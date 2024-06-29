@@ -9,7 +9,7 @@ pre[class*="language-"] {
   hyphens: none;
 
   color: #ccc;
-  background: #2d2d2d;
+  background-color: var(--code-bg-color);
 
   font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   font-size: var(--code-font-size);
@@ -19,7 +19,8 @@ pre[class*="language-"] {
   overflow: auto;
 
   margin: 0.5em 0;
-  padding: 1em;
+
+  border-radius: 6px;
 }
 :not(pre) > code[class*="language-"] {
   padding: 0.1em;

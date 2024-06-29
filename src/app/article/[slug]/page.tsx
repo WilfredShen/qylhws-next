@@ -12,7 +12,7 @@ const markdown = `
 
 lalala
 
-~~~ ts this is meta
+~~~ ts [syntax.ts] {1, 3 ,5-44, +9} +{12-14, 17, 100-111} -{22, 28-29, 6} line-numbers=2
 
 import { codes, types } from "micromark-util-symbol";
 

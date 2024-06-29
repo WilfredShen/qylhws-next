@@ -13,17 +13,22 @@ import { Plugin } from "unified";
 import { filter } from "unist-util-filter";
 import { visit } from "unist-util-visit";
 
-interface CodeBlock extends HastElement {
+interface Element extends RefractorElement {
+  properties: {
+    className: string[];
+    style?: string;
+  };
+}
+
+interface CodeElement extends Element {
   tagName: "code";
   data: {
     meta: string;
   };
 }
 
-interface Element extends RefractorElement {
-  properties: {
-    className: string[];
-  };
+interface PreElement extends Element {
+  tagName: "pre";
 }
 
 interface Parent extends Node {
@@ -31,104 +36,121 @@ interface Parent extends Node {
 }
 
 interface Options {
-  lineNumbers?: false | undefined | "row" | "column" | "tiling";
+  lineNumbers?: boolean;
+  maxHeight?: number | string;
+  maxLines?: number;
 }
 
+type DecoratorType = "+" | "-" | "!";
+
 interface Meta {
-  startLineNumber: number;
+  filename?: string;
+  noLineNumbers: boolean;
+  lineNumbers: false | number;
+  decorators: (DecoratorType | undefined)[];
+  absoluteDecorators: boolean;
+  maxHeight?: number | string;
+  maxLines?: number;
 }
 
 const rehypeCodeBlock: Plugin<[Options], Root> = (options = {}) => {
-  const { lineNumbers } = options;
   return tree => visit(tree, "element", visitor);
 
   function visitor(node: HastElement, index?: number, parent?: HastParent) {
     // @ts-expect-error: Parent 中没有 tagName 属性
     if (!parent || parent.tagName !== "pre" || node.tagName !== "code") return;
-    const code = node as CodeBlock;
-
-    const meta = parseMeta(code.data?.meta ?? "");
-    const { startLineNumber } = meta;
 
     /* 将 className 归一化为数组 */
-    if (
-      !code.properties.className ||
-      typeof code.properties.className === "boolean"
-    ) {
-      code.properties.className = [] as string[];
-    } else if (!Array.isArray(code.properties.className)) {
-      code.properties.className = [code.properties.className];
-    }
+    const code = normalizeClassName(node) as CodeElement;
+    const pre = normalizeClassName(parent as HastElement) as PreElement;
+
+    const meta = parseMeta(code.data?.meta ?? "");
+    console.log(meta);
 
     /* 执行 highlight */
     const lang = getLanguage(code);
     const root = lang
-      ? refractor.highlight(toString(code), lang)
+      ? refractor.highlight(toString(code as HastElement), lang)
       : (code as Parent);
+    pre.properties.className.push(`language-${lang}`);
+    code.properties.className = code.properties.className.filter(
+      e => !e.startsWith("lang"),
+    );
 
     /* 拆分多行文本，添加行号信息 */
     root.children = createFormatter()(root.children);
     const lineCount = getLineNumber(_.last(root.children)!)[1];
+    const startLineNumber = meta.lineNumbers || 1;
+    const lineNumberRange = _.range(
+      startLineNumber,
+      startLineNumber + lineCount,
+    );
     withLineNumber(root, [1, lineCount]);
 
     /* 将内容分行 */
-    const lineNodes = createLineNodes(lineCount);
+    const lineNodes = lineNumberRange.map((_, index) => {
+      return withLineNumber(createLineNode(), index + 1);
+    });
     lineNodes.forEach((line, index) => {
-      line.properties!.className = ["code-line"];
-      const children = filter(root, (node: Node) => {
-        const [start, end] = getLineNumber(node);
-        return start <= index + 1 && end >= index + 1;
-      })?.children;
-      if (children) line.children = children;
+      line.children =
+        filter(root, (node: Node) => {
+          const [start, end] = getLineNumber(node);
+          return start <= index + 1 && end >= index + 1;
+        })?.children ?? [];
     });
 
-    const lineNumberNodes = lineNumbers
-      ? Array.from(lineNodes, (_, index) =>
-          withLineNumber(
-            createLineNumberNode(startLineNumber + index),
-            index + 1,
-          ),
-        )
-      : [];
-
-    if (lineNumbers === "row") {
-      /* 将行号添加到行节点中，此时需要手动设置行号宽度 */
-      lineNodes.forEach((line, index) => {
-        line.children.unshift(lineNumberNodes[index]);
+    /* 添加行号和装饰符 */
+    const showLineNumbers =
+      !meta.noLineNumbers && !!(meta.lineNumbers || options.lineNumbers);
+    if (!showLineNumbers) {
+      code.children = lineNodes;
+    } else {
+      const showDecorators = !!meta.decorators.find(Boolean);
+      const lineNumberNodes = lineNumberRange.map((lineNumber, index) => {
+        return withLineNumber(createLineNumberNode(lineNumber), index + 1);
       });
-      code.children = lineNodes as HastElement["children"];
-      code.properties.className.push("code-layout-row");
-      code.properties.style = `--line-number-size: ${
-        (lineCount + startLineNumber).toString().length
-      }`;
-    } else if (lineNumbers === "column") {
+      const decoratorNodes = showDecorators
+        ? lineNumberRange.map((lineNumber, index) => {
+            return withLineNumber(
+              createDecoratorNode(
+                meta.decorators[
+                  meta.absoluteDecorators ? lineNumber : index + 1
+                ],
+              ),
+              index + 1,
+            );
+          })
+        : [];
+
       /* 行号单独一列，代码单独一列，行号宽度自适应 */
       const lineNumberColumn = createCodeNode();
-      lineNumberColumn.children = lineNumberNodes;
-      lineNumberColumn.properties.className.push("line-number-column");
+      if (showDecorators) {
+        const children: Element[] = [];
+        lineNumberRange.forEach((_, index) => {
+          const lineNode = lineNodes[index];
+          const lineNumberNode = lineNumberNodes[index];
+          const decoratorNode = decoratorNodes[index];
+
+          lineNode!.properties.className.push(
+            ...decoratorNode!.properties.className.slice(1),
+          );
+          children.push(lineNumberNode!, decoratorNode!);
+        });
+        lineNumberColumn.children = children;
+        lineNumberColumn.properties.className.push(
+          "line-numbers",
+          "with-decorators",
+        );
+      } else {
+        lineNumberColumn.children = lineNumberNodes;
+        lineNumberColumn.properties.className.push("line-numbers");
+      }
 
       const codeLineColumn = createCodeNode();
       codeLineColumn.children = lineNodes;
-      codeLineColumn.properties.className.push("code-line-column");
+      codeLineColumn.properties.className.push("code-lines");
 
-      code.children = [
-        lineNumberColumn,
-        codeLineColumn,
-      ] as HastElement["children"];
-      code.properties.className.push("code-layout-column");
-    } else if (lineNumbers === "tiling") {
-      /* 行号和代码混合在一起，不分行也不分列，此时需要手动设置行号宽度 */
-      const nodes: Element["children"] = [];
-      _.range(lineCount).forEach(index => {
-        nodes.push(lineNumberNodes[index], lineNodes[index]);
-      });
-      code.children = nodes as HastElement["children"];
-      code.properties.className.push("code-layout-tiling");
-      code.properties.style = `--line-number-size: ${
-        (lineCount + startLineNumber).toString().length
-      }`;
-    } else {
-      code.children = lineNodes as HastElement["children"];
+      code.children = [lineNumberColumn, codeLineColumn];
     }
   }
 };
@@ -136,14 +158,68 @@ const rehypeCodeBlock: Plugin<[Options], Root> = (options = {}) => {
 export default rehypeCodeBlock;
 
 function parseMeta(meta: string): Meta {
+  const filename = meta.match(/(?<=^|\s)\[([^\[\]]*)\](?=$|\s)/);
+  const noLineNumbers = !!meta.match(/(?<=^|\s)no-line-numbers(?=$|\s)/i);
+  const lineNumbers = meta.match(/(?<=^|\s)line-numbers(?:=(\d+))?(?=$|\s)/i);
+  const decorators = meta.match(/(?<=^|\s)(?:[+-])?\{[^\{\}]*\}(?=$|\s)/g);
+  const absoluteDecorators = !!meta.match(
+    /(?<=^|\s)absolute-decorators(?=$|\s)/i,
+  );
+
   return {
-    startLineNumber: 1,
+    filename: filename?.[1],
+    noLineNumbers,
+    lineNumbers: lineNumbers ? +lineNumbers[1] : false,
+    decorators: parseDecorators(decorators ?? []),
+    absoluteDecorators,
   };
 }
 
-function getLanguage(node: HastElement) {
+function parseDecorators(items: string[]) {
+  const result: DecoratorType[] = [];
+  items.forEach(item => {
+    const defaultType = parseDecoratorType(item) ?? "!";
+    const leftBracket = item.indexOf("{");
+    const rightBracket = item.indexOf("}");
+    const value = item.substring(leftBracket + 1, rightBracket);
+    value
+      .split(",")
+      .map(e => e.trim())
+      .filter(Boolean)
+      .forEach(e => {
+        const decoratorType = parseDecoratorType(e);
+        if (decoratorType) e = e.slice(1);
+        if (!e.match(/^\d+(-\d+)?/)) return;
+        const [begin, end = begin] = e.split("-").map<number>(Number);
+        _.range(begin, end + 1).forEach(lineNumber => {
+          result[lineNumber] = decoratorType ?? defaultType;
+        });
+      });
+  });
+  return result;
+
+  function parseDecoratorType(item: string): DecoratorType | undefined {
+    if (item.startsWith("+") || item.startsWith("-"))
+      return item[0] as DecoratorType;
+  }
+}
+
+function normalizeClassName(
+  node: HastElement,
+): HastElement & { properties: { className: (string | number)[] } } {
+  if (
+    !node.properties.className ||
+    typeof node.properties.className === "boolean"
+  ) {
+    node.properties.className = [] as string[];
+  } else if (!Array.isArray(node.properties.className)) {
+    node.properties.className = [node.properties.className];
+  }
+  return node as any;
+}
+
+function getLanguage(node: Element) {
   const className = node.properties.className;
-  if (!Array.isArray(className)) return;
   const regex = /(?<=^|\s)lang(?:uage)?-(\S+)(?=$|\s)/i;
   for (const item of className) {
     if (typeof item !== "string") continue;
@@ -220,24 +296,13 @@ function hasChildren<T>(value: T): value is T & { children: any } {
   );
 }
 
-/**
- * 创建行节点列表
- *
- * @param size 行数
- * @returns 行节点列表
- */
-function createLineNodes(size: number): Element[] {
-  return Array.from({ length: size }, (_, index) => {
-    return withLineNumber(
-      {
-        type: "element",
-        tagName: "span",
-        properties: { className: [] },
-        children: [],
-      },
-      index + 1,
-    );
-  });
+function createLineNode(): Element {
+  return {
+    type: "element",
+    tagName: "span",
+    properties: { className: ["code-line"] },
+    children: [],
+  };
 }
 
 function createLineNumberNode(lineNumber: number): Element {
@@ -246,6 +311,17 @@ function createLineNumberNode(lineNumber: number): Element {
     tagName: "span",
     properties: { className: ["line-number"] },
     children: [createTextNode(lineNumber.toString())],
+  };
+}
+
+function createDecoratorNode(decorator: DecoratorType | undefined): Element {
+  return {
+    type: "element",
+    tagName: "span",
+    properties: {
+      className: ["line-decorator", getDecoratorClassName(decorator)],
+    },
+    children: [createTextNode(getDecoratorText(decorator))],
   };
 }
 
@@ -292,4 +368,28 @@ function withLineNumber<T extends Node>(
  */
 function getLineNumber<T extends Node>(node: T): [number, number] {
   return (node.data as any).lineNumber;
+}
+
+function getDecoratorClassName(decorator: DecoratorType | undefined) {
+  switch (decorator) {
+    case "+":
+      return "line-inserted";
+    case "-":
+      return "line-deleted";
+    case "!":
+      return "line-highlighted";
+    default:
+      return "";
+  }
+}
+
+function getDecoratorText(decorator: DecoratorType | undefined) {
+  switch (decorator) {
+    case "+":
+    case "-":
+      return decorator;
+    case "!":
+    default:
+      return "";
+  }
 }

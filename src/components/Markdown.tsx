@@ -39,7 +39,7 @@ const Markdown: FC<Props> = props => {
     .use(remarkContainer)
     .use(remarkBadge)
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeCodeBlock, { lineNumbers: "row" })
+    .use(rehypeCodeBlock, { lineNumbers: true })
     .use(rehypeRaw);
 
   const mdast = processor.parse(file);

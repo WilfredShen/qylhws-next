@@ -3,38 +3,88 @@
   text-align: right;
 }
 
-code.code-layout-row {
-  display: flex;
-  flex-direction: column;
-
-  .line-number {
-    display: inline-block;
-
-    box-sizing: content-box;
-    width: calc(var(--line-number-size) * 0.6em);
-    padding: 0 1em;
-  }
+.line-decorator {
+  user-select: none;
+  text-align: center;
 }
 
-code.code-layout-column {
+.line-highlighted {
+  background-color: var(--code-line-highlighted-color);
+}
+
+.line-inserted {
+  background-color: var(--code-line-inserted-color);
+}
+
+.line-deleted {
+  background-color: var(--code-line-deleted-color);
+}
+
+pre[class*="language-"] > code {
   display: flex;
   flex-direction: row;
 
-  .line-number-column,
-  .code-line-column {
+  .line-numbers {
+    position: sticky;
+    left: 0;
+
+    display: grid;
+
+    height: fit-content;
+    padding: var(--code-spacing-width) 0;
+
+    border-right: 1px solid #fff;
+    background-color: var(--code-bg-color);
+
+    grid-template-columns: auto;
+
+    &.with-decorators {
+      grid-template-columns: auto auto;
+    }
+
+    .line-number {
+      padding: 0 0.8em;
+
+      &:has(+ .line-decorator) {
+        padding-right: 0.2em;
+      }
+
+      &:has(+ .line-highlighted) {
+        border-left: var(--code-decorator-border-width) solid
+          var(--code-line-highlighted-border-color);
+        background-color: var(--code-line-highlighted-color);
+      }
+
+      &:has(+ .line-inserted) {
+        border-left: var(--code-decorator-border-width) solid
+          var(--code-line-inserted-border-color);
+        background-color: var(--code-line-inserted-color);
+      }
+
+      &:has(+ .line-deleted) {
+        border-left: var(--code-decorator-border-width) solid
+          var(--code-line-deleted-border-color);
+        background-color: var(--code-line-deleted-color);
+      }
+    }
+
+    .line-decorator {
+      padding-right: 0.8em;
+    }
+  }
+
+  .code-lines {
     display: flex;
+    flex: 0 1 auto;
     flex-direction: column;
 
-    padding: 0 1em;
-  }
-}
+    height: fit-content;
+    padding: var(--code-spacing-width) 0;
 
-code.code-layout-tiling {
-  .line-number {
-    display: inline-block;
+    .code-line {
+      display: inline-block;
 
-    box-sizing: content-box;
-    width: calc(var(--line-number-size) * 0.8em);
-    padding: 0 1em;
+      padding: 0 var(--code-spacing-width);
+    }
   }
 }
