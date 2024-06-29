@@ -9,16 +9,33 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.0.0",
+    "antd": "^5.18.3",
+    "lodash": "^4.17.21",
+    "next": "14.2.4",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.4"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/lodash": "^4.17.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.4"
+    "eslint-config-next": "14.2.4",
+    "hast-util-to-jsx-runtime": "^2.3.0",
+    "hast-util-to-string": "^3.0.0",
+    "refractor": "^4.8.1",
+    "rehype-raw": "^7.0.0",
+    "remark-emoji": "^5.0.0",
+    "remark-gfm": "^4.0.0",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.0",
+    "sass": "^1.77.6",
+    "typescript": "^5",
+    "unified": "^11.0.5",
+    "unist-util-filter": "^5.0.1",
+    "unist-util-visit": "^5.0.0",
+    "vfile": "^6.0.1"
   }
 }

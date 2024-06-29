@@ -1,0 +1,37 @@
+.line-number {
+  text-align: right;
+  user-select: none;
+}
+
+code.code-layout-row {
+  display: flex;
+  flex-direction: column;
+
+  .line-number {
+    box-sizing: content-box;
+    display: inline-block;
+    width: calc(var(--line-number-size) * 0.6em);
+    padding: 0 1em;
+  }
+}
+
+code.code-layout-column {
+  display: flex;
+  flex-direction: row;
+
+  .line-number-column,
+  .code-line-column {
+    display: flex;
+    flex-direction: column;
+    padding: 0 1em;
+  }
+}
+
+code.code-layout-tiling {
+  .line-number {
+    box-sizing: content-box;
+    display: inline-block;
+    width: calc(var(--line-number-size) * 0.8em);
+    padding: 0 1em;
+  }
+}

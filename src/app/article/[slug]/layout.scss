@@ -1,0 +1,29 @@
+.article-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .navbar {
+    flex: 0 0 auto;
+    position: sticky;
+    z-index: 9999;
+    top: 0;
+  }
+
+  .article-main {
+    flex: 1;
+    display: flex;
+
+    .sidebar {
+      flex: 0 0 auto;
+    }
+
+    .content {
+      flex: 0 0 auto;
+      margin: auto;
+      width: var(--content-width);
+      padding: 24px;
+    }
+  }
+}
