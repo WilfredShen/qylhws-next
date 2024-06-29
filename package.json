@@ -21,6 +21,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "csscomb": "^4.3.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "hast-util-to-jsx-runtime": "^2.3.0",

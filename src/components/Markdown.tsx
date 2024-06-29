@@ -9,10 +9,11 @@ import { unified } from "unified";
 import { VFile } from "vfile";
 
 import remarkBadge from "@/plugins/badge";
+import rehypeCodeBlock from "@/plugins/code-block/rehype";
 import remarkContainer from "@/plugins/container";
 import { toJsx } from "@/utils/common";
+
 import Container from "./Container";
-import rehypeCodeBlock from "@/plugins/code-block/rehype";
 
 interface Props {
   content: string;

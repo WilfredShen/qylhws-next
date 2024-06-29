@@ -1,6 +1,6 @@
 .line-number {
-  text-align: right;
   user-select: none;
+  text-align: right;
 }
 
 code.code-layout-row {
@@ -8,8 +8,9 @@ code.code-layout-row {
   flex-direction: column;
 
   .line-number {
-    box-sizing: content-box;
     display: inline-block;
+
+    box-sizing: content-box;
     width: calc(var(--line-number-size) * 0.6em);
     padding: 0 1em;
   }
@@ -23,14 +24,16 @@ code.code-layout-column {
   .code-line-column {
     display: flex;
     flex-direction: column;
+
     padding: 0 1em;
   }
 }
 
 code.code-layout-tiling {
   .line-number {
-    box-sizing: content-box;
     display: inline-block;
+
+    box-sizing: content-box;
     width: calc(var(--line-number-size) * 0.8em);
     padding: 0 1em;
   }
