@@ -38,18 +38,25 @@ interface Parent extends Node {
 interface Options {
   lineNumbers?: boolean;
   maxHeight?: number | string;
+  /** 计算高度时不包含内边距 */
   maxLines?: number;
 }
 
-type DecoratorType = "+" | "-" | "!";
+export enum DecoratorType {
+  INSERT = "+",
+  DELETE = "-",
+  HIGHLIGHT = "!",
+}
 
-interface Meta {
+export interface CodeBlockMeta {
   filename?: string;
   noLineNumbers: boolean;
   lineNumbers: false | number;
   decorators: (DecoratorType | undefined)[];
+  /** 装饰符的行号是否为绝对行号，即装饰符的行号对应的是代码块最终展示的行号 */
   absoluteDecorators: boolean;
   maxHeight?: number | string;
+  /** 计算高度时不包含内边距 */
   maxLines?: number;
 }
 
@@ -65,7 +72,6 @@ const rehypeCodeBlock: Plugin<[Options], Root> = (options = {}) => {
     const pre = normalizeClassName(parent as HastElement) as PreElement;
 
     const meta = parseMeta(code.data?.meta ?? "");
-    console.log(meta);
 
     /* 执行 highlight */
     const lang = getLanguage(code);
@@ -88,9 +94,9 @@ const rehypeCodeBlock: Plugin<[Options], Root> = (options = {}) => {
     withLineNumber(root, [1, lineCount]);
 
     /* 将内容分行 */
-    const lineNodes = lineNumberRange.map((_, index) => {
-      return withLineNumber(createLineNode(), index + 1);
-    });
+    const lineNodes = lineNumberRange.map((_, index) =>
+      withLineNumber(createLineNode(), index + 1),
+    );
     lineNodes.forEach((line, index) => {
       line.children =
         filter(root, (node: Node) => {
@@ -106,9 +112,9 @@ const rehypeCodeBlock: Plugin<[Options], Root> = (options = {}) => {
       code.children = lineNodes;
     } else {
       const showDecorators = !!meta.decorators.find(Boolean);
-      const lineNumberNodes = lineNumberRange.map((lineNumber, index) => {
-        return withLineNumber(createLineNumberNode(lineNumber), index + 1);
-      });
+      const lineNumberNodes = lineNumberRange.map((lineNumber, index) =>
+        withLineNumber(createLineNumberNode(lineNumber), index + 1),
+      );
       const decoratorNodes = showDecorators
         ? lineNumberRange.map((lineNumber, index) => {
             return withLineNumber(
@@ -151,13 +157,42 @@ const rehypeCodeBlock: Plugin<[Options], Root> = (options = {}) => {
       codeLineColumn.properties.className.push("code-lines");
 
       code.children = [lineNumberColumn, codeLineColumn];
+      code.properties.className.push("code-block");
+      addStyle(code, `max-height: ${calcMaxHeight(options, meta)}`);
     }
   }
 };
 
 export default rehypeCodeBlock;
 
-function parseMeta(meta: string): Meta {
+function addStyle(element: Element, style: string) {
+  element.properties.style =
+    element.properties.style
+      ?.split(";")
+      .map(e => e.trim())
+      .filter(Boolean)
+      .concat(style)
+      .join(";") ?? style;
+}
+
+function calcMaxHeight(
+  options: Options,
+  meta: CodeBlockMeta,
+): string | undefined {
+  const { maxHeight, maxLines } = { ...options, ...meta };
+  if (!maxHeight && !maxLines) return undefined;
+  if (typeof maxHeight === "number") return `${maxHeight}px`;
+  if (typeof maxHeight === "string") return maxHeight;
+  return `calc(var(--code-line-height) * ${maxLines})`;
+}
+
+/**
+ * 解析 meta
+ *
+ * @param meta
+ * @returns
+ */
+function parseMeta(meta: string): CodeBlockMeta {
   const filename = meta.match(/(?<=^|\s)\[([^\[\]]*)\](?=$|\s)/);
   const noLineNumbers = !!meta.match(/(?<=^|\s)no-line-numbers(?=$|\s)/i);
   const lineNumbers = meta.match(/(?<=^|\s)line-numbers(?:=(\d+))?(?=$|\s)/i);
@@ -165,20 +200,34 @@ function parseMeta(meta: string): Meta {
   const absoluteDecorators = !!meta.match(
     /(?<=^|\s)absolute-decorators(?=$|\s)/i,
   );
+  const maxHeight = meta.match(/(?<=^|\s)max-height=(\S+)(?=$|\s)/i);
+  const maxLines = meta.match(/(?<=^|\s)max-lines=(\d+)(?=$|\s)/i);
 
   return {
     filename: filename?.[1],
     noLineNumbers,
-    lineNumbers: lineNumbers ? +lineNumbers[1] : false,
+    lineNumbers: lineNumbers?.[1] ? +lineNumbers[1] : false,
     decorators: parseDecorators(decorators ?? []),
     absoluteDecorators,
+    maxHeight: maxHeight?.[1]
+      ? Number.isNaN(+maxHeight[1])
+        ? maxHeight[1]
+        : +maxHeight[1]
+      : undefined,
+    maxLines: maxLines?.[1] ? +maxLines[1] : undefined,
   };
 }
 
+/**
+ * 解析装饰符
+ *
+ * @param items
+ * @returns
+ */
 function parseDecorators(items: string[]) {
   const result: DecoratorType[] = [];
   items.forEach(item => {
-    const defaultType = parseDecoratorType(item) ?? "!";
+    const defaultType = parseDecoratorType(item) ?? DecoratorType.HIGHLIGHT;
     const leftBracket = item.indexOf("{");
     const rightBracket = item.indexOf("}");
     const value = item.substring(leftBracket + 1, rightBracket);
@@ -199,21 +248,30 @@ function parseDecorators(items: string[]) {
   return result;
 
   function parseDecoratorType(item: string): DecoratorType | undefined {
-    if (item.startsWith("+") || item.startsWith("-"))
+    if (
+      item.startsWith(DecoratorType.INSERT) ||
+      item.startsWith(DecoratorType.DELETE)
+    )
       return item[0] as DecoratorType;
   }
 }
 
+/**
+ * 归一化 className 类型为 string[]
+ *
+ * @param node
+ * @returns
+ */
 function normalizeClassName(
   node: HastElement,
-): HastElement & { properties: { className: (string | number)[] } } {
+): HastElement & { properties: { className: string[] } } {
   if (
     !node.properties.className ||
     typeof node.properties.className === "boolean"
   ) {
     node.properties.className = [] as string[];
   } else if (!Array.isArray(node.properties.className)) {
-    node.properties.className = [node.properties.className];
+    node.properties.className = [`${node.properties.className}`];
   }
   return node as any;
 }
