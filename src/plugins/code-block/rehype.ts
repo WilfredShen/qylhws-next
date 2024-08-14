@@ -179,7 +179,8 @@ function calcMaxHeight(
   options: Options,
   meta: CodeBlockMeta,
 ): string | undefined {
-  const { maxHeight, maxLines } = { ...options, ...meta };
+  const maxHeight = meta.maxHeight || options.maxHeight;
+  const maxLines = meta.maxLines || options.maxLines;
   if (!maxHeight && !maxLines) return undefined;
   if (typeof maxHeight === "number") return `${maxHeight}px`;
   if (typeof maxHeight === "string") return maxHeight;
