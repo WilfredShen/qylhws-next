@@ -3,23 +3,29 @@ import React, { FC } from "react";
 
 import { mergeClassNames } from "@/utils/classnames";
 
-export type ContainerProps<T = unknown> = Props & {
+export interface ContainerProps extends Props {
   type: string;
   meta?: string;
   className?: string;
-} & T;
+}
 
-const components: Map<string, FC<ContainerProps>> = new Map();
+const components: Map<string, [FC<any>, any?]> = new Map();
 
 const DEFAULT_KEY = "default";
 
-export function registerComponent(name: string, component: FC<ContainerProps>) {
+export function registerComponent<T extends ContainerProps>(
+  name: string,
+  component: FC<T>,
+  defaultProps?: T,
+) {
   if (!name) return;
 
-  components.set(name, component);
+  components.set(name, [component, defaultProps]);
 }
 
-export function getComponent(name: string) {
+export function getComponent<T extends ContainerProps>(
+  name: string,
+): [FC<T>, T?] {
   return components.get(name) ?? components.get(DEFAULT_KEY)!;
 }
 

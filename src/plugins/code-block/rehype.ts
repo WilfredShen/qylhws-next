@@ -60,7 +60,7 @@ export interface CodeBlockMeta {
   maxLines?: number;
 }
 
-const rehypeCodeBlock: Plugin<[] | [Options], Root> = (options = {}) => {
+const rehypeCodeBlock: Plugin<[Options?], Root> = (options = {}) => {
   return tree => visit(tree, "element", visitor);
 
   function visitor(node: HastElement, index?: number, parent?: HastParent) {

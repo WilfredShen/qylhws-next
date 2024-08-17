@@ -15,7 +15,7 @@ interface Options {
   fenceCode?: NonNullable<Code>;
 }
 
-const remarkContainer: Plugin<[] | [Options]> = function (options = {}) {
+const remarkContainer: Plugin<[Options?]> = function (options = {}) {
   const { fenceCode = codes.equalsTo } = options;
 
   const data = this.data();
