@@ -1,0 +1,29 @@
+@import "@/styles/vars";
+
+.ws-badge {
+  position: relative;
+  top: -0.1em;
+
+  display: inline-block;
+
+  margin: 2px 0.2em;
+  padding: 0.1em 0.2em;
+
+  border: 1px solid var(--badge-border-color-default);
+  border-radius: 0.25em;
+  background-color: var(--badge-bg-color-default);
+
+  font-size: 0.8em;
+  line-height: 1;
+
+  & + & {
+    margin-left: 0;
+  }
+}
+
+@each $type in $badgeTypes {
+  .ws-badge-#{$type} {
+    border-color: var(--badge-border-color-#{$type});
+    background-color: var(--badge-bg-color-#{$type});
+  }
+}

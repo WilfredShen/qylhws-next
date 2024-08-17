@@ -4,7 +4,7 @@ import { Plugin } from "unified";
 
 import { encodePropertiesToString } from "@/utils/escape";
 
-const RE_BUDGE = /(?<=^|\s)#[^\s#]([^#]*[^#\s])?#(?=$|\s)/g;
+const RE_BUDGE = /((?<=^|[^#\s])#|\s#)[^\s#]([^#]*[^#\s])?#(?=$|[^#])/g;
 
 const remarkBadge: Plugin<[], Root> = () => {
   return tree => findAndReplace(tree, [RE_BUDGE, replacer]);
@@ -13,20 +13,20 @@ const remarkBadge: Plugin<[], Root> = () => {
 export default remarkBadge;
 
 function replacer(match: string) {
-  match = match.slice(1, -1);
+  match = match.trim().slice(1, -1);
   let text = match;
-  let color: string | undefined = undefined;
-  const lastVerticalBarIndex = match.lastIndexOf("|");
+  let type = "default";
+  const firstIndex = match.indexOf("|");
 
-  if (lastVerticalBarIndex >= 0) {
-    text = match.slice(0, lastVerticalBarIndex).trim();
-    color = match.slice(lastVerticalBarIndex + 1).trim();
+  if (firstIndex >= 0) {
+    type = match.slice(0, firstIndex).trim();
+    text = match.slice(firstIndex + 1).trim();
   }
 
   return {
     type: "html",
     value: `<ws-badge ${encodePropertiesToString({
-      color,
+      type,
     })}>${text}</ws-badge>`,
   } satisfies Html;
 }

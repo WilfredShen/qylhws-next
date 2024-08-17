@@ -1,9 +1,9 @@
-import "./layout.scss";
-
 import React from "react";
 
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
+
+import "./layout.scss";
 
 interface ArticleLayoutProps {
   children?: React.ReactNode;

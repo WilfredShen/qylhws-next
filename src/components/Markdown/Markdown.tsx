@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React from "react";
 
 import { Components as JsxComponents } from "hast-util-to-jsx-runtime";
 import rehypeRaw from "rehype-raw";
@@ -14,6 +14,7 @@ import rehypeCodeBlock from "@/plugins/code-block/rehype";
 import remarkContainer from "@/plugins/container";
 import { toJsx } from "@/utils/common";
 
+import Badge from "../Badge";
 import Container from "../Container";
 
 export interface MarkdownProps {
@@ -21,13 +22,14 @@ export interface MarkdownProps {
 }
 
 type Components = {
-  [key in keyof JsxComponents | `ws${string}`]: key extends keyof JsxComponents
+  [key in keyof JsxComponents | `ws-${string}`]: key extends keyof JsxComponents
     ? JsxComponents[key]
-    : FC<any>;
+    : React.FC<any>;
 };
 
 const components: Partial<Components> = {
   "ws-container": Container,
+  "ws-badge": Badge,
 };
 
 const Markdown = (props: MarkdownProps) => {

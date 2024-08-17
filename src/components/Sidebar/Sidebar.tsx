@@ -1,7 +1,9 @@
 import React from "react";
 
 import { Menu } from "antd";
-import { MenuItemType } from "antd/es/menu/interface";
+import type { MenuItemType } from "antd/es/menu/interface";
+
+import "./Sidebar.scss";
 
 export interface SidebarProps {
   items: MenuItemType[];

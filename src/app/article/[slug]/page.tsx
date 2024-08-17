@@ -3,11 +3,23 @@ import React from "react";
 import Markdown from "@/components/Markdown";
 
 const markdown = `
-# Hello World! :smile: #badge | red#
+# Hello World! :smile: #default# #info|info# #warning|warning# #danger|danger# #tip|tip# #important|important# #success|success#
+
+## H2 #New#
+
+### H3 #New#
+
+#### H4 #New#
+
+##### H5 #New#
+
+###### H6 #New#
 
 <div style="height: 100px; background-color: #f62">
 
 </div>
+
+你好，我是张三#标签#。
 
 === tabs
 

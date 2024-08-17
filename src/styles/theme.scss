@@ -1,16 +1,52 @@
+@import "./vars";
+
 :root {
-  --navbar-height: 64px;
-  --sidebar-width: 240px;
-  --content-width: 720px;
-  --code-bg-color: #2f2f2f;
-  --code-font-size: 14px;
-  --code-line-height: 20px;
-  --code-spacing-width: 1em;
-  --code-decorator-border-width: 0.5em;
-  --code-line-highlighted-color: #333;
-  --code-line-highlighted-border-color: #666;
-  --code-line-inserted-color: #0e03;
-  --code-line-inserted-border-color: #0e06;
-  --code-line-deleted-color: #e003;
-  --code-line-deleted-border-color: #e006;
+  --font-size: #{$fontSize};
+  --line-height: #{$lineHeight};
+
+  --navbar-height: #{$bavbarHeight};
+  --sidebar-width: #{$sidebarWidth};
+  --content-width: #{$contentWidth};
+
+  @each $baseName, $baseColor in $colorArray {
+    #{$baseName}: $baseColor;
+
+    @each $percent in 100, 75, 50, 30, 15 {
+      #{$baseName}-#{$percent}: rgba($baseColor, $percent / 100);
+    }
+  }
+
+  --font-weight-h1: 500;
+  --font-weight-h2: 500;
+  --font-weight-h3: 500;
+  --font-weight-h4: 500;
+  --font-weight-h5: 500;
+  --font-weight-h6: 500;
+}
+
+code,
+pre {
+  &[class*="language-"] {
+    --code-bg-color: #2f2f2f;
+    --code-font-size: 14px;
+    --code-line-height: 20px;
+    --code-spacing-width: 1em;
+    --code-decorator-border-width: 0.5em;
+    --code-line-highlighted-color: #333;
+    --code-line-highlighted-border-color: #666;
+    --code-line-inserted-color: #0e03;
+    --code-line-inserted-border-color: #0e06;
+    --code-line-deleted-color: #e003;
+    --code-line-deleted-border-color: #e006;
+  }
+}
+
+.ws-badge {
+  --badge-border-color-default: #{rgba(#ccc, 0.3)};
+  --badge-bg-color-default: #{rgba(#ccc, 0.15)};
+
+  @each $type in $badgeTypes {
+    --badge-border-color-#{$type}: var(--color-#{$type}-30);
+    --badge-bg-color-#{$type}: var(--color-#{$type}-15);
+  }
 }

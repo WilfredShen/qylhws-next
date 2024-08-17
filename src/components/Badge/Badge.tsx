@@ -1,14 +1,21 @@
 import React from "react";
 
+import "./Badge.scss";
+import { mergeClassNames } from "@/utils/classnames";
+
 export interface BadgeProps {
-  color?: string;
-  chidren?: React.ReactNode;
+  type?: string;
+  children?: React.ReactNode;
 }
 
 const Badge = (props: BadgeProps) => {
-  const { color, chidren } = props;
+  const { type, children } = props;
 
-  return <span>{chidren}</span>;
+  return (
+    <span className={mergeClassNames("ws-badge", `ws-badge-${type}`)}>
+      {children}
+    </span>
+  );
 };
 
 export default Badge;

@@ -1,8 +1,14 @@
-import { ConfigProvider } from "antd";
-import React, { PropsWithChildren } from "react";
+import React from "react";
 
-const WithTheme = ({ children }: PropsWithChildren) => (
+import { ConfigProvider } from "antd";
+
+export interface WithThemeProps {
+  children?: React.ReactNode;
+}
+
+const WithTheme = ({ children }: WithThemeProps) => (
   <ConfigProvider
+    prefixCls="ws"
     theme={{
       cssVar: true,
       hashed: false,

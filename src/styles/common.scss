@@ -7,10 +7,35 @@
 html,
 body {
   max-width: 100vw;
+  font-size: var(--font-size);
 }
 
 a {
   text-decoration: none;
 
   color: inherit;
+}
+
+h1 {
+  font-weight: var(--font-weight-h1);
+}
+
+h2 {
+  font-weight: var(--font-weight-h2);
+}
+
+h3 {
+  font-weight: var(--font-weight-h3);
+}
+
+h4 {
+  font-weight: var(--font-weight-h4);
+}
+
+h5 {
+  font-weight: var(--font-weight-h5);
+}
+
+h6 {
+  font-weight: var(--font-weight-h6);
 }

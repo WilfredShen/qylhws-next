@@ -4,6 +4,8 @@ import { Card, Tabs } from "antd";
 
 import type { ContainerProps } from "./share";
 
+import "./TabsContainer.scss";
+
 type Child = React.ReactElement | string | null | undefined;
 
 interface TabItem {

@@ -1,0 +1,22 @@
+$fontSize: 16px;
+$lineHeight: 22px;
+
+$bavbarHeight: 64px;
+$sidebarWidth: 240px;
+$contentWidth: 720px;
+
+$colorPrimary: #ffaa00;
+$colorWarning: #ff6600;
+$colorError: #ff2200;
+$colorDanger: $colorError;
+$colorSuccess: #52c41a;
+$colorImportant: #9f7aea;
+$colorTip: #646cff;
+$colorInfo: #777;
+
+$colorArray: "--color-primary" $colorPrimary, "--color-warning" $colorWarning,
+  "--color-error" $colorError, "--color-danger" $colorDanger,
+  "--color-success" $colorSuccess, "--color-important" $colorImportant,
+  "--color-tip" $colorTip, "--color-info" $colorInfo;
+
+$badgeTypes: "danger", "warning", "success", "important", "info", "tip";
