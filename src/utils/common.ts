@@ -1,12 +1,13 @@
+import { Fragment, ReactNode } from "react";
+
 import { Nodes } from "hast";
 import {
   Components as JsxComponents,
   toJsxRuntime,
 } from "hast-util-to-jsx-runtime";
-import { Fragment, ReactNode } from "react";
 import { jsx, jsxs } from "react/jsx-runtime";
 
-export const toJsx = <Components extends JsxComponents = JsxComponents>(
+export const toJsx = <Components extends Partial<JsxComponents>>(
   root: Nodes,
   components?: Components,
 ): ReactNode => {

@@ -1,7 +1,8 @@
-import { Card, Tabs } from "antd";
 import React from "react";
 
-import { ContainerProps } from "./share";
+import { Card, Tabs } from "antd";
+
+import type { ContainerProps } from "./share";
 
 type Child = React.ReactElement | string | null | undefined;
 

@@ -1,4 +1,4 @@
-import { Container } from "./mdast";
+import type { Container } from "./mdast";
 
 declare module "micromark-util-types" {
   interface TokenTypeMap {

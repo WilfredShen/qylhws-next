@@ -1,12 +1,17 @@
 import "./layout.scss";
 
-import { FC, PropsWithChildren } from "react";
+import React from "react";
 
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 
-const ArticleLayout: FC<PropsWithChildren> = props => {
+interface ArticleLayoutProps {
+  children?: React.ReactNode;
+}
+
+const ArticleLayout = (props: ArticleLayoutProps) => {
   const { children } = props;
+
   return (
     <div className="article-page">
       <Navbar />

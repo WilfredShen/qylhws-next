@@ -1,5 +1,6 @@
-import { Props } from "hast-util-to-jsx-runtime";
-import React, { FC } from "react";
+import React from "react";
+
+import type { Props } from "hast-util-to-jsx-runtime";
 
 import { mergeClassNames } from "@/utils/classnames";
 
@@ -9,13 +10,13 @@ export interface ContainerProps extends Props {
   className?: string;
 }
 
-const components: Map<string, [FC<any>, any?]> = new Map();
+const components: Map<string, [React.FC<any>, any?]> = new Map();
 
 const DEFAULT_KEY = "default";
 
 export function registerComponent<T extends ContainerProps>(
   name: string,
-  component: FC<T>,
+  component: React.FC<T>,
   defaultProps?: T,
 ) {
   if (!name) return;
@@ -25,7 +26,7 @@ export function registerComponent<T extends ContainerProps>(
 
 export function getComponent<T extends ContainerProps>(
   name: string,
-): [FC<T>, T?] {
+): [React.FC<T>, T?] {
   return components.get(name) ?? components.get(DEFAULT_KEY)!;
 }
 

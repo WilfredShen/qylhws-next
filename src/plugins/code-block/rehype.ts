@@ -6,7 +6,7 @@ import {
   Text,
 } from "hast";
 import { toString } from "hast-util-to-string";
-import _ from "lodash";
+import { last, range } from "lodash";
 import { RefractorElement } from "refractor";
 import { refractor } from "refractor/lib/all";
 import { Plugin } from "unified";
@@ -85,12 +85,9 @@ const rehypeCodeBlock: Plugin<[Options?], Root> = (options = {}) => {
 
     /* 拆分多行文本，添加行号信息 */
     root.children = createFormatter()(root.children);
-    const lineCount = getLineNumber(_.last(root.children)!)[1];
+    const lineCount = getLineNumber(last(root.children)!)[1];
     const startLineNumber = meta.lineNumbers || 1;
-    const lineNumberRange = _.range(
-      startLineNumber,
-      startLineNumber + lineCount,
-    );
+    const lineNumberRange = range(startLineNumber, startLineNumber + lineCount);
     withLineNumber(root, [1, lineCount]);
 
     /* 将内容分行 */
@@ -241,7 +238,7 @@ function parseDecorators(items: string[]) {
         if (decoratorType) e = e.slice(1);
         if (!e.match(/^\d+(-\d+)?/)) return;
         const [begin, end = begin] = e.split("-").map<number>(Number);
-        _.range(begin, end + 1).forEach(lineNumber => {
+        range(begin, end + 1).forEach(lineNumber => {
           result[lineNumber] = decoratorType ?? defaultType;
         });
       });

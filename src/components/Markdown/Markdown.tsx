@@ -1,5 +1,6 @@
+import { FC } from "react";
+
 import { Components as JsxComponents } from "hast-util-to-jsx-runtime";
-import React from "react";
 import rehypeRaw from "rehype-raw";
 import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
@@ -20,7 +21,9 @@ export interface MarkdownProps {
 }
 
 type Components = {
-  [key in keyof JsxComponents | "ws-container"]: React.FC<any>;
+  [key in keyof JsxComponents | `ws${string}`]: key extends keyof JsxComponents
+    ? JsxComponents[key]
+    : FC<any>;
 };
 
 const components: Partial<Components> = {
@@ -44,7 +47,7 @@ const Markdown = (props: MarkdownProps) => {
   const mdast = processor.parse(file);
   const hast = processor.runSync(mdast, file);
 
-  return toJsx(hast, components as JsxComponents);
+  return toJsx(hast, components);
 };
 
 export default Markdown;

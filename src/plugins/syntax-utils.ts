@@ -1,6 +1,6 @@
 import { markdownSpace } from "micromark-util-character";
 import { codes, types } from "micromark-util-symbol";
-import { Code, Effects, State, TokenType } from "micromark-util-types";
+import type { Code, Effects, State, TokenType } from "micromark-util-types";
 
 export function isFileEnding(code: Code): code is null {
   return code === codes.eof;

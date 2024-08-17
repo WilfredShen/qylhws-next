@@ -1,7 +1,8 @@
-import { encodePropertiesToString } from "@/utils/escape";
 import { Html, Root } from "mdast";
 import { findAndReplace } from "mdast-util-find-and-replace";
 import { Plugin } from "unified";
+
+import { encodePropertiesToString } from "@/utils/escape";
 
 const RE_BUDGE = /(?<=^|\s)#[^\s#]([^#]*[^#\s])?#(?=$|\s)/g;
 

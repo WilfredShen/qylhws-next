@@ -1,15 +1,14 @@
+import type { Html, Parent } from "mdast";
 import { codes } from "micromark-util-symbol";
+import type { Code } from "micromark-util-types";
+import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
 
 import { encodePropertiesToString } from "@/utils/escape";
 
+import type { Container } from "./mdast";
 import { containerMdast } from "./mdast";
 import { containerFlow } from "./syntax";
-
-import type { Html, Parent } from "mdast";
-import type { Plugin } from "unified";
-import type { Code } from "micromark-util-types";
-import type { Container } from "./mdast";
 
 interface Options {
   fenceCode?: NonNullable<Code>;

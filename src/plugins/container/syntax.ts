@@ -1,12 +1,11 @@
 import { types } from "micromark-util-symbol";
+import type { Code, Extension, TokenType } from "micromark-util-types";
 
 import {
   consumeWhiteSpaces,
   isEnding,
   isWhiteSpace,
 } from "@/plugins/syntax-utils";
-
-import type { Code, Extension, TokenType } from "micromark-util-types";
 
 const fenceType: TokenType = "containerFlowFence";
 const sequenceType: TokenType = "containerFlowFenceSequence";
