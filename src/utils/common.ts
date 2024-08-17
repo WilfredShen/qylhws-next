@@ -3,7 +3,7 @@ import {
   Components as JsxComponents,
   toJsxRuntime,
 } from "hast-util-to-jsx-runtime";
-import { ReactNode, Fragment } from "react";
+import { Fragment, ReactNode } from "react";
 import { jsx, jsxs } from "react/jsx-runtime";
 
 export const toJsx = <Components extends JsxComponents = JsxComponents>(

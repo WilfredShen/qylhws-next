@@ -1,5 +1,5 @@
-import { Literal } from "mdast";
-import { Extension } from "mdast-util-from-markdown";
+import type { Literal } from "mdast";
+import type { Extension } from "mdast-util-from-markdown";
 
 export interface Container extends Literal {
   type: "ws-container";
@@ -7,7 +7,7 @@ export interface Container extends Literal {
   meta?: string;
 }
 
-export const containerMdast: Extension = {
+export const containerMdast = (): Extension => ({
   enter: {
     containerFlowFence(token) {
       const node: Container = {
@@ -44,4 +44,4 @@ export const containerMdast: Extension = {
       node.meta = data;
     },
   },
-};
+});

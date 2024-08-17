@@ -5,8 +5,8 @@ export interface ClassNamesOption {
 }
 
 export type ClassNameParam =
-  | string
   | ClassNamesOption
+  | string
   | null
   | undefined
   | ClassNameParam[];
@@ -19,11 +19,11 @@ export function mergeClassNames(...classNames: ClassNameParam[]) {
     if (typeof item === "object")
       Object.entries(item).forEach(([key, value]) => value && array.push(key));
   });
-  return _.uniq(array).join(" ");
+  return _.uniq(array.filter(e => e.trim())).join(" ");
 }
 
 export function appendClassNames<
   T extends { className?: string | null | undefined },
 >(obj: T, ...classNames: ClassNameParam[]) {
-  obj.className = mergeClassNames(obj.className?.split(" "), ...classNames);
+  obj.className = mergeClassNames(obj.className, ...classNames);
 }

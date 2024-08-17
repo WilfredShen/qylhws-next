@@ -49,7 +49,7 @@ export enum DecoratorType {
 }
 
 export interface CodeBlockMeta {
-  filename?: string;
+  // filename?: string;
   noLineNumbers: boolean;
   lineNumbers: false | number;
   decorators: (DecoratorType | undefined)[];
@@ -60,7 +60,7 @@ export interface CodeBlockMeta {
   maxLines?: number;
 }
 
-const rehypeCodeBlock: Plugin<[Options], Root> = (options = {}) => {
+const rehypeCodeBlock: Plugin<[] | [Options], Root> = (options = {}) => {
   return tree => visit(tree, "element", visitor);
 
   function visitor(node: HastElement, index?: number, parent?: HastParent) {
@@ -194,10 +194,10 @@ function calcMaxHeight(
  * @returns
  */
 function parseMeta(meta: string): CodeBlockMeta {
-  const filename = meta.match(/(?<=^|\s)\[([^\[\]]*)\](?=$|\s)/);
+  // const filename = meta.match(/(?<=^|\s)\[([^\[\]]*)\](?=$|\s)/);
   const noLineNumbers = !!meta.match(/(?<=^|\s)no-line-numbers(?=$|\s)/i);
   const lineNumbers = meta.match(/(?<=^|\s)line-numbers(?:=(\d+))?(?=$|\s)/i);
-  const decorators = meta.match(/(?<=^|\s)(?:[+-])?\{[^\{\}]*\}(?=$|\s)/g);
+  const decorators = meta.match(/(?<=^|\s)(?:[+-])?\{[^{}]*\}(?=$|\s)/g);
   const absoluteDecorators = !!meta.match(
     /(?<=^|\s)absolute-decorators(?=$|\s)/i,
   );
@@ -205,7 +205,7 @@ function parseMeta(meta: string): CodeBlockMeta {
   const maxLines = meta.match(/(?<=^|\s)max-lines=(\d+)(?=$|\s)/i);
 
   return {
-    filename: filename?.[1],
+    // filename: filename?.[1],
     noLineNumbers,
     lineNumbers: lineNumbers?.[1] ? +lineNumbers[1] : false,
     decorators: parseDecorators(decorators ?? []),

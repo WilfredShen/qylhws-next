@@ -1,17 +1,29 @@
+import React from "react";
+
 import Markdown from "@/components/Markdown";
-import { FC } from "react";
 
 const markdown = `
-# Hello World! :smile: #badge#
+# Hello World! :smile: #badge | red#
 
 <div style="height: 100px; background-color: #f62">
 
 </div>
 
-::: group xxx
+=== tabs
 
-lalala
+=== tabs-item [code block 1]
 
+~~~ ts
+const name = "code block 1";
+~~~
+
+===
+
+~~~ ts
+const name = "code block 2";
+~~~
+
+=== tabs-item
 ~~~ ts [syntax.ts] {1, 3 ,5-44, +9} +{12-14, 17, 100-111} -{22, 28-29, 6} line-numbers=2
 
 import { codes, types } from "micromark-util-symbol";
@@ -145,14 +157,16 @@ export const containerFlow: Extension = {
 
 ~~~
 
-:::
+===
+
+===
 `;
 
 interface Props {
   slug: string;
 }
 
-const Article: FC<Props> = props => {
+const Article = (props: Props) => {
   return <Markdown content={markdown} />;
 };
 

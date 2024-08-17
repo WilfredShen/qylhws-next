@@ -1,3 +1,4 @@
+import { encodePropertiesToString } from "@/utils/escape";
 import { Html, Root } from "mdast";
 import { findAndReplace } from "mdast-util-find-and-replace";
 import { Plugin } from "unified";
@@ -5,15 +6,26 @@ import { Plugin } from "unified";
 const RE_BUDGE = /(?<=^|\s)#[^\s#]([^#]*[^#\s])?#(?=$|\s)/g;
 
 const remarkBadge: Plugin<[], Root> = () => {
-  const replacer = (match: string) => {
-    return {
-      type: "html",
-      value: `<ws-badge>${match.slice(1, -1)}</ws-badge>`,
-    } satisfies Html;
-  };
-  return tree => {
-    findAndReplace(tree, [RE_BUDGE, replacer]);
-  };
+  return tree => findAndReplace(tree, [RE_BUDGE, replacer]);
 };
 
 export default remarkBadge;
+
+function replacer(match: string) {
+  match = match.slice(1, -1);
+  let text = match;
+  let color: string | undefined = undefined;
+  const lastVerticalBarIndex = match.lastIndexOf("|");
+
+  if (lastVerticalBarIndex >= 0) {
+    text = match.slice(0, lastVerticalBarIndex).trim();
+    color = match.slice(lastVerticalBarIndex + 1).trim();
+  }
+
+  return {
+    type: "html",
+    value: `<ws-badge ${encodePropertiesToString({
+      color,
+    })}>${text}</ws-badge>`,
+  } satisfies Html;
+}

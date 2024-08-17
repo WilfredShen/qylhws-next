@@ -1,5 +1,5 @@
 import { Components as JsxComponents } from "hast-util-to-jsx-runtime";
-import { FC } from "react";
+import React from "react";
 import rehypeRaw from "rehype-raw";
 import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
@@ -15,20 +15,19 @@ import { toJsx } from "@/utils/common";
 
 import Container from "./Container";
 
-interface Props {
+interface MarkdownProps {
   content: string;
 }
 
 type Components = {
-  [key in keyof JsxComponents | "ws-container"]: FC<any>;
+  [key in keyof JsxComponents | "ws-container"]: React.FC<any>;
 };
 
 const components: Partial<Components> = {
   "ws-container": Container,
-  // code: Code,
 };
 
-const Markdown: FC<Props> = props => {
+const Markdown = (props: MarkdownProps) => {
   const { content } = props;
 
   const file = new VFile({ value: content });
@@ -36,11 +35,11 @@ const Markdown: FC<Props> = props => {
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkEmoji)
-    .use(remarkContainer)
-    .use(remarkBadge)
+    .use(remarkContainer) // 自定义容器
+    .use(remarkBadge) // 自定义徽章
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeCodeBlock, { lineNumbers: true, maxHeight: 394 })
-    .use(rehypeRaw);
+    .use(rehypeCodeBlock, { lineNumbers: true, maxHeight: 394 }) // 拓展代码块功能
+    .use(rehypeRaw); // 解析 HTML 标签
 
   const mdast = processor.parse(file);
   const hast = processor.runSync(mdast, file);

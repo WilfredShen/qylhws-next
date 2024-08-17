@@ -1,128 +1,128 @@
-import { codes, types } from "micromark-util-symbol";
+import { types } from "micromark-util-symbol";
 
-import { consumeWhiteSpaces, isEnding, isWhiteSpace } from "@/plugins/utils";
+import {
+  consumeWhiteSpaces,
+  isEnding,
+  isWhiteSpace,
+} from "@/plugins/syntax-utils";
 
-import { Code, Extension, TokenType } from "micromark-util-types";
+import type { Code, Extension, TokenType } from "micromark-util-types";
 
 const fenceType: TokenType = "containerFlowFence";
 const sequenceType: TokenType = "containerFlowFenceSequence";
 const infoType: TokenType = "containerFlowFenceInfo";
 const metaType: TokenType = "containerFlowFenceMeta";
 
-/**
- * 是否为分隔符
- *
- * @param code 待检测字符
- * @returns 检测结果
- */
-const isFence = (code: Code): code is typeof codes.colon =>
-  code === codes.colon;
+export const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
+  /** 是否为分隔符 */
+  const isFence = (code: Code) => code === fenceCode;
 
-export const containerFlow: Extension = {
-  flow: {
-    [codes.colon]: {
-      tokenize: function (effects, ok, nok) {
-        const self = this;
-        let fenceLength = 0;
+  return {
+    flow: {
+      [fenceCode]: {
+        tokenize: function (effects, ok, nok) {
+          const self = this;
+          let fenceLength = 0;
 
-        return start;
+          return start;
 
-        function start(code: Code) {
-          const position = self.now();
+          function start(code: Code) {
+            const position = self.now();
 
-          // 必须是分隔符且在行首
-          if (!isFence(code) || position.column !== 1) return nok(code);
+            // 必须是分隔符且在行首
+            if (!isFence(code) || position.column !== 1) return nok(code);
 
-          // 分隔符所在行
-          effects.enter(fenceType);
-          effects.enter(types.chunkString, { contentType: "string" });
-          // 分隔符序列
-          effects.enter(sequenceType);
+            // 分隔符所在行
+            effects.enter(fenceType);
+            effects.enter(types.chunkString, { contentType: "string" });
+            // 分隔符序列
+            effects.enter(sequenceType);
 
-          return sequence(code);
-        }
-
-        function sequence(code: Code) {
-          if (isFence(code)) {
-            fenceLength++;
-            effects.consume(code);
-            return sequence;
+            return sequence(code);
           }
 
-          if (fenceLength < 3) return nok(code);
+          function sequence(code: Code) {
+            if (isFence(code)) {
+              fenceLength++;
+              effects.consume(code);
+              return sequence;
+            }
 
-          /* 分隔符消耗完毕，且长度大于等于 3 */
+            if (fenceLength < 3) return nok(code);
 
-          effects.exit(sequenceType);
+            /* 分隔符消耗完毕，且长度大于等于 3 */
 
-          // 尝试消耗空白符
-          return isWhiteSpace(code)
-            ? consumeWhiteSpaces(effects, infoBefore)(code)
-            : infoBefore(code);
-        }
+            effects.exit(sequenceType);
 
-        function infoBefore(code: Code) {
-          /* 此时 code 不可能为空白符 */
-
-          if (isEnding(code)) return after(code);
-
-          effects.enter(infoType);
-          effects.enter(types.chunkString, { contentType: "string" });
-
-          return info(code);
-        }
-
-        function info(code: Code) {
-          if (!isWhiteSpace(code) && !isEnding(code)) {
-            effects.consume(code);
-            return info;
+            // 尝试消耗空白符
+            return isWhiteSpace(code)
+              ? consumeWhiteSpaces(effects, infoBefore)(code)
+              : infoBefore(code);
           }
 
-          /* 遇到空白符或结束符 */
+          function infoBefore(code: Code) {
+            /* 此时 code 不可能为空白符 */
 
-          effects.exit(types.chunkString);
-          effects.exit(infoType);
+            if (isEnding(code)) return after(code);
 
-          return isWhiteSpace(code)
-            ? consumeWhiteSpaces(effects, metaBefore)(code)
-            : after(code);
-        }
+            effects.enter(infoType);
+            effects.enter(types.chunkString, { contentType: "string" });
 
-        function metaBefore(code: Code) {
-          /* 此时 code 不可能为空白符 */
-
-          if (isEnding(code)) return after(code);
-
-          effects.enter(metaType);
-          effects.enter(types.chunkString, { contentType: "string" });
-
-          return meta(code);
-        }
-
-        function meta(code: Code) {
-          // meta 只有遇到结束符才停止，非前缀空白符也被视为 meta
-          if (!isEnding(code)) {
-            effects.consume(code);
-            return meta;
+            return info(code);
           }
 
-          /* meta 已消耗完 */
+          function info(code: Code) {
+            if (!isWhiteSpace(code) && !isEnding(code)) {
+              effects.consume(code);
+              return info;
+            }
 
-          effects.exit(types.chunkString);
-          effects.exit(metaType);
+            /* 遇到空白符或结束符 */
 
-          return after(code);
-        }
+            effects.exit(types.chunkString);
+            effects.exit(infoType);
 
-        function after(code: Code) {
-          /* 此时 code 必定为结束符 */
+            return isWhiteSpace(code)
+              ? consumeWhiteSpaces(effects, metaBefore)(code)
+              : after(code);
+          }
 
-          effects.exit(types.chunkString);
-          effects.exit(fenceType);
+          function metaBefore(code: Code) {
+            /* 此时 code 不可能为空白符 */
 
-          return ok(code);
-        }
+            if (isEnding(code)) return after(code);
+
+            effects.enter(metaType);
+            effects.enter(types.chunkString, { contentType: "string" });
+
+            return meta(code);
+          }
+
+          function meta(code: Code) {
+            // meta 只有遇到结束符才停止，非前缀空白符也被视为 meta
+            if (!isEnding(code)) {
+              effects.consume(code);
+              return meta;
+            }
+
+            /* meta 已消耗完 */
+
+            effects.exit(types.chunkString);
+            effects.exit(metaType);
+
+            return after(code);
+          }
+
+          function after(code: Code) {
+            /* 此时 code 必定为结束符 */
+
+            effects.exit(types.chunkString);
+            effects.exit(fenceType);
+
+            return ok(code);
+          }
+        },
       },
     },
-  },
+  };
 };

@@ -1,18 +1,18 @@
 import { ConfigProvider } from "antd";
-import React, { FC, PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 
-const WithTheme: FC<PropsWithChildren> = ({ children }) => (
+const WithTheme = ({ children }: PropsWithChildren) => (
   <ConfigProvider
     theme={{
       cssVar: true,
       hashed: false,
       token: {
         fontSize: 16,
-        colorPrimary: "#ffaa22",
-        colorWarning: "#ff6622",
-        colorError: "#ff2222",
+        colorPrimary: "#ffaa00",
+        colorWarning: "#ff6600",
+        colorError: "#ff2200",
         colorSuccess: "#52c41a",
-        colorInfo: "#ffaa22",
+        colorInfo: "#ffaa00",
       },
     }}
   >
