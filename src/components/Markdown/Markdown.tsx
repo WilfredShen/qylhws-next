@@ -13,9 +13,9 @@ import rehypeCodeBlock from "@/plugins/code-block/rehype";
 import remarkContainer from "@/plugins/container";
 import { toJsx } from "@/utils/common";
 
-import Container from "./Container";
+import Container from "../Container";
 
-interface MarkdownProps {
+export interface MarkdownProps {
   content: string;
 }
 
