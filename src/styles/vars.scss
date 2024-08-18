@@ -13,13 +13,14 @@ $colorWarning: #ff6600;
 $colorError: #ff2200;
 $colorDanger: $colorError;
 $colorSuccess: #52c41a;
+$colorLink: #ff8800;
 $colorImportant: #9f7aea;
 $colorTip: #646cff;
 $colorInfo: #888;
 
 $colorArray: "default" $colorDefault, "text" $colorDefault,
   "primary" $colorPrimary, "warning" $colorWarning, "error" $colorError,
-  "danger" $colorDanger, "success" $colorSuccess, "important" $colorImportant,
-  "tip" $colorTip, "info" $colorInfo;
+  "danger" $colorDanger, "success" $colorSuccess, "link" $colorLink,
+  "important" $colorImportant, "tip" $colorTip, "info" $colorInfo;
 
 $badgeTypes: "danger", "warning", "success", "important", "info", "tip";

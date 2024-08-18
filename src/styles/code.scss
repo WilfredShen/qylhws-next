@@ -18,15 +18,15 @@
 }
 
 .line-highlighted {
-  background-color: var(--code-line-highlighted-color);
+  background-color: var(--code-line-highlighted-bg-color);
 }
 
 .line-inserted {
-  background-color: var(--code-line-inserted-color);
+  background-color: var(--code-line-inserted-bg-color);
 }
 
 .line-deleted {
-  background-color: var(--code-line-deleted-color);
+  background-color: var(--code-line-deleted-bg-color);
 }
 
 pre[class*="language-"] > code {
@@ -61,19 +61,19 @@ pre[class*="language-"] > code {
       &:has(+ .line-highlighted) {
         border-left: var(--code-decorator-border-width) solid
           var(--code-line-highlighted-border-color);
-        background-color: var(--code-line-highlighted-color);
+        background-color: var(--code-line-highlighted-bg-color);
       }
 
       &:has(+ .line-inserted) {
         border-left: var(--code-decorator-border-width) solid
           var(--code-line-inserted-border-color);
-        background-color: var(--code-line-inserted-color);
+        background-color: var(--code-line-inserted-bg-color);
       }
 
       &:has(+ .line-deleted) {
         border-left: var(--code-decorator-border-width) solid
           var(--code-line-deleted-border-color);
-        background-color: var(--code-line-deleted-color);
+        background-color: var(--code-line-deleted-bg-color);
       }
     }
 

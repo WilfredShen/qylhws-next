@@ -1,37 +1,42 @@
 import { ElementProps } from "@/types/element";
-import { Link } from "lucide-react";
+import { Link, Redo2 } from "lucide-react";
 
 export interface AnchorProps
   extends ElementProps,
     React.AnchorHTMLAttributes<HTMLAnchorElement> {
   externalIcon?: React.ReactNode;
+  backRefIcon?: React.ReactNode;
 }
 
 const Anchor = (props: AnchorProps) => {
+  const { node, ...otherProps } = props;
   const {
-    node,
     href,
     children,
     externalIcon = <Link />,
-    ...otherProps
+    backRefIcon = <Redo2 style={{ transform: "rotate(180deg)" }} />,
   } = props;
 
   const isExternal = !!href?.match(/([a-zA-Z\d-]+:)?\/\//);
 
   if (isExternal) {
     return (
-      <a {...otherProps} href={href} target="_blank" rel="noreferer">
+      <a {...otherProps} target="_blank" rel="noreferer">
         {children}
         {externalIcon}
       </a>
     );
   }
 
-  return (
-    <a {...otherProps} href={href}>
-      {children}
-    </a>
-  );
+  if ("data-footnote-ref" in props) {
+    return <a {...otherProps}>[{children}]</a>;
+  }
+
+  if ("data-footnote-backref" in props) {
+    return <a {...otherProps}>{backRefIcon}</a>;
+  }
+
+  return <a {...otherProps}>{children}</a>;
 };
 
 export default Anchor;
