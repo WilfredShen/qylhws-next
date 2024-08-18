@@ -19,6 +19,7 @@ const WithTheme = ({ children }: WithThemeProps) => (
         colorError: "#ff2200",
         colorSuccess: "#52c41a",
         colorInfo: "#ffaa00",
+        colorTextBase: "#141414",
       },
     }}
   >

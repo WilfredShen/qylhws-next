@@ -1,4 +1,4 @@
-import {
+import type {
   Element as HastElement,
   Node,
   Parent as HastParent,
@@ -7,9 +7,9 @@ import {
 } from "hast";
 import { toString } from "hast-util-to-string";
 import { last, range } from "lodash";
-import { RefractorElement } from "refractor";
+import type { RefractorElement } from "refractor";
 import { refractor } from "refractor/lib/all";
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { filter } from "unist-util-filter";
 import { visit } from "unist-util-visit";
 
@@ -64,8 +64,12 @@ const rehypeCodeBlock: Plugin<[Options?], Root> = (options = {}) => {
   return tree => visit(tree, "element", visitor);
 
   function visitor(node: HastElement, index?: number, parent?: HastParent) {
-    // @ts-expect-error: Parent 中没有 tagName 属性
-    if (!parent || parent.tagName !== "pre" || node.tagName !== "code") return;
+    if (!isCodeElement(node)) return;
+
+    if (!isPreElement(parent)) {
+      normalizeClassName(node).properties.className.push("code-inline");
+      return;
+    }
 
     /* 将 className 归一化为数组 */
     const code = normalizeClassName(node) as CodeElement;
@@ -126,7 +130,7 @@ const rehypeCodeBlock: Plugin<[Options?], Root> = (options = {}) => {
         : [];
 
       /* 行号单独一列，代码单独一列，行号宽度自适应 */
-      const lineNumberColumn = createCodeNode();
+      const lineNumberColumn = createDivNode();
       if (showDecorators) {
         const children: Element[] = [];
         lineNumberRange.forEach((_, index) => {
@@ -149,7 +153,7 @@ const rehypeCodeBlock: Plugin<[Options?], Root> = (options = {}) => {
         lineNumberColumn.properties.className.push("line-numbers");
       }
 
-      const codeLineColumn = createCodeNode();
+      const codeLineColumn = createDivNode();
       codeLineColumn.children = lineNodes;
       codeLineColumn.properties.className.push("code-lines");
 
@@ -161,6 +165,24 @@ const rehypeCodeBlock: Plugin<[Options?], Root> = (options = {}) => {
 };
 
 export default rehypeCodeBlock;
+
+function isCodeElement(node?: Node): node is CodeElement {
+  return !!(
+    node &&
+    node.type === "element" &&
+    "tagName" in node &&
+    node.tagName === "code"
+  );
+}
+
+function isPreElement(node?: Node): node is PreElement {
+  return !!(
+    node &&
+    node.type === "element" &&
+    "tagName" in node &&
+    node.tagName === "pre"
+  );
+}
 
 function addStyle(element: Element, style: string) {
   element.properties.style =
@@ -381,10 +403,10 @@ function createDecoratorNode(decorator: DecoratorType | undefined): Element {
   };
 }
 
-function createCodeNode(): Element {
+function createDivNode(): Element {
   return {
     type: "element",
-    tagName: "code",
+    tagName: "div",
     properties: { className: [] },
     children: [],
   };

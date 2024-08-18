@@ -1,19 +1,22 @@
-code[class*="language-"],
-pre[class*="language-"] {
-  text-align: left;
-  white-space: pre;
-  word-spacing: normal;
-  word-wrap: normal;
-  word-break: normal;
-  tab-size: 4;
-  hyphens: none;
-
-  color: #ccc;
-  background-color: var(--code-bg-color);
-
-  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+code,
+pre {
+  font-family: var(--code-font-family);
   font-size: var(--code-font-size);
-  line-height: var(--code-line-height);
+
+  &[class*="language-"] {
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-wrap: normal;
+    word-break: normal;
+    tab-size: 4;
+    hyphens: none;
+
+    color: var(--code-color);
+    background-color: var(--code-bg-color);
+
+    line-height: var(--code-line-height);
+  }
 }
 pre[class*="language-"] {
   overflow: auto;
