@@ -1,0 +1,15 @@
+.ws-heading-anchor {
+  position: absolute;
+  top: 0;
+  left: -4px;
+  transform: translateX(-100%);
+  user-select: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.ws-heading:hover {
+  .ws-heading-anchor {
+    opacity: 1;
+  }
+}

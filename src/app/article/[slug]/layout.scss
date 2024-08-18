@@ -16,17 +16,22 @@
 
   .article-main {
     display: flex;
-    flex: 1;
+    height: calc(100vh - var(--navbar-height));
+    overflow: auto;
 
     .sidebar {
       flex: 0 0 auto;
+      position: sticky;
+      top: 0;
     }
 
     .content {
       flex: 0 0 auto;
+      box-shadow: var(--shadow-default);
 
       width: var(--content-width);
-      margin: auto;
+      margin: 32px auto 48px;
+      height: fit-content;
       padding: 24px;
     }
   }

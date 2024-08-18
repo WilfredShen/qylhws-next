@@ -1,10 +1,9 @@
 import React from "react";
 
-import type { Props } from "hast-util-to-jsx-runtime";
-
+import type { ElementProps } from "@/types/element";
 import { mergeClassNames } from "@/utils/classnames";
 
-export interface ContainerProps extends Props {
+export interface ContainerProps extends ElementProps {
   type: string;
   meta?: string;
   className?: string;

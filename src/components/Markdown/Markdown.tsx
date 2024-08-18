@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Components as JsxComponents } from "hast-util-to-jsx-runtime";
+import type { Components as JsxComponents } from "hast-util-to-jsx-runtime";
 import rehypeRaw from "rehype-raw";
 import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
@@ -10,12 +10,13 @@ import { unified } from "unified";
 import { VFile } from "vfile";
 
 import remarkBadge from "@/plugins/badge";
-import rehypeCodeBlock from "@/plugins/code-block/rehype";
+import rehypeCode from "@/plugins/code/rehype";
 import remarkContainer from "@/plugins/container";
 import { toJsx } from "@/utils/common";
 
 import Badge from "../Badge";
 import Container from "../Container";
+import * as Headings from "../Heading";
 
 export interface MarkdownProps {
   content: string;
@@ -24,12 +25,13 @@ export interface MarkdownProps {
 type Components = {
   [key in keyof JsxComponents | `ws-${string}`]: key extends keyof JsxComponents
     ? JsxComponents[key]
-    : React.FC<any>;
+    : React.ComponentType<any>;
 };
 
 const components: Partial<Components> = {
   "ws-container": Container,
   "ws-badge": Badge,
+  ...Headings,
 };
 
 const Markdown = (props: MarkdownProps) => {
@@ -43,7 +45,7 @@ const Markdown = (props: MarkdownProps) => {
     .use(remarkContainer) // 自定义容器
     .use(remarkBadge) // 自定义徽章
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeCodeBlock, { lineNumbers: true, maxHeight: 394 }) // 拓展代码块功能
+    .use(rehypeCode, { lineNumbers: true, maxHeight: 394 }) // 拓展代码块功能
     .use(rehypeRaw); // 解析 HTML 标签
 
   const mdast = processor.parse(file);

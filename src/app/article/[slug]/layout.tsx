@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Card } from "antd";
+
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 
@@ -17,7 +19,7 @@ const ArticleLayout = (props: ArticleLayoutProps) => {
       <Navbar />
       <main className="article-main">
         <Sidebar items={[]} />
-        <div className="content">{children}</div>
+        <Card className="content">{children}</Card>
       </main>
     </div>
   );
