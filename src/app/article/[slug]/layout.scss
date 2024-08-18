@@ -25,12 +25,12 @@
       top: 0;
     }
 
-    .content {
+    .content-card {
       flex: 0 0 auto;
       box-shadow: var(--shadow-default);
 
       width: var(--content-width);
-      margin: 32px auto 48px;
+      margin: 48px auto 72px;
       height: fit-content;
       padding: 24px;
     }

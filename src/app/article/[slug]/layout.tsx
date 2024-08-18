@@ -19,7 +19,9 @@ const ArticleLayout = (props: ArticleLayoutProps) => {
       <Navbar />
       <main className="article-main">
         <Sidebar items={[]} />
-        <Card className="content">{children}</Card>
+        <Card className="content-card">
+          <div className="content">{children}</div>
+        </Card>
       </main>
     </div>
   );
