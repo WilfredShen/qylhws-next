@@ -7,9 +7,11 @@ import { bindDefaultProps, childrenToString } from "@/utils/common";
 
 import "./Heading.scss";
 
-export interface HeadingProps extends ElementProps {
+export interface HeadingProps
+  extends ElementProps,
+    React.HTMLAttributes<HTMLHeadingElement> {
   level: number;
-  anchor?: React.ReactNode;
+  anchorSymbol?: React.ReactNode;
 }
 
 const Heading = (props: HeadingProps) => {
@@ -17,7 +19,7 @@ const Heading = (props: HeadingProps) => {
     node,
     level,
     children: _children,
-    anchor = "#",
+    anchorSymbol = "#",
     ...otherProps
   } = props;
 
@@ -33,7 +35,7 @@ const Heading = (props: HeadingProps) => {
     },
     children,
     <a className="ws-heading-anchor" href={`#${anchorText}`}>
-      {anchor}
+      {anchorSymbol}
     </a>,
   );
 };

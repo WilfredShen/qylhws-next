@@ -17,6 +17,8 @@
   --shadow-large: 0 0 8px var(--color-shadow);
   --shadow-default: var(--shadow-medium);
 
+  --transition-duration-default: 0.3s;
+
   @each $type, $baseColor in $colorArray {
     $baseName: --color-#{$type};
 

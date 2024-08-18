@@ -1,11 +1,12 @@
 import React from "react";
 
-import "./Badge.scss";
+import { ElementProps } from "@/types/element";
 import { mergeClassNames } from "@/utils/classnames";
 
-export interface BadgeProps {
+import "./Badge.scss";
+
+export interface BadgeProps extends ElementProps {
   type?: string;
-  children?: React.ReactNode;
 }
 
 const Badge = (props: BadgeProps) => {

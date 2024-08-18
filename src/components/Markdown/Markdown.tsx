@@ -14,6 +14,7 @@ import rehypeCode from "@/plugins/code/rehype";
 import remarkContainer from "@/plugins/container";
 import { toJsx } from "@/utils/common";
 
+import Anchor from "../Anchor";
 import Badge from "../Badge";
 import Container from "../Container";
 import * as Headings from "../Heading";
@@ -32,6 +33,7 @@ const components: Partial<Components> = {
   "ws-container": Container,
   "ws-badge": Badge,
   ...Headings,
+  a: Anchor,
 };
 
 const Markdown = (props: MarkdownProps) => {
