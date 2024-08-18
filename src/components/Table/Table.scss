@@ -1,0 +1,43 @@
+.ws-card.ws-table-card {
+  margin: 1em 0;
+
+  border-color: var(--color-divider);
+
+  .ws-card-body {
+    padding: 0;
+  }
+}
+
+.ws-table {
+  overflow: hidden;
+
+  width: 100%;
+
+  border-spacing: 0;
+
+  border-collapse: collapse;
+  border-radius: var(--ws-border-radius-lg);
+
+  th,
+  td {
+    padding: 0.5em 1em;
+
+    text-align: left;
+
+    background-color: var(--table-bg-color);
+  }
+
+  th,
+  tr:nth-child(even) td {
+    background-color: var(--table-hover-bg-color);
+  }
+
+  td {
+    border-top: 1px solid var(--table-border-color);
+  }
+
+  th + th,
+  td + td {
+    border-left: 1px solid var(--table-border-color);
+  }
+}

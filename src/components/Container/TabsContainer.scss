@@ -1,11 +1,13 @@
-.ws-container-tabs {
-  .ws-tabs-tabpane {
-    & > *:first-child {
-      margin-top: 0;
-    }
+.ws-card:not(.ws-card-bordered).ws-container-tabs-card {
+  box-shadow: var(--shadow-default);
+}
 
-    & > *:last-child {
-      margin-bottom: 0;
-    }
+.ws-tabs-tabpane {
+  & > *:first-child {
+    margin-top: 0;
+  }
+
+  & > *:last-child {
+    margin-bottom: 0;
   }
 }

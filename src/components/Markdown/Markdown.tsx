@@ -18,6 +18,7 @@ import Anchor from "../Anchor";
 import Badge from "../Badge";
 import Container from "../Container";
 import * as Headings from "../Heading";
+import Table from "../Table";
 
 export interface MarkdownProps {
   content: string;
@@ -34,6 +35,7 @@ const components: Partial<Components> = {
   "ws-badge": Badge,
   ...Headings,
   a: Anchor,
+  table: Table,
 };
 
 const Markdown = (props: MarkdownProps) => {

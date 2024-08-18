@@ -25,6 +25,7 @@ const TabsContainer = (props: ContainerProps) => {
 
   return (
     <Card
+      bordered={false}
       className="ws-container-tabs-card"
       style={{ margin: "1em 0" }}
       styles={{
