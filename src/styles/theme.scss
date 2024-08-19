@@ -3,7 +3,7 @@
 :root {
   --font-size: #{$fontSize};
   --line-height: #{$lineHeight};
-  --font-family: var(--ws-font-family);
+  --font-family: var(--ant-font-family);
 
   --navbar-height: #{$bavbarHeight};
   --sidebar-width: #{$sidebarWidth};
@@ -15,6 +15,7 @@
   --card-padding: #{$cardPadding};
 
   --color-divider: #{$colorDivider};
+  --color-divider-light: #{$colorDividerLight};
 
   --color-shadow: #{$colorShadow};
   --color-shadow-light: #{$colorShadowLight};
@@ -41,7 +42,7 @@ code,
 pre {
   --code-font-size: 14px;
   --code-line-height: 20px;
-  --code-font-family: var(--ws-font-family-code);
+  --code-font-family: var(--ant-font-family-code);
 
   --code-color: #ccc;
   --code-bg-color: #2f2f2f;

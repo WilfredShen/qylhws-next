@@ -21,9 +21,6 @@ const RootLayout = (props: RootLayoutProps) => {
 
   return (
     <html lang="zh-CN">
-      <head>
-        <script defer src="/scripts/scroll.js" />
-      </head>
       <body>
         <AntdRegistry>
           <WithTheme>{children}</WithTheme>

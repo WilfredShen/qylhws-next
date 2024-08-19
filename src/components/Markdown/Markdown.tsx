@@ -1,6 +1,3 @@
-import React from "react";
-
-import type { Components as JsxComponents } from "hast-util-to-jsx-runtime";
 import rehypeRaw from "rehype-raw";
 import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
@@ -15,33 +12,11 @@ import rehypeCode from "@/plugins/code/rehype";
 import remarkContainer from "@/plugins/container";
 import { toJsx } from "@/utils/common";
 
-import Anchor from "../Anchor";
-import Badge from "../Badge";
-import Container from "../Container";
-import * as Headings from "../Heading";
-import Image from "../Image";
-import Input from "../Input";
-import Table from "../Table";
+import components from "./components";
 
 export interface MarkdownProps {
   content: string;
 }
-
-type Components = {
-  [key in keyof JsxComponents | `ws-${string}`]: key extends keyof JsxComponents
-    ? JsxComponents[key]
-    : React.ComponentType<any>;
-};
-
-const components: Partial<Components> = {
-  "ws-container": Container,
-  "ws-badge": Badge,
-  ...Headings,
-  a: Anchor,
-  table: Table,
-  input: Input,
-  img: Image,
-};
 
 const Markdown = (props: MarkdownProps) => {
   const { content } = props;

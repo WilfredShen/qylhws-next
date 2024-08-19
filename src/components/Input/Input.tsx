@@ -1,8 +1,11 @@
 import React from "react";
 
+import { Checkbox } from "antd";
+
 import type { ElementProps } from "@/types/element";
 import { omitNode } from "@/utils/common";
-import { Checkbox } from "antd";
+
+import "./Input.scss";
 
 export interface InputProps
   extends ElementProps,
@@ -11,7 +14,8 @@ export interface InputProps
 const Input = (props: InputProps) => {
   const { type, checked } = props;
 
-  if (type === "checkbox") return <Checkbox checked={!!checked} />;
+  if (type === "checkbox")
+    return <Checkbox className="ws-content-checkbox" checked={!!checked} />;
 
   return <input {...omitNode(props)} />;
 };
