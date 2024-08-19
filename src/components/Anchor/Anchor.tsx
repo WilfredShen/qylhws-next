@@ -3,6 +3,7 @@ import React from "react";
 import { Link, Redo2 } from "lucide-react";
 
 import type { ElementProps } from "@/types/element";
+import { omitNode } from "@/utils/common";
 
 export interface AnchorProps
   extends ElementProps,
@@ -12,7 +13,6 @@ export interface AnchorProps
 }
 
 const Anchor = (props: AnchorProps) => {
-  const { node, ...otherProps } = props;
   const {
     href,
     children,
@@ -22,24 +22,21 @@ const Anchor = (props: AnchorProps) => {
 
   const isExternal = !!href?.match(/([a-zA-Z\d-]+:)?\/\//);
 
-  if (isExternal) {
+  if (isExternal)
     return (
-      <a {...otherProps} target="_blank" rel="noreferer">
+      <a {...omitNode(props)} target="_blank" rel="noreferer">
         {children}
         {externalIcon}
       </a>
     );
-  }
 
-  if ("data-footnote-ref" in props) {
-    return <a {...otherProps}>[{children}]</a>;
-  }
+  if ("data-footnote-ref" in props)
+    return <a {...omitNode(props)}>[{children}]</a>;
 
-  if ("data-footnote-backref" in props) {
-    return <a {...otherProps}>{backRefIcon}</a>;
-  }
+  if ("data-footnote-backref" in props)
+    return <a {...omitNode(props)}>{backRefIcon}</a>;
 
-  return <a {...otherProps}>{children}</a>;
+  return <a {...omitNode(props)}>{children}</a>;
 };
 
 export default Anchor;

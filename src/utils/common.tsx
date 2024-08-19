@@ -40,3 +40,10 @@ export function childrenToString(children: React.ReactNode): string {
     return childrenToString(children.props.children);
   return "";
 }
+
+export function omitNode<T extends { node?: unknown }>(
+  props: T,
+): Omit<T, "node"> {
+  const { node, ...otherProps } = props;
+  return otherProps;
+}

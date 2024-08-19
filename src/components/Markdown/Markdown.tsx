@@ -18,6 +18,7 @@ import Anchor from "../Anchor";
 import Badge from "../Badge";
 import Container from "../Container";
 import * as Headings from "../Heading";
+import Input from "../Input";
 import Table from "../Table";
 
 export interface MarkdownProps {
@@ -36,6 +37,7 @@ const components: Partial<Components> = {
   ...Headings,
   a: Anchor,
   table: Table,
+  input: Input,
 };
 
 const Markdown = (props: MarkdownProps) => {
