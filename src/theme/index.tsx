@@ -14,13 +14,12 @@ const WithTheme = ({ children }: WithThemeProps) => (
       hashed: false,
       token: {
         fontSize: 16,
-        colorPrimary: "#ffaa00",
-        colorWarning: "#ff6600",
+        colorPrimary: "#ff6600",
+        colorWarning: "#ffaa00",
         colorError: "#ff2200",
         colorSuccess: "#52c41a",
-        colorInfo: "#ffaa00",
+        colorInfo: "#ff6600",
         colorTextBase: "#141414",
-        colorLink: "#ff8800",
       },
     }}
   >

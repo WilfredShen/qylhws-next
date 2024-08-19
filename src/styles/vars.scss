@@ -11,19 +11,18 @@ $colorShadowLight: rgba(#000, 0.08);
 $colorShadowDark: rgba(#000, 0.15);
 
 $colorDefault: #141414;
-$colorPrimary: #ffaa00;
-$colorWarning: #ff6600;
+$colorPrimary: #ff6600;
+$colorWarning: #ffaa00;
 $colorError: #ff2200;
 $colorDanger: $colorError;
 $colorSuccess: #52c41a;
-$colorLink: #ff8800;
 $colorImportant: #9f7aea;
 $colorTip: #646cff;
 $colorInfo: #888;
 
 $colorArray: "default" $colorDefault, "text" $colorDefault,
   "primary" $colorPrimary, "warning" $colorWarning, "error" $colorError,
-  "danger" $colorDanger, "success" $colorSuccess, "link" $colorLink,
-  "important" $colorImportant, "tip" $colorTip, "info" $colorInfo;
+  "danger" $colorDanger, "success" $colorSuccess, "important" $colorImportant,
+  "tip" $colorTip, "info" $colorInfo;
 
 $badgeTypes: "danger", "warning", "success", "important", "info", "tip";

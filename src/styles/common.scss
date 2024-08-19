@@ -116,10 +116,13 @@ ol {
 
     li.task-list-item input {
       position: relative;
-      top: 1px;
+      top: 0.1em;
 
-      width: 14px;
-      height: 14px;
+      width: 0.9em;
+      height: 0.9em;
+      margin-right: 0.25em;
+
+      font-size: 1em;
     }
   }
 }
