@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ElementProps } from "@/types/element";
+import type { ElementProps } from "@/types/element";
 import { mergeClassNames } from "@/utils/classnames";
 
 import "./Badge.scss";

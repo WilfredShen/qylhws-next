@@ -1,6 +1,6 @@
-import { Card } from "antd";
+import React from "react";
 
-import { ElementProps } from "@/types/element";
+import type { ElementProps } from "@/types/element";
 import { mergeClassNames } from "@/utils/classnames";
 
 import "./Table.scss";
@@ -11,15 +11,17 @@ export interface TableProps
 
 const Table = (props: TableProps) => {
   const { node, ...otherProps } = props;
-  const { className } = props;
 
   return (
-    <Card className="ws-table-card">
-      <table
-        {...otherProps}
-        className={mergeClassNames(className, "ws-table")}
-      />
-    </Card>
+    <div
+      className={mergeClassNames(
+        "ws-table",
+        "ws-content-card",
+        "ws-content-card-bordered",
+      )}
+    >
+      <table {...otherProps} />
+    </div>
   );
 };
 

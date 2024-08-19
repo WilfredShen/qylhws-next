@@ -1,22 +1,16 @@
-.ws-card.ws-table-card {
-  margin: 1em 0;
-
-  border-color: var(--color-divider);
-
-  .ws-card-body {
-    padding: 0;
-  }
-}
-
 .ws-table {
   overflow: hidden;
 
   width: 100%;
 
-  border-spacing: 0;
+  table {
+    width: 100%;
+    overflow: hidden;
 
-  border-collapse: collapse;
-  border-radius: var(--ws-border-radius-lg);
+    border-spacing: 0;
+
+    border-collapse: collapse;
+  }
 
   th,
   td {

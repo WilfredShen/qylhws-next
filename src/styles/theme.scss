@@ -9,6 +9,11 @@
   --sidebar-width: #{$sidebarWidth};
   --content-width: #{$contentWidth};
 
+  --border-radius: #{$borderRadius};
+
+  --card-border-radius: #{$cardBorderRadius};
+  --card-padding: #{$cardPadding};
+
   --color-divider: #{$colorDivider};
 
   --color-shadow: #{$colorShadow};
@@ -69,4 +74,9 @@ pre {
   --table-bg-color: transparent;
   --table-hover-bg-color: #cacaca2a;
   --table-border-color: var(--color-divider);
+
+  &.ws-content-card {
+    --card-border-color: var(--color-divider);
+    --card-padding: 0;
+  }
 }

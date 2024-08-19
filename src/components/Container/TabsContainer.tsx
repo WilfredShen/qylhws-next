@@ -1,6 +1,8 @@
 import React from "react";
 
-import { Card, Tabs } from "antd";
+import { Tabs } from "antd";
+
+import { mergeClassNames } from "@/utils/classnames";
 
 import type { ContainerProps } from "./share";
 
@@ -24,18 +26,15 @@ const TabsContainer = (props: ContainerProps) => {
   if (!tabs.length) return null;
 
   return (
-    <Card
-      bordered={false}
-      className="ws-container-tabs-card"
-      style={{ margin: "1em 0" }}
-      styles={{
-        body: {
-          paddingTop: 0,
-        },
-      }}
+    <div
+      className={mergeClassNames(
+        "ws-container-tabs-card",
+        "ws-content-card",
+        "ws-content-card-shadowed",
+      )}
     >
       <Tabs className="ws-container-tabs" items={tabs} />
-    </Card>
+    </div>
   );
 };
 

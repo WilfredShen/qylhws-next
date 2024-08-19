@@ -1,5 +1,8 @@
-import { ElementProps } from "@/types/element";
+import React from "react";
+
 import { Link, Redo2 } from "lucide-react";
+
+import type { ElementProps } from "@/types/element";
 
 export interface AnchorProps
   extends ElementProps,

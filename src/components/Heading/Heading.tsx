@@ -2,7 +2,7 @@ import React from "react";
 
 import { toString } from "hast-util-to-string";
 
-import { ElementProps } from "@/types/element";
+import type { ElementProps } from "@/types/element";
 import { bindDefaultProps, childrenToString } from "@/utils/common";
 
 import "./Heading.scss";
