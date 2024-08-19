@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 }
 
 async function getPost() {
-  const data = await fetch("http://localhost:3000/example.md", {
+  const data = await fetch("http://localhost:3000/examples/example.md", {
     cache: "no-cache",
   });
   return data.text();

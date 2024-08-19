@@ -8,7 +8,6 @@ export interface WithThemeProps {
 
 const WithTheme = ({ children }: WithThemeProps) => (
   <ConfigProvider
-    prefixCls="ws"
     theme={{
       cssVar: true,
       hashed: false,

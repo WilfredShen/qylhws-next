@@ -6,6 +6,7 @@ import remarkEmoji from "remark-emoji";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
+import remarkUnWrapImages from "remark-unwrap-images";
 import { unified } from "unified";
 import { VFile } from "vfile";
 
@@ -18,6 +19,7 @@ import Anchor from "../Anchor";
 import Badge from "../Badge";
 import Container from "../Container";
 import * as Headings from "../Heading";
+import Image from "../Image";
 import Input from "../Input";
 import Table from "../Table";
 
@@ -38,6 +40,7 @@ const components: Partial<Components> = {
   a: Anchor,
   table: Table,
   input: Input,
+  img: Image,
 };
 
 const Markdown = (props: MarkdownProps) => {
@@ -48,6 +51,7 @@ const Markdown = (props: MarkdownProps) => {
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkEmoji)
+    .use(remarkUnWrapImages)
     .use(remarkContainer) // 自定义容器
     .use(remarkBadge) // 自定义徽章
     .use(remarkRehype, { allowDangerousHtml: true })

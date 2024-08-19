@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 import WithTheme from "@/theme";
 import { AntdRegistry } from "@ant-design/nextjs-registry";

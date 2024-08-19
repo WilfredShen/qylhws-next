@@ -29,8 +29,8 @@ const TabsContainer = (props: ContainerProps) => {
     <div
       className={mergeClassNames(
         "ws-container-tabs-card",
-        "ws-content-card",
-        "ws-content-card-shadowed",
+        "ws-card",
+        "ws-card-shadowed",
       )}
     >
       <Tabs className="ws-container-tabs" items={tabs} />

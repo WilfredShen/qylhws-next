@@ -15,8 +15,8 @@ const Table = (props: TableProps) => {
     <div
       className={mergeClassNames(
         "ws-table",
-        "ws-content-card",
-        "ws-content-card-bordered",
+        "ws-card",
+        "ws-card-bordered",
       )}
     >
       <table {...omitNode(props)} />
