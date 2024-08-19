@@ -2,6 +2,7 @@ code,
 pre {
   font-family: var(--code-font-family);
   font-size: var(--code-font-size);
+  line-height: var(--code-line-height);
 
   &[class*="language-"] {
     text-align: left;
@@ -14,8 +15,6 @@ pre {
 
     color: var(--code-color);
     background-color: var(--code-bg-color);
-
-    line-height: var(--code-line-height);
   }
 }
 pre[class*="language-"] {

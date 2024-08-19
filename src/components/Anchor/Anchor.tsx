@@ -16,7 +16,7 @@ const Anchor = (props: AnchorProps) => {
   const {
     href,
     children,
-    externalIcon = <Link />,
+    externalIcon = <Link style={{ marginLeft: "0.2em" }} />,
     backRefIcon = <Redo2 style={{ transform: "rotate(180deg)" }} />,
   } = props;
 

@@ -1,10 +1,15 @@
 .lucide {
   position: relative;
-  top: 0.065em;
 
+  width: 1em;
+  height: 1em;
+
+  vertical-align: -0.15em;
+}
+
+p .lucide {
   width: 0.8em;
   height: 0.8em;
-  margin-left: 0.2em;
 
-  vertical-align: baseline;
+  vertical-align: -0.065em;
 }

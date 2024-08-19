@@ -13,11 +13,21 @@ body {
   padding: 0;
 }
 
-p {
-  margin: 1em 0;
-
+p,
+table,
+blockquote,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-size: var(--font-size);
   line-height: var(--line-height);
+}
+
+p {
+  margin: 1em 0;
 }
 
 hr {
@@ -44,8 +54,8 @@ h6 {
 h1 {
   margin: 0;
 
-  font-size: 32px;
-  line-height: 40px;
+  --font-size: 32px;
+  --line-height: 40px;
 }
 
 h2 {
@@ -54,8 +64,8 @@ h2 {
 
   border-top: 1px solid var(--color-divider);
 
-  font-size: 24px;
-  line-height: 32px;
+  --font-size: 24px;
+  --line-height: 32px;
 
   .ws-heading-anchor {
     top: 16px;
@@ -65,29 +75,29 @@ h2 {
 h3 {
   margin: 32px 0 0;
 
-  font-size: 20px;
-  line-height: 28px;
+  --font-size: 20px;
+  --line-height: 28px;
 }
 
 h4 {
   margin: 24px 0 0;
 
-  font-size: 18px;
-  line-height: 26px;
+  --font-size: 18px;
+  --line-height: 26px;
 }
 
 h5 {
   margin: 0;
 
-  font-size: 16px;
-  line-height: 24px;
+  --font-size: 16px;
+  --line-height: 24px;
 }
 
 h6 {
   margin: 0;
 
-  font-size: 16px;
-  line-height: 24px;
+  --font-size: 16px;
+  --line-height: 24px;
 }
 
 ul,
@@ -115,16 +125,24 @@ li + li {
 
 blockquote {
   margin: 1em 0;
-  padding-left: 0.5em;
+  padding: 0 0.8em;
 
   color: var(--color-text-50);
   border-left: 0.2em solid var(--color-divider-light);
 
-  --font-size: 14px;
-  --line-height: 22px;
-
   p {
     margin: 0.5em 0;
+
+    --font-size: 14px;
+    --line-height: 22px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -142,6 +160,7 @@ blockquote {
 }
 
 .ws-card {
+  margin: 1em 0;
   padding: var(--card-padding);
 
   border: none;
