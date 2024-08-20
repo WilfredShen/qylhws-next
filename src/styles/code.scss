@@ -1,4 +1,4 @@
-.code-inline {
+:not(pre) > code {
   padding: 0.125em 0.25em;
 
   color: var(--code-inline-color);
@@ -31,7 +31,10 @@
 
 pre[class*="language-"] > code {
   display: flex;
-  flex-direction: row;
+
+  &:not(:has(> .line-numbers)) {
+    flex-direction: column;
+  }
 
   .line-numbers {
     position: sticky;
@@ -40,7 +43,7 @@ pre[class*="language-"] > code {
     display: grid;
 
     height: fit-content;
-    padding: var(--code-spacing-width) 0;
+    padding: var(--code-spacing) 0;
 
     border-right: 1px solid #fff;
     background-color: var(--code-bg-color);
@@ -88,12 +91,12 @@ pre[class*="language-"] > code {
     flex-direction: column;
 
     height: fit-content;
-    padding: var(--code-spacing-width) 0;
+    padding: var(--code-spacing) 0;
 
     .code-line {
       display: inline-block;
 
-      padding: 0 var(--code-spacing-width);
+      padding: 0 var(--code-spacing);
     }
   }
 }

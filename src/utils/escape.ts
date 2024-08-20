@@ -1,5 +1,6 @@
 import { Nullable } from "@/types/utils";
 import { isValid } from "./validate";
+import { camelCase, kebabCase } from "lodash";
 
 function escapeHtmlChar(char: string): string {
   switch (char) {
@@ -69,12 +70,31 @@ export function unescapeHtml(text: Nullable<string>): Nullable<string> {
   return unescapedText;
 }
 
+export function kebabObjectToCamelObject(value: any) {
+  if (typeof value !== "object" || !value) return value;
+  Object.entries(value).forEach(([k, v]) => {
+    delete value[k];
+    value[camelCase(k)] = kebabObjectToCamelObject(v);
+  });
+  return value;
+}
+
 export function encodePropertiesToString(
   props: Record<string | number, unknown>,
 ) {
   return Object.entries(props)
     .map(([key, value]) =>
-      isValid(value) ? `${key}="${escapeHtml(String(value))}"` : "",
+      isValid(value) ? `${camelCase(key)}="${escapeHtml(String(value))}"` : "",
     )
+    .filter(Boolean)
     .join(" ");
+}
+
+export function encodeStyleToString(style: Record<string, unknown>) {
+  return Object.entries(style)
+    .map(([key, value]) =>
+      isValid(value) ? `${kebabCase(key)}: ${value}` : "",
+    )
+    .filter(Boolean)
+    .join("; ");
 }

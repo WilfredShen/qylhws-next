@@ -12,7 +12,7 @@ const sequenceType: TokenType = "containerFlowFenceSequence";
 const infoType: TokenType = "containerFlowFenceInfo";
 const metaType: TokenType = "containerFlowFenceMeta";
 
-export const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
+const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
   /** 是否为分隔符 */
   const isFence = (code: Code) => code === fenceCode;
 
@@ -125,3 +125,5 @@ export const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
     },
   };
 };
+
+export default containerFlow;

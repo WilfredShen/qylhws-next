@@ -19,7 +19,9 @@
     "postcss-scopify": "^1.0.0",
     "react": "^18",
     "react-dom": "^18",
-    "remark-unwrap-images": "^4.0.0"
+    "remark-frontmatter": "^5.0.0",
+    "remark-unwrap-images": "^4.0.0",
+    "vfile-matter": "^5.0.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.6",

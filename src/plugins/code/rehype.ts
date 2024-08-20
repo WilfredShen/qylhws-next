@@ -13,6 +13,8 @@ import type { Plugin } from "unified";
 import { filter } from "unist-util-filter";
 import { visit } from "unist-util-visit";
 
+import { encodeStyleToString } from "@/utils/escape";
+
 interface Element extends RefractorElement {
   properties: {
     className: string[];
@@ -35,7 +37,7 @@ interface Parent extends Node {
   children: Element["children"];
 }
 
-interface Options {
+export interface RehypeCodeOptions {
   lineNumbers?: boolean;
   maxHeight?: number | string;
   /** 计算高度时不包含内边距 */
@@ -51,7 +53,7 @@ export enum DecoratorType {
 export interface CodeBlockMeta {
   // filename?: string;
   noLineNumbers: boolean;
-  lineNumbers: false | number;
+  lineNumbers?: number;
   decorators: (DecoratorType | undefined)[];
   /** 装饰符的行号是否为绝对行号，即装饰符的行号对应的是代码块最终展示的行号 */
   absoluteDecorators: boolean;
@@ -60,16 +62,15 @@ export interface CodeBlockMeta {
   maxLines?: number;
 }
 
-const rehypeCode: Plugin<[Options?], Root> = (options = {}) => {
+const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
+  const data = this.data();
+
   return tree => visit(tree, "element", visitor);
 
   function visitor(node: HastElement, index?: number, parent?: HastParent) {
-    if (!isCodeElement(node)) return;
+    if (!isCodeElement(node) || !isPreElement(parent)) return;
 
-    if (!isPreElement(parent)) {
-      normalizeClassName(node).properties.className.push("code-inline");
-      return;
-    }
+    const pageOptions = (data.matter.code ?? {}) as RehypeCodeOptions;
 
     /* 将 className 归一化为数组 */
     const code = normalizeClassName(node) as CodeElement;
@@ -89,8 +90,8 @@ const rehypeCode: Plugin<[Options?], Root> = (options = {}) => {
 
     /* 拆分多行文本，添加行号信息 */
     root.children = createFormatter()(root.children);
-    const lineCount = getLineNumber(last(root.children)!)[1];
-    const startLineNumber = meta.lineNumbers || 1;
+    const [_, lineCount] = getLineNumber(last(root.children)!);
+    const startLineNumber = meta.lineNumbers ?? 1;
     const lineNumberRange = range(startLineNumber, startLineNumber + lineCount);
     withLineNumber(root, [1, lineCount]);
 
@@ -106,11 +107,16 @@ const rehypeCode: Plugin<[Options?], Root> = (options = {}) => {
         })?.children ?? [];
     });
 
+    const codeLineColumn = createDivNode();
+    codeLineColumn.children = lineNodes;
+    codeLineColumn.properties.className.push("code-lines");
+
     /* 添加行号和装饰符 */
     const showLineNumbers =
-      !meta.noLineNumbers && !!(meta.lineNumbers || options.lineNumbers);
+      !meta.noLineNumbers &&
+      !!(meta.lineNumbers ?? pageOptions.lineNumbers ?? options.lineNumbers);
     if (!showLineNumbers) {
-      code.children = lineNodes;
+      code.children = [codeLineColumn];
     } else {
       const showDecorators = !!meta.decorators.find(Boolean);
       const lineNumberNodes = lineNumberRange.map((lineNumber, index) =>
@@ -153,14 +159,20 @@ const rehypeCode: Plugin<[Options?], Root> = (options = {}) => {
         lineNumberColumn.properties.className.push("line-numbers");
       }
 
-      const codeLineColumn = createDivNode();
-      codeLineColumn.children = lineNodes;
-      codeLineColumn.properties.className.push("code-lines");
-
       code.children = [lineNumberColumn, codeLineColumn];
-      code.properties.className.push("code-block");
-      addStyle(code, `max-height: ${calcMaxHeight(options, meta)}`);
     }
+
+    code.properties.className.push("code-block");
+    addStyle(
+      code,
+      encodeStyleToString({
+        maxHeight: calcMaxHeight({
+          options: { ...options, ...pageOptions },
+          meta,
+          lineCount,
+        }),
+      }),
+    );
   }
 };
 
@@ -185,25 +197,30 @@ function isPreElement(node?: Node): node is PreElement {
 }
 
 function addStyle(element: Element, style: string) {
-  element.properties.style =
-    element.properties.style
-      ?.split(";")
-      .map(e => e.trim())
-      .filter(Boolean)
-      .concat(style)
-      .join(";") ?? style;
+  element.properties.style = element.properties.style
+    ? element.properties.style + `; ${style}`
+    : style;
 }
 
-function calcMaxHeight(
-  options: Options,
-  meta: CodeBlockMeta,
-): string | undefined {
+function calcMaxHeight({
+  options,
+  meta,
+  lineCount,
+}: {
+  options: RehypeCodeOptions;
+  meta: CodeBlockMeta;
+  lineCount: number;
+}): string | undefined {
   const maxHeight = meta.maxHeight || options.maxHeight;
   const maxLines = meta.maxLines || options.maxLines;
-  if (!maxHeight && !maxLines) return undefined;
+  if (
+    (!maxHeight && !maxLines) ||
+    (maxHeight === "auto" && (!maxLines || maxLines === lineCount))
+  )
+    return undefined;
   if (typeof maxHeight === "number") return `${maxHeight}px`;
-  if (typeof maxHeight === "string") return maxHeight;
-  return `calc(var(--code-line-height) * ${maxLines})`;
+  if (typeof maxHeight === "string" && maxHeight !== "auto") return maxHeight;
+  return `calc(var(--code-line-height) * ${maxLines} + var(--code-spacing))`;
 }
 
 /**
@@ -226,7 +243,7 @@ function parseMeta(meta: string): CodeBlockMeta {
   return {
     // filename: filename?.[1],
     noLineNumbers,
-    lineNumbers: lineNumbers?.[1] ? +lineNumbers[1] : false,
+    lineNumbers: lineNumbers?.[1] ? +lineNumbers[1] : undefined,
     decorators: parseDecorators(decorators ?? []),
     absoluteDecorators,
     maxHeight: maxHeight?.[1]

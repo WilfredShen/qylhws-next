@@ -7,7 +7,7 @@ export interface Container extends Literal {
   meta?: string;
 }
 
-export const containerMdast = (): Extension => ({
+const containerMdast = (): Extension => ({
   enter: {
     containerFlowFence(token) {
       const node: Container = {
@@ -45,3 +45,5 @@ export const containerMdast = (): Extension => ({
     },
   },
 });
+
+export default containerMdast;

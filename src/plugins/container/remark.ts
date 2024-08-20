@@ -7,14 +7,16 @@ import { visit } from "unist-util-visit";
 import { encodePropertiesToString } from "@/utils/escape";
 
 import type { Container } from "./mdast";
-import { containerMdast } from "./mdast";
-import { containerFlow } from "./syntax";
+import containerMdast from "./mdast";
+import containerFlow from "./syntax";
 
-interface Options {
+export interface RemarkContainerOptions {
   fenceCode?: NonNullable<Code>;
 }
 
-const remarkContainer: Plugin<[Options?]> = function (options = {}) {
+const remarkContainer: Plugin<[RemarkContainerOptions?]> = function (
+  options = {},
+) {
   const { fenceCode = codes.equalsTo } = options;
 
   const data = this.data();

@@ -1,5 +1,6 @@
 import rehypeRaw from "rehype-raw";
 import remarkEmoji from "remark-emoji";
+import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -8,11 +9,12 @@ import { unified } from "unified";
 import { VFile } from "vfile";
 
 import remarkBadge from "@/plugins/badge";
-import rehypeCode from "@/plugins/code/rehype";
+import rehypeCode from "@/plugins/code";
 import remarkContainer from "@/plugins/container";
 import { toJsx } from "@/utils/common";
 
 import components from "./components";
+import remarkMatter from "@/plugins/matter/remark";
 
 export interface MarkdownProps {
   content: string;
@@ -24,13 +26,15 @@ const Markdown = (props: MarkdownProps) => {
   const file = new VFile({ value: content });
   const processor = unified()
     .use(remarkParse)
+    .use(remarkFrontmatter)
+    .use(remarkMatter)
     .use(remarkGfm)
     .use(remarkEmoji)
     .use(remarkUnWrapImages)
     .use(remarkContainer) // 自定义容器
     .use(remarkBadge) // 自定义徽章
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeCode, { lineNumbers: true, maxHeight: 394 }) // 拓展代码块功能
+    .use(rehypeCode, { lineNumbers: true, maxHeight: "auto", maxLines: 20 }) // 拓展代码块功能
     .use(rehypeRaw); // 解析 HTML 标签
 
   const mdast = processor.parse(file);

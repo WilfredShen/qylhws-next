@@ -6,7 +6,7 @@ import { encodePropertiesToString } from "@/utils/escape";
 
 const RE_BUDGE = /((?<=^|[^#\s])#|\s#)[^\s#]([^#]*[^#\s])?#(?=$|[^#])/g;
 
-const remarkBadge: Plugin<[], Root> = () => {
+const remarkBadge: Plugin<[], Root> = function () {
   return tree => findAndReplace(tree, [RE_BUDGE, replacer]);
 };
 
