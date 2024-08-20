@@ -70,15 +70,16 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
   function visitor(node: HastElement, index?: number, parent?: HastParent) {
     if (!isCodeElement(node) || !isPreElement(parent)) return;
 
+    /** 读取 markdown 文件中的配置 */
     const pageOptions = (data.matter.code ?? {}) as RehypeCodeOptions;
 
-    /* 将 className 归一化为数组 */
+    /** 将 className 归一化为数组 */
     const code = normalizeClassName(node) as CodeElement;
     const pre = normalizeClassName(parent as HastElement) as PreElement;
 
     const meta = parseMeta(code.data?.meta ?? "");
 
-    /* 执行 highlight */
+    /** 执行 highlight */
     const lang = getLanguage(code);
     const root = lang
       ? refractor.highlight(toString(code as HastElement), lang)
@@ -88,14 +89,14 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
       e => !e.startsWith("lang"),
     );
 
-    /* 拆分多行文本，添加行号信息 */
+    /** 拆分多行文本，添加行号信息 */
     root.children = createFormatter()(root.children);
     const [_, lineCount] = getLineNumber(last(root.children)!);
     const startLineNumber = meta.lineNumbers ?? 1;
     const lineNumberRange = range(startLineNumber, startLineNumber + lineCount);
     withLineNumber(root, [1, lineCount]);
 
-    /* 将内容分行 */
+    /** 将内容分行 */
     const lineNodes = lineNumberRange.map((_, index) =>
       withLineNumber(createLineNode(), index + 1),
     );
@@ -111,7 +112,7 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
     codeLineColumn.children = lineNodes;
     codeLineColumn.properties.className.push("code-lines");
 
-    /* 添加行号和装饰符 */
+    /** 添加行号和装饰符 */
     const showLineNumbers =
       !meta.noLineNumbers &&
       !!(meta.lineNumbers ?? pageOptions.lineNumbers ?? options.lineNumbers);
@@ -135,7 +136,7 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
           })
         : [];
 
-      /* 行号单独一列，代码单独一列，行号宽度自适应 */
+      /** 行号单独一列，代码单独一列，行号宽度自适应 */
       const lineNumberColumn = createDivNode();
       if (showDecorators) {
         const children: Element[] = [];

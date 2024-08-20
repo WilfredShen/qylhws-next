@@ -49,7 +49,7 @@ const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
 
             if (fenceLength < 3) return nok(code);
 
-            /* 分隔符消耗完毕，且长度大于等于 3 */
+            /** 分隔符消耗完毕，且长度大于等于 3 */
 
             effects.exit(sequenceType);
 
@@ -60,7 +60,7 @@ const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
           }
 
           function infoBefore(code: Code) {
-            /* 此时 code 不可能为空白符 */
+            /** 此时 code 不可能为空白符 */
 
             if (isEnding(code)) return after(code);
 
@@ -76,7 +76,7 @@ const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
               return info;
             }
 
-            /* 遇到空白符或结束符 */
+            /** 遇到空白符或结束符 */
 
             effects.exit(types.chunkString);
             effects.exit(infoType);
@@ -87,7 +87,7 @@ const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
           }
 
           function metaBefore(code: Code) {
-            /* 此时 code 不可能为空白符 */
+            /** 此时 code 不可能为空白符 */
 
             if (isEnding(code)) return after(code);
 
@@ -104,7 +104,7 @@ const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
               return meta;
             }
 
-            /* meta 已消耗完 */
+            /** meta 已消耗完 */
 
             effects.exit(types.chunkString);
             effects.exit(metaType);
@@ -113,7 +113,7 @@ const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
           }
 
           function after(code: Code) {
-            /* 此时 code 必定为结束符 */
+            /** 此时 code 必定为结束符 */
 
             effects.exit(types.chunkString);
             effects.exit(fenceType);

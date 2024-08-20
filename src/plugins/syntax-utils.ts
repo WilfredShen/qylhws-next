@@ -47,7 +47,7 @@ export function consumeWhiteSpaces(
       return consumer;
     }
 
-    /* 空白符已消耗完 */
+    /** 空白符已消耗完 */
 
     effects.exit(type);
 
