@@ -1,6 +1,6 @@
 @import "./vars";
 
-:root {
+#root {
   --font-size: #{$fontSize};
   --line-height: #{$lineHeight};
   --font-family: var(--ant-font-family);

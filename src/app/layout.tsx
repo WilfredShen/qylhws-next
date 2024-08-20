@@ -20,7 +20,7 @@ const RootLayout = (props: RootLayoutProps) => {
   const { children } = props;
 
   return (
-    <html lang="zh-CN">
+    <html id="root" lang="zh-CN">
       <body>
         <AntdRegistry>
           <WithTheme>{children}</WithTheme>

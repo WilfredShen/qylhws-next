@@ -1,7 +1,7 @@
-.ws-container-tabs-card {
-  padding-top: 0;
+.ws-detail {
+  --ant-color-border: var(--color-divider);
 
-  .ant-tabs-tabpane {
+  .ant-collapse-content-box {
     & > *:first-child {
       margin-top: 0;
     }

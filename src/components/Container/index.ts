@@ -1,3 +1,4 @@
+import DetailContainer from "./DetailContainer";
 import NoteContainer from "./NoteContainer";
 import { registerComponent } from "./share";
 import TabsContainer from "./TabsContainer";
@@ -7,3 +8,4 @@ export * from "./Container";
 
 registerComponent("tabs", TabsContainer);
 registerComponent("note", NoteContainer);
+registerComponent("detail", DetailContainer);
