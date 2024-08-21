@@ -7,15 +7,20 @@
     "plugin:react-hooks/recommended"
   ],
   "plugins": ["@typescript-eslint"],
+  "ignorePatterns": ["/src/code"],
   "rules": {
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-this-alias": [
+    "@typescript-eslint/no-unused-vars": [
       "error",
       {
-        "allowedNames": ["self"],
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
         "ignoreRestSiblings": true
       }
-    ]
+    ],
+    "@typescript-eslint/no-this-alias": ["error", { "allowedNames": ["self"] }]
   }
 }

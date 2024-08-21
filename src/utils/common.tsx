@@ -29,6 +29,7 @@ export function bindDefaultProps<P extends object, D extends Partial<P>>(
   Comp: React.ComponentType<P>,
   defaultProps: D,
 ): (props: WithDefaultProps<P, D>) => React.ReactElement {
+  // eslint-disable-next-line react/display-name
   return props => <Comp {...defaultProps} {...(props as P)} />;
 }
 

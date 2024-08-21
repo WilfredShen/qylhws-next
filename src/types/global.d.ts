@@ -25,6 +25,12 @@ declare module "mdast" {
   }
 }
 
+declare module "hast" {
+  interface Data {
+    lineNumber?: [number, number];
+  }
+}
+
 declare module "unified" {
   interface Data {
     matter: Record<string, unknown>;

@@ -78,7 +78,6 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
     const pre = normalizeClassName(parent as HastElement) as PreElement;
 
     const meta = parseMeta((code.data?.meta as string)?.trim() ?? "");
-    console.log(meta);
 
     /** 执行 highlight */
     const lang = getLanguage(code) ?? meta.language;
@@ -92,7 +91,7 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
 
     /** 拆分多行文本，添加行号信息 */
     root.children = createFormatter()(root.children);
-    const [_, lineCount] = getLineNumber(last(root.children)!);
+    const [_, lineCount] = getLineNumber(last(root.children)!)!;
     const startLineNumber = meta.lineNumbers ?? 1;
     const lineNumberRange = range(startLineNumber, startLineNumber + lineCount);
     withLineNumber(root, [1, lineCount]);
@@ -104,7 +103,7 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
     lineNodes.forEach((line, index) => {
       line.children =
         filter(root, (node: Node) => {
-          const [start, end] = getLineNumber(node);
+          const [start, end] = getLineNumber(node)!;
           return start <= index + 1 && end >= index + 1;
         })?.children ?? [];
     });
@@ -310,9 +309,7 @@ function parseDecorators(items: string[]) {
  * @param node
  * @returns
  */
-function normalizeClassName(
-  node: HastElement,
-): HastElement & { properties: { className: string[] } } {
+function normalizeClassName<T extends HastElement>(node: T) {
   if (
     !node.properties.className ||
     typeof node.properties.className === "boolean"
@@ -321,7 +318,7 @@ function normalizeClassName(
   } else if (!Array.isArray(node.properties.className)) {
     node.properties.className = [`${node.properties.className}`];
   }
-  return node as any;
+  return node as T & { properties: { className: string[] } };
 }
 
 function getLanguage(node: Element) {
@@ -394,7 +391,7 @@ function createFormatter() {
  * @param value 待检测对象
  * @returns 检测结果
  */
-function hasChildren<T>(value: T): value is T & { children: any } {
+function hasChildren<T>(value: T): value is T & { children: unknown } {
   return (
     value !== undefined &&
     value !== null &&
@@ -472,8 +469,8 @@ function withLineNumber<T extends Node>(
  * @param node 节点
  * @returns 行号信息
  */
-function getLineNumber<T extends Node>(node: T): [number, number] {
-  return (node.data as any).lineNumber;
+function getLineNumber<T extends Node>(node: T) {
+  return node.data?.lineNumber;
 }
 
 function getDecoratorClassName(decorator: DecoratorType | undefined) {

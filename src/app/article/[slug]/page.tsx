@@ -6,7 +6,7 @@ interface Props {
   slug: string;
 }
 
-const Article = async (props: Props) => {
+const Article = async (_props: Props) => {
   const markdown = await getPost();
   return <Markdown content={markdown} />;
 };
@@ -18,8 +18,11 @@ export async function generateStaticParams() {
 }
 
 async function getPost() {
-  const data = await fetch("http://localhost:3000/examples/async-and-promise.md", {
-    cache: "no-cache",
-  });
+  const data = await fetch(
+    "http://localhost:3000/examples/async-and-promise.md",
+    {
+      cache: "no-cache",
+    },
+  );
   return data.text();
 }

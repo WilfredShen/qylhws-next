@@ -9,13 +9,14 @@ export interface ContainerProps extends ElementProps {
   className?: string;
 }
 
-const components: Map<string, [React.FC<any>, any?]> = new Map();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const components: Map<string, [React.ComponentType<any>, any?]> = new Map();
 
 const DEFAULT_KEY = "default";
 
 export function registerComponent<T extends ContainerProps>(
   name: string,
-  component: React.FC<T>,
+  component: React.ComponentType<T>,
   defaultProps?: T,
 ) {
   if (!name) return;
@@ -25,7 +26,7 @@ export function registerComponent<T extends ContainerProps>(
 
 export function getComponent<T extends ContainerProps>(
   name: string,
-): [React.FC<T>, T?] {
+): [React.ComponentType<T>, T?] {
   return components.get(name) ?? components.get(DEFAULT_KEY)!;
 }
 

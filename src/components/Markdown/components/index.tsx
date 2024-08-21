@@ -14,7 +14,7 @@ import Table from "./Table";
 type Components = {
   [key in keyof JsxComponents | `ws-${string}`]: key extends keyof JsxComponents
     ? JsxComponents[key]
-    : React.ComponentType<any>;
+    : React.ComponentType<never>;
 };
 
 const components: Partial<Components> = {

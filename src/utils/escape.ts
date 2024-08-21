@@ -70,6 +70,7 @@ export function unescapeHtml(text: Nullable<string>): Nullable<string> {
   return unescapedText;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function kebabObjectToCamelObject(value: any) {
   if (typeof value !== "object" || !value) return value;
   Object.entries(value).forEach(([k, v]) => {
