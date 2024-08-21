@@ -8,13 +8,14 @@ import remarkUnWrapImages from "remark-unwrap-images";
 import { unified } from "unified";
 import { VFile } from "vfile";
 
-import remarkBadge from "@/plugins/badge";
-import rehypeCode from "@/plugins/code";
-import remarkContainer from "@/plugins/container";
 import { toJsx } from "@/utils/common";
 
 import components from "./components";
-import remarkMatter from "@/plugins/matter/remark";
+import remarkBadge from "./plugins/badge";
+import rehypeCode from "./plugins/code";
+import remarkContainer from "./plugins/container";
+import remarkMatter from "./plugins/matter";
+import remarkReference from "./plugins/reference";
 
 export interface MarkdownProps {
   content: string;
@@ -28,6 +29,7 @@ const Markdown = (props: MarkdownProps) => {
     .use(remarkParse)
     .use(remarkFrontmatter)
     .use(remarkMatter)
+    .use(remarkReference)
     .use(remarkGfm)
     .use(remarkEmoji)
     .use(remarkUnWrapImages)

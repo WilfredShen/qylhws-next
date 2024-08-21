@@ -1,6 +1,7 @@
-import { kebabObjectToCamelObject } from "@/utils/escape";
-import { Plugin } from "unified";
+import type { Plugin } from "unified";
 import { matter } from "vfile-matter";
+
+import { kebabObjectToCamelObject } from "@/utils/escape";
 
 const remarkMatter: Plugin<[]> = function () {
   const data = this.data();

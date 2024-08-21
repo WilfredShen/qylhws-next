@@ -8,7 +8,7 @@ import { encodePropertiesToString } from "@/utils/escape";
 
 import type { Container } from "./mdast";
 import containerMdast from "./mdast";
-import containerFlow from "./syntax";
+import containerSyntax from "./syntax";
 
 export interface RemarkContainerOptions {
   fenceCode?: NonNullable<Code>;
@@ -24,21 +24,22 @@ const remarkContainer: Plugin<[RemarkContainerOptions?]> = function (
   data.micromarkExtensions = data.micromarkExtensions ?? [];
   data.fromMarkdownExtensions = data.fromMarkdownExtensions ?? [];
 
-  data.micromarkExtensions.push(containerFlow(fenceCode));
+  data.micromarkExtensions.push(containerSyntax(fenceCode));
   data.fromMarkdownExtensions.push(containerMdast());
 
   return tree => visit(tree, "ws-container", visitor);
 
   function visitor(node: Container, index: number, parent: Parent) {
     const { component, meta } = node;
-    const properties = encodePropertiesToString({
-      type: component,
-      meta: meta,
-    });
 
     parent.children[index] = {
       type: "html",
-      value: component ? `<ws-container ${properties}>` : `</ws-container>`,
+      value: component
+        ? `<ws-container ${encodePropertiesToString({
+            type: component,
+            meta: meta,
+          })}>`
+        : `</ws-container>`,
     } satisfies Html;
   }
 };

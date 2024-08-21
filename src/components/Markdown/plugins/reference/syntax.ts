@@ -1,20 +1,20 @@
-import { types } from "micromark-util-symbol";
+import { codes, types } from "micromark-util-symbol";
 import type { Code, Extension, TokenType } from "micromark-util-types";
 
-import {
-  consumeWhiteSpaces,
-  isEnding,
-  isWhiteSpace,
-} from "@/plugins/syntax-utils";
+import { consumeWhiteSpaces, isEnding, isWhiteSpace } from "../syntax-utils";
 
-const fenceType: TokenType = "containerFlowFence";
-const sequenceType: TokenType = "containerFlowFenceSequence";
-const infoType: TokenType = "containerFlowFenceInfo";
-const metaType: TokenType = "containerFlowFenceMeta";
+const fenceType: TokenType = "referenceFlowFence";
+const sequenceType: TokenType = "referenceFlowFenceSequence";
+const infoType: TokenType = "referenceFlowFenceInfo";
+const metaType: TokenType = "referenceFlowFenceMeta";
 
-const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
+const referenceSyntax = (fenceCode: NonNullable<Code>): Extension => {
   /** 是否为分隔符 */
   const isFence = (code: Code) => code === fenceCode;
+
+  /** 是否为引号 */
+  const isQuote = (code: Code) =>
+    code === codes.quotationMark || code === codes.apostrophe;
 
   return {
     flow: {
@@ -22,6 +22,10 @@ const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
         tokenize: function (effects, ok, nok) {
           const self = this;
           let fenceLength = 0;
+          let infoExitCode: Code = codes.space;
+
+          /** 是否为 info 序列的结束符 */
+          const isInfoExitCode = (code: Code) => code === infoExitCode;
 
           return start;
 
@@ -64,6 +68,9 @@ const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
 
             if (isEnding(code)) return after(code);
 
+            // 如果 info 以单/双引号开头，则必须以相同字符结束
+            if (isQuote(code)) infoExitCode = code;
+
             effects.enter(infoType);
             effects.enter(types.chunkString, { contentType: "string" });
 
@@ -71,7 +78,11 @@ const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
           }
 
           function info(code: Code) {
-            if (!isWhiteSpace(code) && !isEnding(code)) {
+            if (
+              !isWhiteSpace(code) &&
+              !isEnding(code) &&
+              !isInfoExitCode(code)
+            ) {
               effects.consume(code);
               return info;
             }
@@ -126,4 +137,4 @@ const containerFlow = (fenceCode: NonNullable<Code>): Extension => {
   };
 };
 
-export default containerFlow;
+export default referenceSyntax;
