@@ -82,7 +82,7 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
     /** 执行 highlight */
     const lang = getLanguage(code);
     const root = lang
-      ? refractor.highlight(toString(code as HastElement), lang)
+      ? refractor.highlight(trimEmptyLines(toString(code as HastElement)), lang)
       : (code as Parent);
     pre.properties.className.push(`language-${lang}`);
     code.properties.className = code.properties.className.filter(
@@ -468,11 +468,11 @@ function getLineNumber<T extends Node>(node: T): [number, number] {
 
 function getDecoratorClassName(decorator: DecoratorType | undefined) {
   switch (decorator) {
-    case "+":
+    case DecoratorType.INSERT:
       return "line-inserted";
-    case "-":
+    case DecoratorType.DELETE:
       return "line-deleted";
-    case "!":
+    case DecoratorType.HIGHLIGHT:
       return "line-highlighted";
     default:
       return "";
@@ -481,11 +481,21 @@ function getDecoratorClassName(decorator: DecoratorType | undefined) {
 
 function getDecoratorText(decorator: DecoratorType | undefined) {
   switch (decorator) {
-    case "+":
-    case "-":
+    case DecoratorType.INSERT:
+    case DecoratorType.DELETE:
       return decorator;
-    case "!":
+    case DecoratorType.HIGHLIGHT:
     default:
       return "";
   }
+}
+
+/**
+ * 移除开头和结尾的空行
+ *
+ * @param content
+ * @returns
+ */
+function trimEmptyLines(content: string): string {
+  return content.replace(/^(\s*\n)+/g, "").replace(/(\s*\n)+$/g, "");
 }
