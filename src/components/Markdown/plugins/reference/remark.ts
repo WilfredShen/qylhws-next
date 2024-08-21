@@ -67,14 +67,15 @@ const remarkReference: Plugin<[RemarkContainerOptions?]> = function (
     const regionLines = lines.slice(begin, end);
 
     meta = meta?.trim();
-    const matchLang = meta?.match(/^\[(\w+)\]/);
+    const match = meta?.match(/(?<=^|\s)\[(\w+)(?::([^\]]+))?\](?=$|\s)/);
+
     const codeLang =
-      matchLang?.[1] ?? path.extname(absolutePath).replace(/^\./, "");
+      match?.[1] ?? path.extname(absolutePath).replace(/^\./, "");
 
     parent.children.splice(index, 1, {
       type: "code",
       lang: codeLang,
-      meta: meta?.slice(matchLang?.[0].length),
+      meta,
       value: regionLines.join("\n"),
     });
   }

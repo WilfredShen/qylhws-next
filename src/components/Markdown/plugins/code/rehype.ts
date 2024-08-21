@@ -19,14 +19,13 @@ interface Element extends RefractorElement {
   properties: {
     className: string[];
     style?: string;
+    language?: string;
+    filename?: string;
   };
 }
 
 interface CodeElement extends Element {
   tagName: "code";
-  data: {
-    meta: string;
-  };
 }
 
 interface PreElement extends Element {
@@ -51,7 +50,8 @@ export enum DecoratorType {
 }
 
 export interface CodeBlockMeta {
-  // filename?: string;
+  language?: string;
+  filename?: string;
   noLineNumbers: boolean;
   lineNumbers?: number;
   decorators: (DecoratorType | undefined)[];
@@ -77,10 +77,11 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
     const code = normalizeClassName(node) as CodeElement;
     const pre = normalizeClassName(parent as HastElement) as PreElement;
 
-    const meta = parseMeta(code.data?.meta.trim() ?? "");
+    const meta = parseMeta((code.data?.meta as string)?.trim() ?? "");
+    console.log(meta);
 
     /** 执行 highlight */
-    const lang = getLanguage(code);
+    const lang = getLanguage(code) ?? meta.language;
     const root = lang
       ? refractor.highlight(trimEmptyLines(toString(code as HastElement)), lang)
       : (code as Parent);
@@ -163,6 +164,11 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
       code.children = [lineNumberColumn, codeLineColumn];
     }
 
+    pre.properties = {
+      ...pre.properties,
+      language: lang,
+      filename: meta.filename,
+    };
     code.properties.className.push("code-block");
     addStyle(
       code,
@@ -231,7 +237,8 @@ function calcMaxHeight({
  * @returns
  */
 function parseMeta(meta: string): CodeBlockMeta {
-  // const filename = meta.match(/(?<=^|\s)\[([^\[\]]*)\](?=$|\s)/);
+  const match = meta.match(/(?<=^|\s)\[[^\]]+\](?=$|\s)/)?.[0].slice(1, -1);
+  const colonIndex = match?.indexOf(":") ?? -1;
   const noLineNumbers = !!meta.match(/(?<=^|\s)no-line-numbers(?=$|\s)/i);
   const lineNumbers = meta.match(/(?<=^|\s)line-numbers(?:=(\d+))?(?=$|\s)/i);
   const decorators = meta.match(/(?<=^|\s)(?:[+-])?\{[^{}]*\}(?=$|\s)/g);
@@ -242,7 +249,10 @@ function parseMeta(meta: string): CodeBlockMeta {
   const maxLines = meta.match(/(?<=^|\s)max-lines=(\d+)(?=$|\s)/i);
 
   return {
-    // filename: filename?.[1],
+    language:
+      colonIndex === -1 ? match : match?.slice(0, colonIndex) || undefined,
+    filename:
+      colonIndex === -1 ? match : match?.slice(colonIndex + 1) || undefined,
     noLineNumbers,
     lineNumbers: lineNumbers?.[1] ? +lineNumbers[1] : undefined,
     decorators: parseDecorators(decorators ?? []),

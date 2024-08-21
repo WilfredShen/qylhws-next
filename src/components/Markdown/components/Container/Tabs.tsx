@@ -1,22 +1,16 @@
 import React from "react";
 
-import { Tabs } from "antd";
+import { Tabs as AntdTabs, TabsProps } from "antd";
 
 import { mergeClassNames } from "@/utils/classnames";
 
 import type { ContainerProps } from "./share";
 
-import "./TabsContainer.scss";
+import "./Tabs.scss";
 
 type Child = React.ReactElement | string | null | undefined;
 
-interface TabItem {
-  key: string;
-  label: string;
-  children: Child;
-}
-
-const TabsContainer = (props: ContainerProps) => {
+const Tabs = (props: ContainerProps) => {
   const { children } = props;
 
   const tabs = convertElementsToTabs(
@@ -27,20 +21,18 @@ const TabsContainer = (props: ContainerProps) => {
 
   return (
     <div
-      className={mergeClassNames(
-        "ws-container-tabs-card",
-        "ws-card",
-        "ws-card-shadowed",
-      )}
+      className={mergeClassNames("ws-tabs-card", "ws-card", "ws-card-shadowed")}
     >
-      <Tabs className="ws-container-tabs" items={tabs} />
+      <AntdTabs className="ws-tabs" items={tabs} />
     </div>
   );
 };
 
-export default TabsContainer;
+export default Tabs;
 
-function convertElementsToTabs(elements: Child[]): TabItem[] {
+function convertElementsToTabs(
+  elements: Child[],
+): NonNullable<TabsProps["items"]> {
   return elements
     .filter(
       (element): element is React.ReactElement =>

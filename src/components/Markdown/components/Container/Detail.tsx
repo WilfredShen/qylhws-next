@@ -6,9 +6,9 @@ import { mergeClassNames } from "@/utils/classnames";
 
 import type { ContainerProps } from "./share";
 
-import "./DetailContainer.scss";
+import "./Detail.scss";
 
-const DetailContainer = (props: ContainerProps) => {
+const Detail = (props: ContainerProps) => {
   const { meta, children, className } = props;
 
   const label = meta?.trim() || "Detail";
@@ -21,4 +21,4 @@ const DetailContainer = (props: ContainerProps) => {
   );
 };
 
-export default DetailContainer;
+export default Detail;

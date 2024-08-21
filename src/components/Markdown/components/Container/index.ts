@@ -1,11 +1,13 @@
-import DetailContainer from "./DetailContainer";
-import NoteContainer from "./NoteContainer";
+import CodeGroup from "./CodeGroup";
+import Detail from "./Detail";
+import Note from "./Note";
 import { registerComponent } from "./share";
-import TabsContainer from "./TabsContainer";
+import Tabs from "./Tabs";
 
 export { default } from "./Container";
 export * from "./Container";
 
-registerComponent("tabs", TabsContainer);
-registerComponent("note", NoteContainer);
-registerComponent("detail", DetailContainer);
+registerComponent("tabs", Tabs);
+registerComponent("note", Note);
+registerComponent("detail", Detail);
+registerComponent("code-group", CodeGroup);

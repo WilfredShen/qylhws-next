@@ -1,10 +1,6 @@
 import React from "react";
 
-import { mergeClassNames } from "@/utils/classnames";
-
-import type { ContainerProps } from "./share";
-
-import "./NoteContainer.scss";
+import { capitalize } from "lodash";
 import {
   BellRing,
   Info,
@@ -13,7 +9,12 @@ import {
   Star,
   TriangleAlert,
 } from "lucide-react";
-import { capitalize } from "lodash";
+
+import { mergeClassNames } from "@/utils/classnames";
+
+import type { ContainerProps } from "./share";
+
+import "./Note.scss";
 
 enum NoteType {
   INFO = "info",
@@ -44,7 +45,7 @@ const iconMap: Record<NoteType, React.ReactElement> = {
   [NoteType.DANGER]: <OctagonAlert />,
 };
 
-const NoteContainer = (props: ContainerProps) => {
+const Note = (props: ContainerProps) => {
   const { meta, children } = props;
 
   const parsedMeta = meta
@@ -72,4 +73,4 @@ const NoteContainer = (props: ContainerProps) => {
   );
 };
 
-export default NoteContainer;
+export default Note;

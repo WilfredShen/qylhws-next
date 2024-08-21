@@ -19,6 +19,10 @@ declare module "mdast" {
     "ws-container": WsContainer;
     "ws-reference": WsReference;
   }
+
+  interface CodeData {
+    filename?: string;
+  }
 }
 
 declare module "unified" {

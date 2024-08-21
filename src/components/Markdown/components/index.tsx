@@ -2,14 +2,14 @@ import React from "react";
 
 import type { Components as JsxComponents } from "hast-util-to-jsx-runtime";
 
-import Anchor from "./components/Anchor";
-import Badge from "./components/Badge";
-import BlockQuote from "./components/BlockQuote";
-import Container from "./components/Container";
-import * as Headings from "./components/Heading";
-import Image from "./components/Image";
-import Input from "./components/Input";
-import Table from "./components/Table";
+import Anchor from "./Anchor";
+import Badge from "./Badge";
+import BlockQuote from "./BlockQuote";
+import Container from "./Container";
+import * as Headings from "./Heading";
+import Image from "./Image";
+import Input from "./Input";
+import Table from "./Table";
 
 type Components = {
   [key in keyof JsxComponents | `ws-${string}`]: key extends keyof JsxComponents
