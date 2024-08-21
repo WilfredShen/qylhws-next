@@ -77,7 +77,7 @@ const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
     const code = normalizeClassName(node) as CodeElement;
     const pre = normalizeClassName(parent as HastElement) as PreElement;
 
-    const meta = parseMeta(code.data?.meta ?? "");
+    const meta = parseMeta(code.data?.meta.trim() ?? "");
 
     /** 执行 highlight */
     const lang = getLanguage(code);

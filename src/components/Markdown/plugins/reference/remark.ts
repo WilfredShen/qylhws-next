@@ -74,7 +74,7 @@ const remarkReference: Plugin<[RemarkContainerOptions?]> = function (
     parent.children.splice(index, 1, {
       type: "code",
       lang: codeLang,
-      meta: meta?.slice(matchLang?.index ?? 0),
+      meta: meta?.slice(matchLang?.[0].length),
       value: regionLines.join("\n"),
     });
   }

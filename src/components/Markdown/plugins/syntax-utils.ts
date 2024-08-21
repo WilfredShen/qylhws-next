@@ -14,7 +14,9 @@ export function isEnding(code: Code) {
   return isFileEnding(code) || isLineEnding(code);
 }
 
-export const isWhiteSpace = markdownSpace;
+export function isWhiteSpace(code: Code) {
+  return code === codes.space;
+}
 
 export function consumeLineEnding(effects: Effects, code: Code) {
   if (!isLineEnding(code)) return;

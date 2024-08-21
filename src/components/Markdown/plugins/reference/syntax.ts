@@ -23,9 +23,7 @@ const referenceSyntax = (fenceCode: NonNullable<Code>): Extension => {
           const self = this;
           let fenceLength = 0;
           let infoExitCode: Code = codes.space;
-
-          /** 是否为 info 序列的结束符 */
-          const isInfoExitCode = (code: Code) => code === infoExitCode;
+          let quoteCount = 0;
 
           return start;
 
@@ -79,10 +77,11 @@ const referenceSyntax = (fenceCode: NonNullable<Code>): Extension => {
 
           function info(code: Code) {
             if (
-              !isWhiteSpace(code) &&
-              !isEnding(code) &&
-              !isInfoExitCode(code)
+              (!isWhiteSpace(code) ||
+                (!isWhiteSpace(infoExitCode) && quoteCount < 2)) &&
+              !isEnding(code)
             ) {
+              if (isQuote(code)) quoteCount++;
               effects.consume(code);
               return info;
             }
