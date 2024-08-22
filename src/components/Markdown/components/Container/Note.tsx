@@ -27,6 +27,7 @@ enum NoteType {
 
 const typeMap: Record<string, NoteType> = {
   info: NoteType.INFO,
+  note: NoteType.INFO,
   tip: NoteType.TIP,
   important: NoteType.IMPORTANT,
   success: NoteType.SUCCESS,
@@ -45,16 +46,21 @@ const iconMap: Record<NoteType, React.ReactElement> = {
   [NoteType.DANGER]: <OctagonAlert />,
 };
 
-const Note = (props: ContainerProps) => {
-  const { meta, children } = props;
+export interface NoteProps extends ContainerProps {
+  noteType?: string;
+  title?: React.ReactNode;
+}
+
+const Note = (props: NoteProps) => {
+  const { meta, noteType: typeProp, title, children } = props;
 
   const parsedMeta = meta
     ?.split(" ")
     .map(e => e.trim())
     .filter(Boolean);
   const metaType = parsedMeta?.[0].toLowerCase();
-  const noteTitle = parsedMeta?.[1] ?? capitalize(metaType);
-  const noteType = typeMap[metaType ?? "info"];
+  const noteTitle = title ?? parsedMeta?.[1] ?? capitalize(metaType);
+  const noteType = typeMap[typeProp?.toLowerCase() ?? metaType ?? "info"];
 
   return (
     <div

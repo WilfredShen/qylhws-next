@@ -25,6 +25,7 @@ const Article = async (props: ArticlePageProps) => {
       <div className="content">
         <Markdown content={content} />
       </div>
+      <hr style={{ marginTop: 32 }} />
     </>
   );
 };

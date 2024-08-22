@@ -12,6 +12,7 @@ import { toJsx } from "@/utils/common";
 
 import components from "./components";
 import remarkBadge from "./plugins/badge";
+import remarkBlockQuote from "./plugins/block-quote";
 import rehypeCode from "./plugins/code";
 import remarkContainer from "./plugins/container";
 import remarkMatter from "./plugins/matter";
@@ -30,6 +31,7 @@ const Markdown = (props: MarkdownProps) => {
     .use(remarkFrontmatter)
     .use(remarkMatter)
     .use(remarkReference)
+    .use(remarkBlockQuote)
     .use(remarkGfm)
     .use(remarkEmoji)
     .use(remarkUnWrapImages)

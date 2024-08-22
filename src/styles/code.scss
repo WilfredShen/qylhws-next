@@ -1,5 +1,7 @@
 :not(pre) > code {
-  padding: 0.125em 0.25em;
+  padding: 0.1em 0.3em;
+
+  vertical-align: calc((var(--font-size) - var(--code-font-size)) / 2);
 
   color: var(--code-inline-color);
   border: 1px solid var(--code-inline-border-color);

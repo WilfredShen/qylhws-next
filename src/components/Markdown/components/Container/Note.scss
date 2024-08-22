@@ -6,6 +6,9 @@
   border-left: 0.2em solid var(--color-info-50);
   background-color: var(--color-info-15);
 
+  --font-size: 14px;
+  --line-height: 22px;
+
   @each $name in "info", "tip", "important", "success", "warning", "danger" {
     &-#{$name} {
       border-color: var(--color-#{$name}-50);
@@ -14,14 +17,18 @@
       .ws-note-title {
         color: var(--color-#{$name});
       }
+
+      pre,
+      code {
+        --code-font-size: 13px;
+        --code-inline-bg-color: #ffffff1f;
+        --code-inline-border-color: var(--color-#{$name}-30);
+      }
     }
   }
 
   p {
     margin: 0.5em 0;
-
-    --font-size: 14px;
-    --line-height: 22px;
 
     &:first-child {
       margin-top: 0;
@@ -34,6 +41,11 @@
 }
 
 .ws-note-title {
+  font-weight: 500;
+
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+
   .lucide {
     margin-right: 0.5em;
   }
