@@ -1,8 +1,8 @@
 .ws-note {
-  margin: 1em 0;
+  margin: var(--line-gap-top) 0 var(--line-gap-bottom);
   padding: 0.5em 0.8em;
 
-  color: var(--color-text-50);
+  color: var(--color-text-75);
   border-left: 0.2em solid var(--color-info-50);
   background-color: var(--color-info-15);
 
@@ -27,23 +27,28 @@
     }
   }
 
-  p {
-    margin: 0.5em 0;
+  & > p {
+    --font-size: 14px;
+    --line-height: 22px;
 
     &:first-child {
-      margin-top: 0;
+      --line-gap-top: 0;
     }
 
     &:last-child {
-      margin-bottom: 0;
+      --line-gap-bottom: 0;
     }
+  }
+
+  & > * {
+    --line-gap-top: 0.5em;
+    --line-gap-bottom: 0.5em;
   }
 }
 
 .ws-note-title {
-  font-weight: 500;
-
   font-size: var(--font-size);
+  font-weight: 500;
   line-height: var(--line-height);
 
   .lucide {

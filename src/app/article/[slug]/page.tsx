@@ -1,11 +1,11 @@
 import React from "react";
 
-import fs from "fs";
 import matter from "gray-matter";
-import path from "path";
 
+import { getArticle } from "@/api/article";
 import Markdown from "@/components/Markdown";
 import { FrontMatter } from "@/types/article";
+import { ArticleType } from "@/types/strapi";
 
 import type { ArticlePageProps } from "./types";
 
@@ -13,14 +13,16 @@ const Article = async (props: ArticlePageProps) => {
   const { params } = props;
   const { slug } = params;
 
-  const { content, frontmatter } = await getPost(props);
+  const article = await getPost(props);
+  const content = article.content.replace(/(^|\n)#\s+.*/g, "");
 
-  const { title } = frontmatter;
+  const { data: frontmatter } = matter(content);
+  const contentTitle: string = article.title || frontmatter.title || slug;
 
   return (
     <>
       <div className="content-header">
-        <h1 className="content-title">{title || slug}</h1>
+        <h1 className="content-title">{contentTitle}</h1>
       </div>
       <div className="content">
         <Markdown content={content} />
@@ -33,20 +35,9 @@ const Article = async (props: ArticlePageProps) => {
 export default Article;
 
 export async function generateStaticParams() {
-  return [{ slug: "async-and-promise" }];
+  return [{ slug: "browser-event-loop" }];
 }
 
-async function getPost(props: ArticlePageProps): Promise<{
-  content: string;
-  frontmatter: FrontMatter;
-}> {
-  const { params } = props;
-  const { slug } = params;
-
-  const filePath = path.join(process.cwd(), "examples", `${slug}.md`);
-  const content = fs.readFileSync(filePath).toString();
-
-  const { data } = matter(content);
-
-  return { content: content.replace(/(^|\n)#\s+.*/g, ""), frontmatter: data };
+async function getPost(props: ArticlePageProps): Promise<ArticleType> {
+  return getArticle({ slug: props.params.slug }).then(({ data }) => data[0]);
 }

@@ -20,7 +20,7 @@ pre {
 pre[class*="language-"] {
   overflow: auto;
 
-  margin: 1em 0;
+  margin: var(--line-gap-top) 0 var(--line-gap-bottom);
 
   border-radius: 6px;
 }
