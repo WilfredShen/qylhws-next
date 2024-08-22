@@ -1,21 +1,22 @@
 import React from "react";
 
+import { Tag } from "antd";
+
 import type { ElementProps } from "@/types/element";
-import { mergeClassNames } from "@/utils/classnames";
 
 import "./Badge.scss";
 
 export interface BadgeProps extends ElementProps {
-  type?: string;
+  color?: string;
 }
 
 const Badge = (props: BadgeProps) => {
-  const { type, children } = props;
+  const { color, children } = props;
 
   return (
-    <span className={mergeClassNames("ws-badge", `ws-badge-${type}`)}>
+    <Tag className="ws-badge" color={color}>
       {children}
-    </span>
+    </Tag>
   );
 };
 
