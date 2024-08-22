@@ -1,5 +1,6 @@
 import type { Container as WsContainer } from "@/components/Markdown/plugins/container";
 import type { Reference as WsReference } from "@/components/Markdown/plugins/reference";
+import { FrontMatter } from "./article";
 
 declare module "micromark-util-types" {
   interface TokenTypeMap {
@@ -33,6 +34,6 @@ declare module "hast" {
 
 declare module "unified" {
   interface Data {
-    matter: Record<string, unknown>;
+    matter: FrontMatter;
   }
 }

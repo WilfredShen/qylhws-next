@@ -12,6 +12,7 @@
     "@ant-design/nextjs-registry": "^1.0.0",
     "antd": "^5.18.3",
     "autoprefixer": "^10.4.20",
+    "gray-matter": "^4.0.3",
     "lodash": "^4.17.21",
     "lucide-react": "^0.428.0",
     "mdast": "^3.0.0",

@@ -14,30 +14,40 @@
     flex: 0 0 auto;
   }
 
-  .article-main {
+  .article-page-container {
     display: flex;
     overflow: auto;
 
     height: calc(100vh - var(--navbar-height));
 
-    scroll-behavior: smooth;
-
     .sidebar {
-      position: sticky;
-      top: 0;
+      flex: 0 0 var(--sidebar-width);
 
-      flex: 0 0 auto;
+      height: 100%;
     }
 
-    .content-card {
-      flex: 0 0 auto;
+    .article-main {
+      display: flex;
+      overflow: hidden auto;
+      flex: 1 1 auto;
+      justify-content: center;
 
-      width: var(--content-width);
-      height: fit-content;
-      margin: 48px auto 72px;
-      padding: 24px;
+      width: fit-content;
+      min-width: calc(48px * 2 + var(--content-min-width));
+      height: 100%;
 
-      box-shadow: var(--shadow-default);
+      scroll-behavior: smooth;
+
+      .content-card {
+        width: calc(100% - 96px);
+        min-width: var(--content-min-width);
+        max-width: var(--content-max-width);
+        height: fit-content;
+        margin: 48px 48px 72px;
+        padding: 24px;
+
+        box-shadow: var(--shadow-default);
+      }
     }
   }
 }

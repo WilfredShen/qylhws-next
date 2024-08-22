@@ -5,9 +5,11 @@ import { Card } from "antd";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 
+import type { ArticlePageProps } from "./types";
+
 import "./layout.scss";
 
-interface ArticleLayoutProps {
+interface ArticleLayoutProps extends ArticlePageProps {
   children?: React.ReactNode;
 }
 
@@ -17,12 +19,12 @@ const ArticleLayout = (props: ArticleLayoutProps) => {
   return (
     <div className="article-page">
       <Navbar />
-      <main className="article-main">
+      <div className="article-page-container">
         <Sidebar items={[]} />
-        <Card className="content-card">
-          <div className="content">{children}</div>
-        </Card>
-      </main>
+        <main className="article-main">
+          <Card className="content-card">{children}</Card>
+        </main>
+      </div>
     </div>
   );
 };
