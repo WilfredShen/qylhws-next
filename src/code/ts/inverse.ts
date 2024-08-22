@@ -14,7 +14,7 @@ const invCache: Map<number, number[]> = new Map();
 
 export function inverseLazy(a: number, p: number): number {
   if (!invCache.has(p)) invCache.set(p, [0, 1]); // 初始化
-  const array = invCache.get(p);
+  const array = invCache.get(p)!;
   if (array[a] === void 0)
     array[a] = ((p - Math.floor(p / a)) * inverseLazy(p % a, p)) % p;
   return array[a];

@@ -10,7 +10,7 @@ interface Ref<T = any> {
 }
 
 function isRef<T>(value: Ref<T> | unknown): value is Ref<T> {
-  return !!(value && value[RefFlags.IS_REF]);
+  return !!(value && (value as any)[RefFlags.IS_REF]);
 }
 
 class RefImpl<T> implements Ref<T> {

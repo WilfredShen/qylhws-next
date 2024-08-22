@@ -3,8 +3,8 @@ function timeout(fn: () => void) {
   setTimeout(fn, 1000);
 }
 
-function listenClick(dom: Element, fn: () => void) {
-  dom.addEventListener("click", fn);
+function listenClick(dom: Element | null, fn: () => void) {
+  dom?.addEventListener("click", fn);
 }
 
 function ajax(url: string, fn: () => void) {

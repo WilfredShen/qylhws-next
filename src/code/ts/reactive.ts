@@ -7,13 +7,15 @@ enum ReactiveFlags {
   RAW = "__raw__",
 }
 
-interface Target {
+interface _Target<T = unknown> {
   [ReactiveFlags.IS_REACTIVE]: boolean;
-  [ReactiveFlags.RAW]: boolean;
+  [ReactiveFlags.RAW]: T;
 }
 
-export function isReactive(value: object): boolean {
-  return !!value[ReactiveFlags.IS_REACTIVE];
+type Target<T = unknown> = T extends _Target ? T : T & _Target<T>;
+
+export function isReactive<T>(value: T): value is Target<T> {
+  return !!(value as any)[ReactiveFlags.IS_REACTIVE];
 }
 
 // 使用 WeakMap，避免影响垃圾回收
@@ -40,7 +42,7 @@ class ReactiveHandler implements ProxyHandler<Target> {
   }
 }
 
-export function reactive<T extends object>(target: T): T {
+export function reactive<T extends object>(target: T): Target<T> {
   if (!isObject(target)) throw "target must be an object";
 
   // 不能使用 target instanceof Proxy 来判断 target 是否为 Proxy
@@ -59,7 +61,7 @@ export function reactive<T extends object>(target: T): T {
  * 尝试获得响应式对象的原始对象，否则返回自身
  */
 export function toRaw<T>(value: T): T {
-  const raw = value && value[ReactiveFlags.RAW];
+  const raw = value && (value as any)[ReactiveFlags.RAW];
   return raw ? toRaw(raw) : value;
 }
 
