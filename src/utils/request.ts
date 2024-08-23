@@ -11,4 +11,6 @@ export function get<T = unknown, D = unknown>(
   return service.get(url, { params }).then(({ data }) => data);
 }
 
-export default { get };
+const request = { get };
+
+export default request;

@@ -1,8 +1,8 @@
 import React from "react";
-
+import {  } from 'next';
 import matter from "gray-matter";
 
-import { getArticle, listArticles } from "@/api/article";
+import { getArticle, getArticles } from "@/api/article";
 import Markdown from "@/components/Markdown";
 import { ArticleType } from "@/types/strapi";
 
@@ -34,7 +34,7 @@ const Article = async (props: ArticlePageProps) => {
 export default Article;
 
 export async function generateStaticParams() {
-  return listArticles().then(({ data }) => data);
+  return getArticles().then(({ data }) => data);
 }
 
 async function getPost(props: ArticlePageProps): Promise<ArticleType> {

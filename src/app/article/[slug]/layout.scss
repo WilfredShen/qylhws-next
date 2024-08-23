@@ -23,7 +23,11 @@
     .sidebar {
       flex: 0 0 var(--sidebar-width);
 
-      height: 100%;
+      .ant-menu {
+        border: none;
+
+        --ant-menu-sub-menu-item-bg: transparent;
+      }
     }
 
     .article-main {

@@ -25,7 +25,7 @@ const CodeGroup = (props: ContainerProps) => {
         "ws-code-group",
         "ws-tabs-card",
         "ws-card",
-        "ws-card-shadowed",
+        "ws-shadowed",
       )}
     >
       <AntdTabs className="ws-tabs" items={tabs} />

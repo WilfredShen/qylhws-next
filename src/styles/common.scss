@@ -13,141 +13,143 @@ body {
   padding: 0;
 }
 
-p,
-table,
-blockquote,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-size: var(--font-size);
-  line-height: var(--line-height);
-}
-
-p {
-  margin: var(--line-gap-top) 0 var(--line-gap-bottom);
-}
-
-hr {
-  height: 1px;
-  margin: var(--font-size) 0;
-
-  border: none;
-  background-color: var(--color-divider);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  position: relative;
-
-  outline: none;
-
-  font-weight: 600;
-}
-
-h1 {
-  margin: 0;
-
-  --font-size: 32px;
-  --line-height: 40px;
-}
-
-h2 {
-  margin: 48px 0 16px;
-  padding: 16px 0 0;
-
-  border-top: 1px solid var(--color-divider);
-
-  --font-size: 24px;
-  --line-height: 32px;
-
-  .ws-heading-anchor {
-    top: 16px;
+.article-main {
+  p,
+  table,
+  blockquote,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: var(--font-size);
+    line-height: var(--line-height);
   }
-}
 
-h3 {
-  margin: 32px 0 0;
+  p {
+    margin: var(--line-gap-top) 0 var(--line-gap-bottom);
+  }
 
-  --font-size: 20px;
-  --line-height: 28px;
-}
+  hr {
+    height: 1px;
+    margin: var(--font-size) 0;
 
-h4 {
-  margin: 24px 0 0;
+    border: none;
+    background-color: var(--color-divider);
+  }
 
-  --font-size: 18px;
-  --line-height: 26px;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    position: relative;
 
-h5 {
-  margin: 0;
+    outline: none;
 
-  --font-size: 16px;
-  --line-height: 24px;
-}
+    font-weight: 600;
+  }
 
-h6 {
-  margin: 0;
+  h1 {
+    margin: 0;
 
-  --font-size: 16px;
-  --line-height: 24px;
-}
+    --font-size: 32px;
+    --line-height: 40px;
+  }
 
-ul,
-ol {
-  margin: var(--line-gap-top) 0 var(--line-gap-bottom);
-  padding-left: 1.25em;
+  h2 {
+    margin: 48px 0 16px;
+    padding: 16px 0 0;
 
-  font-size: var(--font-size);
+    border-top: 1px solid var(--color-divider);
+
+    --font-size: 24px;
+    --line-height: 32px;
+
+    .ws-heading-anchor {
+      top: 16px;
+    }
+  }
+
+  h3 {
+    margin: 32px 0 0;
+
+    --font-size: 20px;
+    --line-height: 28px;
+  }
+
+  h4 {
+    margin: 24px 0 0;
+
+    --font-size: 18px;
+    --line-height: 26px;
+  }
+
+  h5 {
+    margin: 0;
+
+    --font-size: 16px;
+    --line-height: 24px;
+  }
+
+  h6 {
+    margin: 0;
+
+    --font-size: 16px;
+    --line-height: 24px;
+  }
 
   ul,
-  ol,
-  li {
-    --line-gap-top: 0.25em;
-    --line-gap-bottom: 0.25em;
-  }
+  ol {
+    margin: var(--line-gap-top) 0 var(--line-gap-bottom);
+    padding-left: 1.25em;
 
-  &.contains-task-list {
-    padding-left: 0.25em;
+    font-size: var(--font-size);
 
-    list-style: none;
-  }
-}
-
-li + li {
-  margin-top: var(--line-gap-top);
-}
-
-blockquote {
-  margin: var(--line-gap-top) 0 var(--line-gap-bottom);
-  padding: 0 0.8em;
-
-  color: var(--color-text-50);
-  border-left: 0.2em solid var(--color-divider-light);
-
-  & > p {
-    --font-size: 14px;
-    --line-height: 22px;
-
-    &:first-child {
-      --line-gap-top: 0;
+    ul,
+    ol,
+    li {
+      --line-gap-top: 0.25em;
+      --line-gap-bottom: 0.25em;
     }
 
-    &:last-child {
-      --line-gap-bottom: 0;
+    &.contains-task-list {
+      padding-left: 0.25em;
+
+      list-style: none;
     }
   }
 
-  & > * {
-    --line-gap-top: 0.5em;
-    --line-gap-bottom: 0.5em;
+  li + li {
+    margin-top: var(--line-gap-top);
+  }
+
+  blockquote {
+    margin: var(--line-gap-top) 0 var(--line-gap-bottom);
+    padding: 0 0.8em;
+
+    color: var(--color-text-50);
+    border-left: 0.2em solid #ddd8;
+
+    & > p {
+      --font-size: 14px;
+      --line-height: 22px;
+
+      &:first-child {
+        --line-gap-top: 0;
+      }
+
+      &:last-child {
+        --line-gap-bottom: 0;
+      }
+    }
+
+    & > * {
+      --line-gap-top: 0.5em;
+      --line-gap-bottom: 0.5em;
+    }
   }
 }
 
@@ -173,10 +175,16 @@ blockquote {
   box-shadow: none;
 }
 
-.ws-card-bordered {
+.ws-bordered {
   border: 1px solid var(--color-divider);
+
+  @each $pos in left, right, top, bottom {
+    &-#{$pos} {
+      border-#{$pos}: 1px solid var(--color-divider);
+    }
+  }
 }
 
-.ws-card-shadowed {
+.ws-shadowed {
   box-shadow: var(--shadow-default);
 }

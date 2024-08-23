@@ -1,15 +1,15 @@
 import React from "react";
 
 import { Link, Redo2 } from "lucide-react";
-import RouteLink from "next/link";
 
+import RouteLink from "@/components/RouteLink";
 import type { ElementProps } from "@/types/element";
 import { omitNode } from "@/utils/common";
 
 export interface AnchorProps
   extends ElementProps,
     React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  href: string;
+  href?: string;
   externalIcon?: React.ReactNode;
   backRefIcon?: React.ReactNode;
 }
@@ -22,23 +22,37 @@ const Anchor = (props: AnchorProps) => {
     backRefIcon = <Redo2 style={{ transform: "rotate(180deg)" }} />,
   } = props;
 
-  const isExternal = !!href?.match(/([a-zA-Z\d-]+:)?\/\//);
+  if (!href) return null;
+
+  const isExternal = !!href.match(/([a-zA-Z\d-]+:)?\/\//);
 
   if (isExternal)
     return (
-      <RouteLink {...omitNode(props)} target="_blank" rel="noreferer">
+      <RouteLink {...omitNode(props)} href={href} target="_blank">
         {children}
         {externalIcon}
       </RouteLink>
     );
 
   if ("data-footnote-ref" in props)
-    return <RouteLink {...omitNode(props)}>[{children}]</RouteLink>;
+    return (
+      <RouteLink {...omitNode(props)} href={href}>
+        {children}
+      </RouteLink>
+    );
 
   if ("data-footnote-backref" in props)
-    return <RouteLink {...omitNode(props)}>{backRefIcon}</RouteLink>;
+    return (
+      <RouteLink {...omitNode(props)} href={href}>
+        {backRefIcon}
+      </RouteLink>
+    );
 
-  return <RouteLink {...omitNode(props)}>{children}</RouteLink>;
+  return (
+    <RouteLink {...omitNode(props)} href={href}>
+      {children}
+    </RouteLink>
+  );
 };
 
 export default Anchor;

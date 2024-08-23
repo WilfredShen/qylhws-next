@@ -5,22 +5,20 @@ import { Card } from "antd";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 
-import type { ArticlePageProps } from "./types";
-
 import "./layout.scss";
 
-interface ArticleLayoutProps extends ArticlePageProps {
+export interface ArticleLayoutProps {
   children?: React.ReactNode;
 }
 
-const ArticleLayout = (props: ArticleLayoutProps) => {
+const ArticleLayout = async (props: ArticleLayoutProps) => {
   const { children } = props;
 
   return (
     <div className="article-page">
       <Navbar />
       <div className="article-page-container">
-        <Sidebar items={[]} />
+        <Sidebar />
         <main className="article-main">
           <Card className="content-card">{children}</Card>
         </main>

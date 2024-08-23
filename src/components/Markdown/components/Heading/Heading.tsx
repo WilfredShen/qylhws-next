@@ -1,8 +1,8 @@
 import React from "react";
 
 import { toString } from "hast-util-to-string";
-import RouteLink from "next/link";
 
+import RouteLink from "@/components/RouteLink";
 import type { ElementProps } from "@/types/element";
 import { bindDefaultProps, childrenToString } from "@/utils/common";
 

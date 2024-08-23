@@ -3,7 +3,7 @@ export interface BaseType {
   documentId: string;
 }
 
-export interface Collection extends BaseType {
+export interface CollectionType extends BaseType {
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
@@ -29,7 +29,7 @@ export interface StrapiResponse<T> {
   error?: object;
 }
 
-export interface ArticleType extends Collection {
+export interface ArticleType extends BaseType {
   slug: string;
   title: string;
   content: string;
@@ -37,15 +37,16 @@ export interface ArticleType extends Collection {
   tags?: TagType[];
 }
 
-export interface CategoryType extends Collection {
+export interface CategoryType extends BaseType {
   slug: string;
   name: string;
   children?: CategoryType[];
   parent?: CategoryType;
-  articles?: ArticleType[];
+  articles?: (BaseType & Pick<ArticleType, "slug" | "title">)[];
 }
 
-export interface TagType extends Collection {
+export interface TagType extends BaseType {
+  slug: string;
   label: string;
-  articles?: ArticleType[];
+  articles?: (BaseType & Pick<ArticleType, "slug" | "title">)[];
 }

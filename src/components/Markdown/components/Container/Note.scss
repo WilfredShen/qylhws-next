@@ -47,6 +47,8 @@
 }
 
 .ws-note-title {
+  display: flex;
+
   font-size: var(--font-size);
   font-weight: 500;
   line-height: var(--line-height);

@@ -21,7 +21,7 @@ const Tabs = (props: ContainerProps) => {
 
   return (
     <div
-      className={mergeClassNames("ws-tabs-card", "ws-card", "ws-card-shadowed")}
+      className={mergeClassNames("ws-tabs-card", "ws-card", "ws-shadowed")}
     >
       <AntdTabs className="ws-tabs" items={tabs} />
     </div>

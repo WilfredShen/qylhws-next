@@ -70,8 +70,8 @@ const Note = (props: NoteProps) => {
     >
       {!!noteTitle && noteTitle !== "false" && (
         <div className="ws-note-title">
-          {iconMap[noteType]}
-          {noteTitle}
+          <span>{iconMap[noteType]}</span>
+          <span>{noteTitle}</span>
         </div>
       )}
       {children}

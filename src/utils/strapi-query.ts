@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export default class SQBuilder<Model extends object, Data extends object = {}> {
   private _query: QueryRawInfo<Model, Data> = {
     sort: [],
