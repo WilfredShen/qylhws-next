@@ -4,7 +4,10 @@ const service = axios.create({
   baseURL: "http://localhost:1337/",
 });
 
-export function get<T, R>(url: string, params: T): Promise<R> {
+export function get<T = unknown, D = unknown>(
+  url: string,
+  params: D,
+): Promise<T> {
   return service.get(url, { params }).then(({ data }) => data);
 }
 

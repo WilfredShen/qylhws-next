@@ -2,9 +2,8 @@ import React from "react";
 
 import matter from "gray-matter";
 
-import { getArticle } from "@/api/article";
+import { getArticle, listArticles } from "@/api/article";
 import Markdown from "@/components/Markdown";
-import { FrontMatter } from "@/types/article";
 import { ArticleType } from "@/types/strapi";
 
 import type { ArticlePageProps } from "./types";
@@ -35,7 +34,7 @@ const Article = async (props: ArticlePageProps) => {
 export default Article;
 
 export async function generateStaticParams() {
-  return [{ slug: "browser-event-loop" }];
+  return listArticles().then(({ data }) => data);
 }
 
 async function getPost(props: ArticlePageProps): Promise<ArticleType> {

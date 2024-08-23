@@ -1,6 +1,9 @@
-export interface Collection {
+export interface BaseType {
   id: number;
   documentId: string;
+}
+
+export interface Collection extends BaseType {
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
@@ -18,7 +21,7 @@ export interface Pagination {
   total: number;
 }
 
-export interface Response<T> {
+export interface StrapiResponse<T> {
   data: T;
   meta: {
     pagination?: Pagination;
