@@ -1,6 +1,7 @@
 import React from "react";
 
 import { toString } from "hast-util-to-string";
+import RouteLink from "next/link";
 
 import type { ElementProps } from "@/types/element";
 import { bindDefaultProps, childrenToString } from "@/utils/common";
@@ -34,9 +35,9 @@ const Heading = (props: HeadingProps) => {
       className: "ws-heading",
     },
     children,
-    <a className="ws-heading-anchor" href={`#${anchorText}`}>
+    <RouteLink className="ws-heading-anchor" href={`#${anchorText}`}>
       {anchorSymbol}
-    </a>,
+    </RouteLink>,
   );
 };
 

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Link, Redo2 } from "lucide-react";
+import RouteLink from "next/link";
 
 import type { ElementProps } from "@/types/element";
 import { omitNode } from "@/utils/common";
@@ -8,6 +9,7 @@ import { omitNode } from "@/utils/common";
 export interface AnchorProps
   extends ElementProps,
     React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  href: string;
   externalIcon?: React.ReactNode;
   backRefIcon?: React.ReactNode;
 }
@@ -24,19 +26,19 @@ const Anchor = (props: AnchorProps) => {
 
   if (isExternal)
     return (
-      <a {...omitNode(props)} target="_blank" rel="noreferer">
+      <RouteLink {...omitNode(props)} target="_blank" rel="noreferer">
         {children}
         {externalIcon}
-      </a>
+      </RouteLink>
     );
 
   if ("data-footnote-ref" in props)
-    return <a {...omitNode(props)}>[{children}]</a>;
+    return <RouteLink {...omitNode(props)}>[{children}]</RouteLink>;
 
   if ("data-footnote-backref" in props)
-    return <a {...omitNode(props)}>{backRefIcon}</a>;
+    return <RouteLink {...omitNode(props)}>{backRefIcon}</RouteLink>;
 
-  return <a {...omitNode(props)}>{children}</a>;
+  return <RouteLink {...omitNode(props)}>{children}</RouteLink>;
 };
 
 export default Anchor;
