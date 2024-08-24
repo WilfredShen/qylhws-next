@@ -55,7 +55,7 @@ function parseNote(props: BlockQuoteProps) {
     /** 解析 note 类型，并将剩余部分作为 title 的一部分 */
     const [_, type, rest] = match;
     const title: ReactNode[] = firstParagraph.props.children.slice(1);
-    if (rest?.trim()) title.unshift(rest.trim());
+    if (rest?.trimStart()) title.unshift(rest.trimStart());
 
     return (
       <Note type="note" noteType={type?.trim() || undefined} title={title}>
