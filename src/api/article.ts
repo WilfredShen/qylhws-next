@@ -1,48 +1,64 @@
 import type {
   ArticleType,
-  CategoryType,
+  BaseType,
   CollectionType,
+  NavigationType,
+  PickDoc,
   StrapiResponse,
 } from "@/types/strapi";
+import type { Entries } from "@/types/utils";
 import request from "@/utils/request";
 import SQBuilder from "@/utils/strapi-query";
 
-export function getArticle(params: Pick<ArticleType, "slug">) {
-  const { slug } = params;
-
+export async function getArticleId(
+  params: Partial<Pick<ArticleType, "id" | "documentId" | "slug" | "title">>,
+) {
   const builder = new SQBuilder<ArticleType>();
-  const query = builder
-    .filters("slug", e => e.eq(slug))
-    .populate("*")
-    .build();
+  (Object.entries(params) as Entries<typeof params>).forEach(([key, value]) =>
+    builder.filters(key, bd => bd.eq(value!)),
+  );
+  const query = builder.fields(["id"]).build();
 
-  return request.get<StrapiResponse<(ArticleType & CollectionType)[]>>(
-    "/strapi/articles",
+  const { data } = await request.get<StrapiResponse<BaseType[]>>(
+    `/strapi/articles`,
     query,
   );
+  return data[0];
 }
 
-export function getArticles() {
+export async function getArticle(params: Pick<ArticleType, "documentId">) {
+  const { documentId } = params;
+
+  const builder = new SQBuilder<ArticleType>();
+  const query = builder.populate("*").build();
+
+  const { data } = await request.get<
+    StrapiResponse<CollectionType<ArticleType>>
+  >(`/strapi/articles/${documentId}`, query);
+  return data;
+}
+
+export async function getArticles() {
   const builder = new SQBuilder<ArticleType>();
   const query = builder.fields(["slug"]).pageSize(10000).build();
 
-  return request.get<
-    StrapiResponse<Pick<ArticleType, "id" | "documentId" | "slug">[]>
+  const { data } = await request.get<
+    StrapiResponse<PickDoc<ArticleType, "slug">[]>
   >("/strapi/articles", query);
+  return data;
 }
 
-export function getCategories() {
-  const builder = new SQBuilder<CategoryType>();
+export async function getNavigations() {
+  const builder = new SQBuilder<NavigationType>();
   const query = builder
-    .fields(["slug", "name"])
-    .populate<CategoryType>("parent", bd => bd.fields(["slug", "name"]))
-    .populate<CategoryType>("children", bd => bd.fields(["slug", "name"]))
+    .fields(["slug", "label", "type", "order", "link"])
     .populate<ArticleType>("articles", bd => bd.fields(["slug", "title"]))
-    .pageSize(10000)
+    .populate<NavigationType>("children", bd => bd.fields(["id"]))
     .build();
 
-  return request.get<StrapiResponse<CategoryType[]>>(
-    "/strapi/categories",
+  const { data } = await request.get<StrapiResponse<NavigationType[]>>(
+    "/strapi/navigations",
     query,
   );
+  return data;
 }

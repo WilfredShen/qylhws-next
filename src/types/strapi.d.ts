@@ -1,13 +1,25 @@
+import type { NavigationTypeEnum } from "@/share/enum";
+
 export interface BaseType {
   id: number;
   documentId: string;
 }
 
-export interface CollectionType extends BaseType {
-  createdAt: string;
-  updatedAt: string;
-  publishedAt: string | null;
-  locale: string | null;
+export type PickDoc<
+  T extends BaseType,
+  K extends Exclude<keyof T, keyof BaseType>,
+> = BaseType & Pick<T, K>;
+
+export type OmitDoc<
+  T extends BaseType,
+  K extends Exclude<keyof T, keyof BaseType>,
+> = BaseType & Omit<T, K>;
+
+export interface CollectionType<T extends BaseType> extends T {
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string | null;
+  locale?: string | null;
 }
 
 export interface Pagination {
@@ -26,27 +38,38 @@ export interface StrapiResponse<T> {
   meta: {
     pagination?: Pagination;
   };
-  error?: object;
+  error?: Record<string, unknown>;
 }
 
 export interface ArticleType extends BaseType {
   slug: string;
   title: string;
   content: string;
+  abstract?: string;
+  navigation?: NavigationType;
   category?: CategoryType;
   tags?: TagType[];
 }
 
+export interface NavigationType extends BaseType {
+  slug: string;
+  label: string;
+  type: NavigationTypeEnum;
+  order: number;
+  link?: string;
+  parent?: NavigationType;
+  children?: NavigationType[];
+  articles?: ArticleType[];
+}
+
 export interface CategoryType extends BaseType {
   slug: string;
-  name: string;
-  children?: CategoryType[];
-  parent?: CategoryType;
-  articles?: (BaseType & Pick<ArticleType, "slug" | "title">)[];
+  label: string;
+  articles?: ArticleType[];
 }
 
 export interface TagType extends BaseType {
   slug: string;
   label: string;
-  articles?: (BaseType & Pick<ArticleType, "slug" | "title">)[];
+  articles?: ArticleType[];
 }

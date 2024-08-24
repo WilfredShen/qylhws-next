@@ -1,25 +1,20 @@
 import matter from "gray-matter";
 
-import { getArticle, getArticles } from "@/api/article";
+import { getArticle, getArticleId, getArticles } from "@/api/article";
 import Markdown from "@/components/Markdown";
+import { PageProps } from "@/types/page";
 import { ArticleType } from "@/types/strapi";
 
-import type { ArticlePageProps } from "./types";
-
-const Article = async (props: ArticlePageProps) => {
+const Article = async (props: PageProps<Pick<ArticleType, "slug">>) => {
   const { params } = props;
   const { slug } = params;
 
-  const article = await getPost(props);
-  const content = article.content.replace(/(^|\n)#\s+.*/g, "");
-
-  const { data: frontmatter } = matter(content);
-  const contentTitle: string = article.title || frontmatter.title || slug;
+  const { title, content } = await getPost({ slug });
 
   return (
     <>
       <div className="content-header">
-        <h1 className="content-title">{contentTitle}</h1>
+        <h1 className="content-title">{title}</h1>
       </div>
       <div className="content">
         <Markdown content={content} />
@@ -32,9 +27,22 @@ const Article = async (props: ArticlePageProps) => {
 export default Article;
 
 export async function generateStaticParams() {
-  return getArticles().then(({ data }) => data);
+  const articles = await getArticles();
+  return articles.map(({ slug }) => ({ slug }));
 }
 
-async function getPost(props: ArticlePageProps): Promise<ArticleType> {
-  return getArticle({ slug: props.params.slug }).then(({ data }) => data[0]);
+export async function getPost(props: Pick<ArticleType, "slug">) {
+  const { slug } = props;
+
+  const { documentId } = await getArticleId({ slug });
+  const article = await getArticle({ documentId });
+
+  const content = article.content.replace(/(^|\n)#\s+.*/g, "");
+  const { data: frontmatter } = matter(content);
+
+  return {
+    title: article.title || frontmatter.title || "无标题",
+    content,
+    frontmatter,
+  };
 }
