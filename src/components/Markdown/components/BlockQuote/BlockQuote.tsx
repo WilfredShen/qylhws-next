@@ -1,4 +1,4 @@
-import React from "react";
+import type { BlockquoteHTMLAttributes, ReactElement, ReactNode } from "react";
 
 import type { ElementProps } from "@/types/element";
 import { omitNode } from "@/utils/common";
@@ -7,7 +7,7 @@ import Note from "../Container/Note";
 
 export interface BlockQuoteProps
   extends ElementProps,
-    React.BlockquoteHTMLAttributes<HTMLQuoteElement> {}
+    BlockquoteHTMLAttributes<HTMLQuoteElement> {}
 
 const BlockQuote = (props: BlockQuoteProps) => {
   const note = parseNote(props);
@@ -40,7 +40,7 @@ function parseNote(props: BlockQuoteProps) {
   if (firstParagraphIndex === -1) return;
 
   const pattern = /^\s*\[!([^\]]*)\](.*)/;
-  const firstParagraph: React.ReactElement = children[firstParagraphIndex];
+  const firstParagraph: ReactElement = children[firstParagraphIndex];
   const restParagraphs = children.slice(firstParagraphIndex + 1);
   if (Array.isArray(firstParagraph.props.children)) {
     /** 第一个 p 元素有多个子元素 */
@@ -54,7 +54,7 @@ function parseNote(props: BlockQuoteProps) {
 
     /** 解析 note 类型，并将剩余部分作为 title 的一部分 */
     const [_, type, rest] = match;
-    const title: React.ReactNode[] = firstParagraph.props.children.slice(1);
+    const title: ReactNode[] = firstParagraph.props.children.slice(1);
     if (rest?.trim()) title.unshift(rest.trim());
 
     return (

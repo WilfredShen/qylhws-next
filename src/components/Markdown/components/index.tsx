@@ -1,4 +1,4 @@
-import React from "react";
+import type { ComponentType } from "react";
 
 import type { Components as JsxComponents } from "hast-util-to-jsx-runtime";
 
@@ -14,7 +14,7 @@ import Table from "./Table";
 type Components = {
   [key in keyof JsxComponents | `ws-${string}`]: key extends keyof JsxComponents
     ? JsxComponents[key]
-    : React.ComponentType<never>;
+    : ComponentType<never>;
 };
 
 const components: Partial<Components> = {

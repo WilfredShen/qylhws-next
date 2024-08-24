@@ -1,4 +1,4 @@
-import React from "react";
+import type { AnchorHTMLAttributes, ReactNode } from "react";
 
 import { Link, Redo2 } from "lucide-react";
 
@@ -8,10 +8,10 @@ import { omitNode } from "@/utils/common";
 
 export interface AnchorProps
   extends ElementProps,
-    React.AnchorHTMLAttributes<HTMLAnchorElement> {
+    AnchorHTMLAttributes<HTMLAnchorElement> {
   href?: string;
-  externalIcon?: React.ReactNode;
-  backRefIcon?: React.ReactNode;
+  externalIcon?: ReactNode;
+  backRefIcon?: ReactNode;
 }
 
 const Anchor = (props: AnchorProps) => {

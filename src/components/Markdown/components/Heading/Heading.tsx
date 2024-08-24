@@ -1,4 +1,4 @@
-import React from "react";
+import { createElement, type HTMLAttributes, type ReactNode } from "react";
 
 import { toString } from "hast-util-to-string";
 
@@ -10,9 +10,9 @@ import "./Heading.scss";
 
 export interface HeadingProps
   extends ElementProps,
-    React.HTMLAttributes<HTMLHeadingElement> {
+    HTMLAttributes<HTMLHeadingElement> {
   level: number;
-  anchorSymbol?: React.ReactNode;
+  anchorSymbol?: ReactNode;
 }
 
 const Heading = (props: HeadingProps) => {
@@ -26,7 +26,7 @@ const Heading = (props: HeadingProps) => {
 
   const [anchorText, children] = getAnchorText(node, _children);
 
-  return React.createElement(
+  return createElement(
     `h${level}`,
     {
       ...otherProps,

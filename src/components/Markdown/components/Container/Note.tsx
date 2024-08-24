@@ -1,4 +1,4 @@
-import React from "react";
+import type { ReactElement, ReactNode } from "react";
 
 import { capitalize } from "lodash";
 import {
@@ -37,7 +37,7 @@ const typeMap: Record<string, NoteType> = {
   caution: NoteType.DANGER,
 };
 
-const iconMap: Record<NoteType, React.ReactElement> = {
+const iconMap: Record<NoteType, ReactElement> = {
   [NoteType.INFO]: <Info />,
   [NoteType.TIP]: <NotebookPen />,
   [NoteType.IMPORTANT]: <BellRing />,
@@ -48,7 +48,7 @@ const iconMap: Record<NoteType, React.ReactElement> = {
 
 export interface NoteProps extends ContainerProps {
   noteType?: string;
-  title?: React.ReactNode;
+  title?: ReactNode;
 }
 
 const Note = (props: NoteProps) => {

@@ -1,4 +1,3 @@
-import React from "react";
 import matter from "gray-matter";
 
 import { getArticle, getArticles } from "@/api/article";

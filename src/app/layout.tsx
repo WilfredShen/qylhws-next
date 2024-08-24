@@ -1,4 +1,4 @@
-import React from "react";
+import type { ReactNode } from "react";
 
 import type { Metadata } from "next";
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export interface RootLayoutProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 const RootLayout = (props: RootLayoutProps) => {

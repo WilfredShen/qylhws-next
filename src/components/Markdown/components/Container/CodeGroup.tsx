@@ -1,4 +1,4 @@
-import React from "react";
+import type { ReactElement } from "react";
 
 import { Tabs as AntdTabs, TabsProps } from "antd";
 
@@ -8,7 +8,7 @@ import type { ContainerProps } from "./share";
 
 import "./Tabs.scss";
 
-type Child = React.ReactElement | string | null | undefined;
+type Child = ReactElement | string | null | undefined;
 
 const CodeGroup = (props: ContainerProps) => {
   const { children } = props;
@@ -40,7 +40,7 @@ function convertElementsToTabs(
 ): NonNullable<TabsProps["items"]> {
   return elements
     .filter(
-      (element): element is React.ReactElement =>
+      (element): element is ReactElement =>
         !!(element && typeof element === "object" && element.type === "pre"),
     )
     .map((element, index) => {

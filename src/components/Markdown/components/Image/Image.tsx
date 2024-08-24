@@ -1,4 +1,4 @@
-import React from "react";
+import type { ImgHTMLAttributes } from "react";
 
 import { Image as AntdImage } from "antd";
 
@@ -8,7 +8,7 @@ import "./Image.scss";
 
 export interface ImageProps
   extends ElementProps,
-    React.ImgHTMLAttributes<HTMLImageElement> {}
+    ImgHTMLAttributes<HTMLImageElement> {}
 
 const Image = (props: ImageProps) => {
   const { src, alt } = props;

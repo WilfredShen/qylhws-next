@@ -1,8 +1,8 @@
-import type React from "react";
+import type { ReactNode } from "react";
 
 export interface MenuItemType {
   key: string;
-  label: React.ReactNode;
+  label: ReactNode;
   children?: MenuItemType[];
   parent?: MenuItemType;
 }

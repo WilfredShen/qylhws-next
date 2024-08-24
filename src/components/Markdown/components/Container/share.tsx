@@ -1,4 +1,4 @@
-import React from "react";
+import type { ComponentType } from "react";
 
 import type { ElementProps } from "@/types/element";
 import { mergeClassNames } from "@/utils/classnames";
@@ -10,13 +10,13 @@ export interface ContainerProps extends ElementProps {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const components: Map<string, [React.ComponentType<any>, any?]> = new Map();
+const components: Map<string, [ComponentType<any>, any?]> = new Map();
 
 const DEFAULT_KEY = "default";
 
 export function registerComponent<T extends ContainerProps>(
   name: string,
-  component: React.ComponentType<T>,
+  component: ComponentType<T>,
   defaultProps?: T,
 ) {
   if (!name) return;
@@ -26,7 +26,7 @@ export function registerComponent<T extends ContainerProps>(
 
 export function getComponent<T extends ContainerProps>(
   name: string,
-): [React.ComponentType<T>, T?] {
+): [ComponentType<T>, T?] {
   return components.get(name) ?? components.get(DEFAULT_KEY)!;
 }
 

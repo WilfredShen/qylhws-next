@@ -1,9 +1,9 @@
-import React from "react";
+import type { ReactNode } from "react";
 
 import { ConfigProvider } from "antd";
 
 export interface WithThemeProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 const WithTheme = ({ children }: WithThemeProps) => (

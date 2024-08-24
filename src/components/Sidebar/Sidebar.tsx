@@ -1,5 +1,3 @@
-import React from "react";
-
 import dynamic from "next/dynamic";
 
 import { getCategories } from "@/api/article";
@@ -9,9 +7,9 @@ import RouteLink from "../RouteLink";
 
 import "./Sidebar.scss";
 
-const Sidebar = async () => {
-  const Menu = dynamic(() => import("./Menu"), { ssr: false });
+const Menu = dynamic(() => import("./Menu"), { ssr: false });
 
+const Sidebar = async () => {
   const { data } = await getCategories();
   const flatMap: Record<string, MenuItemType> = {};
   const articleMap: Record<string, MenuItemType> = {};

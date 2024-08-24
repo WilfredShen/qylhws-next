@@ -1,4 +1,4 @@
-import React from "react";
+import type { InputHTMLAttributes } from "react";
 
 import { Checkbox } from "antd";
 
@@ -9,7 +9,7 @@ import "./Input.scss";
 
 export interface InputProps
   extends ElementProps,
-    React.InputHTMLAttributes<HTMLInputElement> {}
+    InputHTMLAttributes<HTMLInputElement> {}
 
 const Input = (props: InputProps) => {
   const { type, checked } = props;

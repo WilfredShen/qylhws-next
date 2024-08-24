@@ -1,4 +1,10 @@
-import React from "react";
+import {
+  type ComponentType,
+  Fragment,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 
 import { Nodes } from "hast";
 import {
@@ -10,9 +16,9 @@ import { jsx, jsxs } from "react/jsx-runtime";
 export function toJsx<Components extends Partial<JsxComponents>>(
   root: Nodes,
   components?: Components,
-): React.ReactNode {
+): ReactNode {
   return toJsxRuntime(root, {
-    Fragment: React.Fragment,
+    Fragment,
     components,
     //@ts-expect-error: type of the first argument does not match
     jsx,
@@ -26,18 +32,18 @@ export function toJsx<Components extends Partial<JsxComponents>>(
 type WithDefaultProps<P, D> = Omit<P, keyof D> & Partial<D>;
 
 export function bindDefaultProps<P extends object, D extends Partial<P>>(
-  Comp: React.ComponentType<P>,
+  Comp: ComponentType<P>,
   defaultProps: D,
-): (props: WithDefaultProps<P, D>) => React.ReactElement {
+): (props: WithDefaultProps<P, D>) => ReactElement {
   // eslint-disable-next-line react/display-name
   return props => <Comp {...defaultProps} {...(props as P)} />;
 }
 
-export function childrenToString(children: React.ReactNode): string {
+export function childrenToString(children: ReactNode): string {
   if (typeof children === "string") return children;
   if (Array.isArray(children))
     return children.map(child => childrenToString(child)).join("");
-  if (React.isValidElement(children))
+  if (isValidElement(children))
     return childrenToString(children.props.children);
   return "";
 }

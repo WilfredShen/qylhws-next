@@ -1,4 +1,4 @@
-import React from "react";
+import type { ReactNode } from "react";
 
 import { Card } from "antd";
 
@@ -8,7 +8,7 @@ import Sidebar from "@/components/Sidebar";
 import "./layout.scss";
 
 export interface ArticleLayoutProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 const ArticleLayout = async (props: ArticleLayoutProps) => {

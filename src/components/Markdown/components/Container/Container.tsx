@@ -1,5 +1,3 @@
-import React from "react";
-
 import { type ContainerProps, getComponent } from "./share";
 
 const Container = <T extends ContainerProps>(props: T) => {

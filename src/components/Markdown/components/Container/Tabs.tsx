@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactElement } from "react";
 
 import { Tabs as AntdTabs, TabsProps } from "antd";
 
@@ -8,7 +8,7 @@ import type { ContainerProps } from "./share";
 
 import "./Tabs.scss";
 
-type Child = React.ReactElement | string | null | undefined;
+type Child = ReactElement | string | null | undefined;
 
 const Tabs = (props: ContainerProps) => {
   const { children } = props;
@@ -20,9 +20,7 @@ const Tabs = (props: ContainerProps) => {
   if (!tabs.length) return null;
 
   return (
-    <div
-      className={mergeClassNames("ws-tabs-card", "ws-card", "ws-shadowed")}
-    >
+    <div className={mergeClassNames("ws-tabs-card", "ws-card", "ws-shadowed")}>
       <AntdTabs className="ws-tabs" items={tabs} />
     </div>
   );
@@ -35,7 +33,7 @@ function convertElementsToTabs(
 ): NonNullable<TabsProps["items"]> {
   return elements
     .filter(
-      (element): element is React.ReactElement =>
+      (element): element is ReactElement =>
         !!(
           element &&
           typeof element === "object" &&

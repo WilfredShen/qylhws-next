@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Collapse } from "antd";
 
 import { mergeClassNames } from "@/utils/classnames";
