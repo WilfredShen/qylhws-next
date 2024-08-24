@@ -1,5 +1,7 @@
 import type { NavigationTypeEnum } from "@/share/enum";
 
+import type { Nullable } from "./utils";
+
 export interface BaseType {
   id: number;
   documentId: string;
@@ -16,10 +18,10 @@ export type OmitDoc<
 > = BaseType & Omit<T, K>;
 
 export interface CollectionType<T extends BaseType> extends T {
-  createdAt?: string;
-  updatedAt?: string;
-  publishedAt?: string | null;
-  locale?: string | null;
+  createdAt?: Nullable<string>;
+  updatedAt?: Nullable<string>;
+  publishedAt?: Nullable<string>;
+  locale?: Nullable<string>;
 }
 
 export interface Pagination {
@@ -36,19 +38,19 @@ export interface Pagination {
 export interface StrapiResponse<T> {
   data: T;
   meta: {
-    pagination?: Pagination;
+    pagination?: Nullable<Pagination>;
   };
-  error?: Record<string, unknown>;
+  error?: Nullable<Record<string, unknown>>;
 }
 
 export interface ArticleType extends BaseType {
   slug: string;
   title: string;
   content: string;
-  abstract?: string;
-  navigation?: NavigationType;
-  category?: CategoryType;
-  tags?: TagType[];
+  abstract?: Nullable<string>;
+  navigation?: Nullable<NavigationType>;
+  category?: Nullable<CategoryType>;
+  tags?: Nullable<TagType[]>;
 }
 
 export interface NavigationType extends BaseType {
@@ -56,20 +58,20 @@ export interface NavigationType extends BaseType {
   label: string;
   type: NavigationTypeEnum;
   order: number;
-  link?: string;
-  parent?: NavigationType;
-  children?: NavigationType[];
-  articles?: ArticleType[];
+  link?: Nullable<string>;
+  parent?: Nullable<NavigationType>;
+  children?: Nullable<NavigationType[]>;
+  articles?: Nullable<ArticleType[]>;
 }
 
 export interface CategoryType extends BaseType {
   slug: string;
   label: string;
-  articles?: ArticleType[];
+  articles?: Nullable<ArticleType[]>;
 }
 
 export interface TagType extends BaseType {
   slug: string;
   label: string;
-  articles?: ArticleType[];
+  articles?: Nullable<ArticleType[]>;
 }

@@ -1,5 +1,7 @@
 /* eslint-disable */
 
+import type { Nullable } from "@/types/utils";
+
 export default class SQBuilder<Model extends object, Data extends object = {}> {
   private _query: QueryRawInfo<Model, Data> = {
     sort: [],
@@ -1348,7 +1350,7 @@ function unionBy<Type>(
   );
 }
 
-function isDefined<T>(value: T | undefined | null): value is T {
+function isDefined<T>(value: Nullable<T>): value is T {
   return value !== undefined && value !== null;
 }
 

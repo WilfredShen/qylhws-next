@@ -4,7 +4,7 @@ const service = axios.create({
   baseURL: "http://localhost:1337/",
 });
 
-export function get<T = unknown, D extends Record<string, unknown> = {}>(
+export function get<T = unknown, D = Record<string, unknown>>(
   url: string,
   params?: D,
 ): Promise<T> {

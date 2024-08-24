@@ -1,6 +1,8 @@
-import { Nullable } from "@/types/utils";
-import { isValid } from "./validate";
 import { camelCase, kebabCase } from "lodash";
+
+import type { Nullable } from "@/types/utils";
+
+import { isValid } from "./validate";
 
 function escapeHtmlChar(char: string): string {
   switch (char) {

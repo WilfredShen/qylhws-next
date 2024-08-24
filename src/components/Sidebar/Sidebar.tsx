@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { getNavigations } from "@/api/article";
 import { NavigationTypeEnum } from "@/share/enum";
 import type { MenuItemType } from "@/types/menu";
+import type { Nullable } from "@/types/utils";
 
 import RouteLink from "../RouteLink";
 
@@ -90,7 +91,7 @@ const Sidebar = async () => {
   const topLevelItems = Object.values(flatMap)
     .filter(e => e.parent === null)
     .map(e => trimEmptyNode(e))
-    .filter(e => e !== null);
+    .filter(e => !!e);
 
   return (
     <div className="sidebar">
@@ -98,11 +99,11 @@ const Sidebar = async () => {
     </div>
   );
 
-  function trimEmptyNode(node: MenuItemType): MenuItemType | null {
+  function trimEmptyNode(node: MenuItemType): Nullable<MenuItemType> {
     if (!node.children) return node;
     node.children = node.children
       .map(child => trimEmptyNode(child))
-      .filter(child => child !== null);
+      .filter(child => !!child);
     if (!node.children.length) return null;
 
     node.children.forEach(child => (validMap[child.key] = child));

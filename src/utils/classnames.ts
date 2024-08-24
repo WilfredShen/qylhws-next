@@ -1,5 +1,7 @@
 import { flatten, uniq } from "lodash";
 
+import type { Nullable } from "@/types/utils";
+
 export interface ClassNamesOption {
   [className: string]: boolean;
 }
@@ -22,8 +24,9 @@ export function mergeClassNames(...classNames: ClassNameParam[]) {
   return uniq(array.filter(e => e.trim())).join(" ");
 }
 
-export function appendClassNames<
-  T extends { className?: string | null | undefined },
->(obj: T, ...classNames: ClassNameParam[]) {
+export function appendClassNames<T extends { className?: Nullable<string> }>(
+  obj: T,
+  ...classNames: ClassNameParam[]
+) {
   obj.className = mergeClassNames(obj.className, ...classNames);
 }

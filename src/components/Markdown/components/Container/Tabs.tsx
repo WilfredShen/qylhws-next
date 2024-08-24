@@ -1,14 +1,15 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 
-import { Tabs as AntdTabs, TabsProps } from "antd";
+import { Tabs as AntdTabs, type TabsProps } from "antd";
 
+import type { Nullable } from "@/types/utils";
 import { mergeClassNames } from "@/utils/classnames";
 
 import type { ContainerProps } from "./share";
 
 import "./Tabs.scss";
 
-type Child = ReactElement | string | null | undefined;
+type Child = Nullable<ReactElement | string>;
 
 const Tabs = (props: ContainerProps) => {
   const { children } = props;

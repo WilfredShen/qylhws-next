@@ -7,6 +7,7 @@ import { uniq } from "lodash";
 import { usePathname } from "next/navigation";
 
 import type { MenuItemType } from "@/types/menu";
+import type { Nullable } from "@/types/utils";
 import dstore from "@/utils/dstore";
 
 export interface MenuProps {
@@ -31,7 +32,7 @@ const Menu = (props: MenuProps) => {
     }
 
     const path: string[] = [];
-    let item: MenuItemType | undefined = articleItem;
+    let item: Nullable<MenuItemType> = articleItem;
     while (item) {
       path.unshift(item.key);
       item = item.parent;

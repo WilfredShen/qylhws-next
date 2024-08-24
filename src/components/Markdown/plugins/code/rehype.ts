@@ -13,6 +13,7 @@ import type { Plugin } from "unified";
 import { filter } from "unist-util-filter";
 import { visit } from "unist-util-visit";
 
+import type { Nullable } from "@/types/utils";
 import { encodeStyleToString } from "@/utils/escape";
 
 interface Element extends RefractorElement {
@@ -54,12 +55,12 @@ export interface CodeBlockMeta {
   filename?: string;
   noLineNumbers: boolean;
   lineNumbers?: number;
-  decorators: (DecoratorType | undefined)[];
+  decorators: Nullable<DecoratorType>[];
   /** 装饰符的行号是否为绝对行号，即装饰符的行号对应的是代码块最终展示的行号 */
   absoluteDecorators: boolean;
-  maxHeight?: number | string;
+  maxHeight?: Nullable<number | string>;
   /** 计算高度时不包含内边距 */
-  maxLines?: number;
+  maxLines?: Nullable<number>;
 }
 
 const rehypeCode: Plugin<[RehypeCodeOptions?], Root> = function (options = {}) {
@@ -216,7 +217,7 @@ function calcMaxHeight({
   options: RehypeCodeOptions;
   meta: CodeBlockMeta;
   lineCount: number;
-}): string | undefined {
+}): Nullable<string> {
   const maxHeight = meta.maxHeight || options.maxHeight;
   const maxLines = meta.maxLines || options.maxLines;
   if (
@@ -294,7 +295,7 @@ function parseDecorators(items: string[]) {
   });
   return result;
 
-  function parseDecoratorType(item: string): DecoratorType | undefined {
+  function parseDecoratorType(item: string): Nullable<DecoratorType> {
     if (
       item.startsWith(DecoratorType.INSERT) ||
       item.startsWith(DecoratorType.DELETE)
@@ -417,7 +418,7 @@ function createLineNumberNode(lineNumber: number): Element {
   };
 }
 
-function createDecoratorNode(decorator: DecoratorType | undefined): Element {
+function createDecoratorNode(decorator: Nullable<DecoratorType>): Element {
   return {
     type: "element",
     tagName: "span",
@@ -473,7 +474,7 @@ function getLineNumber<T extends Node>(node: T) {
   return node.data?.lineNumber;
 }
 
-function getDecoratorClassName(decorator: DecoratorType | undefined) {
+function getDecoratorClassName(decorator: Nullable<DecoratorType>) {
   switch (decorator) {
     case DecoratorType.INSERT:
       return "line-inserted";
@@ -486,7 +487,7 @@ function getDecoratorClassName(decorator: DecoratorType | undefined) {
   }
 }
 
-function getDecoratorText(decorator: DecoratorType | undefined) {
+function getDecoratorText(decorator: Nullable<DecoratorType>) {
   switch (decorator) {
     case DecoratorType.INSERT:
     case DecoratorType.DELETE:

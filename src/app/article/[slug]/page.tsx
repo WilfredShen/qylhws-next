@@ -2,8 +2,8 @@ import matter from "gray-matter";
 
 import { getArticle, getArticleId, getArticles } from "@/api/article";
 import Markdown from "@/components/Markdown";
-import { PageProps } from "@/types/page";
-import { ArticleType } from "@/types/strapi";
+import type { PageProps } from "@/types/page";
+import type { ArticleType } from "@/types/strapi";
 
 const Article = async (props: PageProps<Pick<ArticleType, "slug">>) => {
   const { params } = props;
@@ -31,7 +31,7 @@ export async function generateStaticParams() {
   return articles.map(({ slug }) => ({ slug }));
 }
 
-export async function getPost(props: Pick<ArticleType, "slug">) {
+async function getPost(props: Pick<ArticleType, "slug">) {
   const { slug } = props;
 
   const { documentId } = await getArticleId({ slug });

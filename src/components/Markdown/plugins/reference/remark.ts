@@ -1,14 +1,16 @@
+import { readFileSync } from "fs";
+import type { Parent } from "mdast";
 import { codes } from "micromark-util-symbol";
 import type { Code } from "micromark-util-types";
 import path from "path";
 import type { Plugin } from "unified";
 import { visit } from "unist-util-visit";
 
+import type { Nullable } from "@/types/utils";
+
 import type { Reference } from "./mdast";
 import refenrenceMdast from "./mdast";
 import referenceSyntax from "./syntax";
-import { readFileSync } from "fs";
-import { Parent } from "mdast";
 
 export interface RemarkContainerOptions {
   fenceCode?: NonNullable<Code>;
@@ -94,7 +96,7 @@ function findRegion(lines: string[], regionName: string) {
     /^# ?((?:end)?region) ([\w*-]+)$/, // C#, PHP, Powershell, Python, perl & misc
   ];
 
-  let matchedPattern: RegExp | null = null;
+  let matchedPattern: Nullable<RegExp>;
   let start = -1;
 
   for (const [index, line] of lines.entries()) {
