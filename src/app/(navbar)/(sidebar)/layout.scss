@@ -3,6 +3,8 @@
 }
 
 .page-main {
+  position: relative;
+
   display: flex;
   overflow: hidden auto;
   flex: 1 1 auto;
@@ -24,4 +26,14 @@
 
     box-shadow: var(--shadow-default);
   }
+}
+
+.entry-scroll-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  visibility: hidden;
+
+  user-select: none;
 }

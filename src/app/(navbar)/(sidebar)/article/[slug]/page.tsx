@@ -1,3 +1,4 @@
+import { Card } from "antd";
 import matter from "gray-matter";
 
 import { getArticle, getArticleId, getArticles } from "@/api/article";
@@ -13,13 +14,16 @@ const Article = async (props: PageProps<Pick<ArticleType, "slug">>) => {
 
   return (
     <>
-      <div className="content-header">
-        <h1 className="content-title">{title}</h1>
-      </div>
-      <div className="content">
-        <Markdown content={content} />
-      </div>
-      <hr style={{ marginTop: 32 }} />
+      <div aria-hidden className="entry-scroll-anchor" />
+      <Card className="content-card">
+        <div className="content-header">
+          <h1 className="content-title">{title}</h1>
+        </div>
+        <div className="content">
+          <Markdown content={content} />
+        </div>
+        <hr style={{ marginTop: 32 }} />
+      </Card>
     </>
   );
 };
