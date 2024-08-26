@@ -13,6 +13,17 @@ body {
   padding: 0;
 }
 
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: calc(var(--scrollbar-width) / 2);
+  background-color: var(--color-scrollbar);
+}
+
 .page-main {
   p,
   table,
