@@ -1,0 +1,27 @@
+.sidebar {
+  flex: 0 0 var(--sidebar-width);
+}
+
+.page-main {
+  display: flex;
+  overflow: hidden auto;
+  flex: 1 1 auto;
+  justify-content: center;
+
+  width: fit-content;
+  min-width: calc(48px * 2 + var(--content-min-width));
+  height: 100%;
+
+  scroll-behavior: smooth;
+
+  .content-card {
+    width: calc(100% - 96px);
+    min-width: var(--content-min-width);
+    max-width: var(--content-max-width);
+    height: fit-content;
+    margin: 48px 48px 72px;
+    padding: 24px;
+
+    box-shadow: var(--shadow-default);
+  }
+}

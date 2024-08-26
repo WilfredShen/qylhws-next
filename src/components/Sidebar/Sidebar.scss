@@ -7,17 +7,9 @@
 
   border-right: 1px solid var(--color-divider-light);
 
-  .ant-menu-title-content {
-    transition: none;
-  }
+  .ant-menu {
+    border: none;
 
-  .ant-menu-submenu-arrow {
-    &::before,
-    &::after {
-      transition: background var(--ant-motion-duration-slow)
-          var(--ant-motion-ease-in-out),
-        transform var(--ant-motion-duration-slow) var(--ant-motion-ease-in-out),
-        top var(--ant-motion-duration-slow) var(--ant-motion-ease-in-out);
-    }
+    --ant-menu-sub-menu-item-bg: transparent;
   }
 }

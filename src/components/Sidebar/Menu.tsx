@@ -1,57 +1,59 @@
 "use client";
 
-import { useCallback, useMemo } from "react";
+import { useMemo, useState } from "react";
 
+import { useLocalStorageState, useMount } from "ahooks";
 import { Menu as AntdMenu } from "antd";
 import { uniq } from "lodash";
 import { usePathname } from "next/navigation";
 
 import type { MenuItemType } from "@/types/menu";
 import type { Nullable } from "@/types/utils";
-import dstore from "@/utils/dstore";
 
 export interface MenuProps {
   items: MenuItemType[];
   articleMap: Record<string, MenuItemType>;
 }
 
-const DSTORE_PATH_KEY = "__previous_open_keys__";
+const LOCAL_OPEN_KEYS_KEY = "__previous_open_keys__";
 
 const Menu = (props: MenuProps) => {
   const { items, articleMap } = props;
 
+  const [openKeys, setOpenKeys] =
+    useLocalStorageState<string[]>(LOCAL_OPEN_KEYS_KEY);
+  const [selectedKey, setSelectedKey] = useState<string>();
+  const selectedKeys = useMemo(
+    () => (selectedKey === undefined ? undefined : [selectedKey]),
+    [selectedKey],
+  );
+
   const pathname = usePathname();
 
-  const [defaultPath, defaultKey] = useMemo(() => {
-    const prevKeys = dstore.get<string[]>(DSTORE_PATH_KEY);
-    const [first, second] = pathname.split("/").filter(Boolean);
+  useMount(() => {
+    const match = pathname.match(/^\/article\/([^/]+)(?:\/|$)/);
+    if (!(match && match[1] in articleMap)) return;
 
-    const articleItem = articleMap[second];
-    if (first !== "article" || !articleItem) {
-      return [prevKeys];
-    }
+    const articleItem = articleMap[match[1]];
 
     const path: string[] = [];
     let item: Nullable<MenuItemType> = articleItem;
     while (item) {
-      path.unshift(item.key);
+      path.push(item.key);
       item = item.parent;
     }
 
-    const current = uniq([...(prevKeys ?? []), ...path]);
-    dstore.set(DSTORE_PATH_KEY, current);
-    return [current, path.slice(-1)];
-  }, [articleMap, pathname]);
-
-  const handleOpenChange = useCallback((openKeys: string[]) => {
-    dstore.set(DSTORE_PATH_KEY, openKeys);
-  }, []);
+    const current = uniq([...(openKeys ?? []), ...path]);
+    setOpenKeys(current);
+    setSelectedKey(path[0]);
+  });
 
   return (
     <AntdMenu
-      defaultOpenKeys={defaultPath}
-      defaultSelectedKeys={defaultKey}
-      onOpenChange={handleOpenChange}
+      openKeys={openKeys}
+      selectedKeys={selectedKeys}
+      onOpenChange={openKeys => setOpenKeys(openKeys)}
+      onClick={({ key }) => setSelectedKey(key)}
       mode="inline"
       items={items}
     />

@@ -49,7 +49,6 @@ export interface ArticleType extends BaseType {
   content: string;
   abstract?: Nullable<string>;
   navigation?: Nullable<NavigationType>;
-  category?: Nullable<CategoryType>;
   tags?: Nullable<TagType[]>;
 }
 
@@ -61,12 +60,6 @@ export interface NavigationType extends BaseType {
   link?: Nullable<string>;
   parent?: Nullable<NavigationType>;
   children?: Nullable<NavigationType[]>;
-  articles?: Nullable<ArticleType[]>;
-}
-
-export interface CategoryType extends BaseType {
-  slug: string;
-  label: string;
   articles?: Nullable<ArticleType[]>;
 }
 

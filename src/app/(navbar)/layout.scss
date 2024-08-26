@@ -1,0 +1,23 @@
+.page-layout {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  .navbar {
+    position: sticky;
+    z-index: 99;
+    top: 0;
+
+    flex: 0 0 auto;
+  }
+}
+
+.page-container {
+  display: flex;
+  overflow: auto;
+
+  height: calc(100vh - var(--navbar-height));
+}
