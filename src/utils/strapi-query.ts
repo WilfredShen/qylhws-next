@@ -2,6 +2,8 @@
 
 import type { Nullable } from "@/types/utils";
 
+import { isValid } from "./validate";
+
 export default class SQBuilder<Model extends object, Data extends object = {}> {
   private _query: QueryRawInfo<Model, Data> = {
     sort: [],
@@ -773,7 +775,7 @@ export default class SQBuilder<Model extends object, Data extends object = {}> {
 
     this._query.pagination = { ...this._query.pagination, page };
 
-    if (withCount !== undefined && withCount !== null) {
+    if (isValid(withCount)) {
       this._query.pagination.withCount = withCount;
     }
 
@@ -805,7 +807,7 @@ export default class SQBuilder<Model extends object, Data extends object = {}> {
     }
     this._query.offsetPagination = { ...this._query.offsetPagination, start };
 
-    if (withCount !== undefined && withCount !== null) {
+    if (isValid(withCount)) {
       this._query.offsetPagination.withCount = withCount;
     }
 
@@ -1306,7 +1308,7 @@ export default class SQBuilder<Model extends object, Data extends object = {}> {
   private static _isPopulateComplex<Md extends object, Dt extends object>(
     populate: StrapiPopulate<Md, Dt>,
   ) {
-    return populate.nestedQuery !== undefined && populate.nestedQuery !== null;
+    return isValid(populate.nestedQuery);
   }
   // </editor-fold>
 }
@@ -1351,7 +1353,7 @@ function unionBy<Type>(
 }
 
 function isDefined<T>(value: Nullable<T>): value is T {
-  return value !== undefined && value !== null;
+  return isValid(value);
 }
 
 /**

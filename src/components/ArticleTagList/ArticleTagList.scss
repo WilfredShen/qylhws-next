@@ -1,0 +1,11 @@
+.article-tag-list {
+  .article-tag {
+    + .article-tag {
+      margin-left: 0.5em;
+    }
+
+    .ant-tag {
+      margin: 0;
+    }
+  }
+}

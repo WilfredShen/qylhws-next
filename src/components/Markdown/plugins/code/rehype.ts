@@ -15,6 +15,7 @@ import { visit } from "unist-util-visit";
 
 import type { Nullable } from "@/types/utils";
 import { encodeStyleToString } from "@/utils/escape";
+import { isValid } from "@/utils/validate";
 
 interface Element extends RefractorElement {
   properties: {
@@ -392,11 +393,11 @@ function createFormatter() {
  * @param value 待检测对象
  * @returns 检测结果
  */
-function hasChildren<T>(value: T): value is T & { children: unknown } {
+function hasChildren<T>(
+  value: Nullable<T>,
+): value is T & { children: unknown } {
   return (
-    value !== undefined &&
-    value !== null &&
-    Object.prototype.hasOwnProperty.call(value, "children")
+    isValid(value) && Object.prototype.hasOwnProperty.call(value, "children")
   );
 }
 

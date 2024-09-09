@@ -13,15 +13,24 @@ body {
   padding: 0;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 ::-webkit-scrollbar {
-  width: var(--scrollbar-width);
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
 
   background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: calc(var(--scrollbar-width) / 2);
+  border-radius: calc(var(--scrollbar-size) / 2);
   background-color: var(--color-scrollbar);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
 }
 
 .page-main {

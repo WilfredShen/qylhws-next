@@ -4,6 +4,7 @@ import { getNavigations } from "@/api/article";
 import { NavigationTypeEnum } from "@/share/enum";
 import type { MenuItemType } from "@/types/menu";
 import type { Nullable } from "@/types/utils";
+import { isValid } from "@/utils/validate";
 
 import RouteLink from "../RouteLink";
 
@@ -89,7 +90,7 @@ const Sidebar = async () => {
 
   const validMap: Record<string, MenuItemType> = {};
   const topLevelItems = Object.values(flatMap)
-    .filter(e => e.parent === null)
+    .filter(e => !isValid(e.parent))
     .map(e => trimEmptyNode(e))
     .filter(e => !!e);
 

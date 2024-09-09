@@ -1,0 +1,73 @@
+.related-articles {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: 0 1em;
+
+  .related-article {
+    overflow: hidden;
+
+    padding: 0.5em 0.7em 0.7em;
+
+    transition: box-shadow 0.3s;
+
+    border-radius: 6px;
+
+    --font-size: 12px;
+
+    &:hover {
+      box-shadow: var(--shadow-heavy);
+    }
+
+    .related-article-title {
+      margin-bottom: 0.5em;
+
+      a {
+        color: var(--text-color);
+      }
+    }
+
+    .article-tag-list {
+      position: relative;
+
+      overflow: hidden;
+
+      width: 100%;
+
+      white-space: nowrap;
+
+      &::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        display: block;
+
+        width: 1em;
+        height: 100%;
+
+        content: "";
+        pointer-events: none;
+
+        background: linear-gradient(to right, transparent, #fff);
+      }
+    }
+  }
+
+  .related-article-refresh {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    span {
+      margin-top: 0.5em;
+
+      writing-mode: vertical-rl;
+    }
+  }
+}
