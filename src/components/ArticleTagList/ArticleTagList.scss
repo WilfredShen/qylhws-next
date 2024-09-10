@@ -1,4 +1,6 @@
 .article-tag-list {
+  display: flex;
+
   .article-tag {
     + .article-tag {
       margin-left: 0.5em;

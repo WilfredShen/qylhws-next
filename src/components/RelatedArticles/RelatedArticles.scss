@@ -1,73 +1,95 @@
-.related-articles {
-  display: grid;
+.related {
+  &-title {
+    display: flex;
+    justify-content: space-between;
 
-  grid-template-columns: repeat(3, 1fr) auto;
-  gap: 0 1em;
+    width: 100%;
+    margin-bottom: 0.75em;
 
-  .related-article {
-    overflow: hidden;
-
-    padding: 0.5em 0.7em 0.7em;
-
-    transition: box-shadow 0.3s;
-
-    border-radius: 6px;
-
-    --font-size: 12px;
-
-    &:hover {
-      box-shadow: var(--shadow-heavy);
-    }
-
-    .related-article-title {
-      margin-bottom: 0.5em;
-
-      a {
-        color: var(--text-color);
-      }
-    }
-
-    .article-tag-list {
-      position: relative;
-
-      overflow: hidden;
-
-      width: 100%;
-
-      white-space: nowrap;
-
-      &::after {
-        position: absolute;
-        top: 0;
-        right: 0;
-
-        display: block;
-
-        width: 1em;
-        height: 100%;
-
-        content: "";
-        pointer-events: none;
-
-        background: linear-gradient(to right, transparent, #fff);
-      }
-    }
+    font-weight: bold;
   }
 
-  .related-article-refresh {
+  &-content {
     display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
 
-    cursor: pointer;
+    width: 100%;
 
-    font-size: 14px;
+    .related-articles {
+      display: grid;
 
-    span {
-      margin-top: 0.5em;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0 1em;
 
-      writing-mode: vertical-rl;
+      .related-article {
+        overflow: hidden;
+
+        padding: 0.5em 0.75em 0.75em;
+
+        transition: box-shadow 0.3s;
+
+        border-radius: 6px;
+
+        &:hover {
+          box-shadow: var(--shadow-heavy);
+        }
+
+        &-title {
+          margin-bottom: 0.5em;
+
+          a {
+            --ant-color-link: var(--color-text);
+          }
+        }
+
+        .article-tag-list {
+          position: relative;
+
+          overflow: hidden;
+
+          width: 100%;
+
+          white-space: nowrap;
+
+          &::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            display: block;
+
+            width: 1em;
+            height: 100%;
+
+            content: "";
+            pointer-events: none;
+
+            background: linear-gradient(to right, transparent, #fff);
+          }
+        }
+      }
+    }
+
+    .related-refresh {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+
+      margin-left: 1em;
+
+      cursor: pointer;
+
+      font-size: 14px;
+
+      gap: 0.5em 0;
+
+      span {
+        writing-mode: vertical-rl;
+      }
+
+      &-icon {
+        transition: transform 1s;
+      }
     }
   }
 }

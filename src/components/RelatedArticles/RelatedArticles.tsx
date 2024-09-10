@@ -25,24 +25,40 @@ const RelatedArticles = (props: RelatedArticlesProps) => {
 
   const [sampled, updateSampled] = useSampledArticles(articles);
 
+  const [rotateCount, setRotateCount] = useState(0);
+
   return (
-    <div className="related-articles">
-      {sampled.map(({ slug, title, tags }) => (
-        <div
-          key={slug}
-          className={mergeClassNames("related-article", "ws-shadowed")}
-        >
-          <div className="related-article-title">
-            <RouteLink href={`/article/${slug}`}>{title}</RouteLink>
-          </div>
-          <div className="related-article-tags">
-            <ArticleTagList tags={tags!} />
-          </div>
+    <div className="related">
+      <div className="related-title">相关文章</div>
+      <div className="related-content">
+        <div className="related-articles">
+          {sampled.map(({ slug, title, tags }) => (
+            <div
+              key={slug}
+              className={mergeClassNames("related-article", "ws-shadowed")}
+            >
+              <div className="related-article-title">
+                <RouteLink href={`/article/${slug}`}>{title}</RouteLink>
+              </div>
+              <div className="related-article-tags">
+                <ArticleTagList tags={tags!} />
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-      <div className="related-article-refresh" onClick={updateSampled}>
-        <RefreshCw />
-        <span>换一批</span>
+        <div
+          className="related-refresh"
+          onClick={() => {
+            updateSampled();
+            setRotateCount(rotateCount + 1);
+          }}
+        >
+          <RefreshCw
+            className="related-refresh-icon"
+            style={{ transform: `rotate(${rotateCount * 360}deg)` }}
+          />
+          <span>换一换</span>
+        </div>
       </div>
     </div>
   );

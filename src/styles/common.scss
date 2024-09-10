@@ -208,3 +208,7 @@ body {
 .ws-shadowed {
   box-shadow: var(--shadow-default);
 }
+
+.ws-rotate {
+  transform: rotate(360deg);
+}
